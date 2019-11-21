@@ -1,0 +1,63 @@
+{
+  "code": 0,
+  "msg": "",
+  "count": 1000,
+  "data": [
+    {
+      "id": 1,
+      "gradeIcon": "icon-vip1",
+      "gradeName": "倔强青铜",
+      "gradePoint": "0",
+      "gradeGold": "0",
+      "gradeValue": "0"
+    },
+    {
+      "id": 2,
+      "gradeIcon": "icon-vip2",
+      "gradeName": "秩序白银",
+      "gradePoint": "100",
+      "gradeGold": "200",
+      "gradeValue": "500"
+    },
+    {
+      "id": 3,
+      "gradeIcon": "icon-vip3",
+      "gradeName": "荣耀黄金",
+      "gradePoint": "300",
+      "gradeGold": "300",
+      "gradeValue": "1000"
+    },
+    {
+      "id": 4,
+      "gradeIcon": "icon-vip4",
+      "gradeName": "尊贵铂金",
+      "gradePoint": "800",
+      "gradeGold": "400",
+      "gradeValue": "2000"
+    },
+    {
+      "id": 5,
+      "gradeIcon": "icon-vip5",
+      "gradeName": "永恒钻石",
+      "gradePoint": "1500",
+      "gradeGold": "500",
+      "gradeValue": "5000"
+    },
+    {
+      "id": 6,
+      "gradeIcon": "icon-vip6",
+      "gradeName": "至尊星耀",
+      "gradePoint": "3000",
+      "gradeGold": "600",
+      "gradeValue": "10000"
+    },
+    {
+      "id": 7,
+      "gradeIcon": "icon-vip7",
+      "gradeName": "最强王者",
+      "gradePoint": "5000",
+      "gradeGold": "700",
+      "gradeValue": "35000"
+    }
+  ]
+}

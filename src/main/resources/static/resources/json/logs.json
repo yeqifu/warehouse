@@ -1,0 +1,158 @@
+{
+	"code": 0,
+	"msg": "",
+	"count": 15,
+	"data": [
+		{
+			"logId": "1",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "正常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "2",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "POST",
+			"ip": "192.169.39.11",
+			"timeConsuming":"89",
+			"isAbnormal": "异常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "3",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "正常",
+			"operator": "admin",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "4",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "异常",
+			"operator": "admin",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "5",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "POST",
+			"ip": "192.169.39.11",
+			"timeConsuming":"55",
+			"newsLook": "开放浏览",
+			"isAbnormal": "正常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "6",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method": "POST",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "正常",
+			"operator": "admin",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "7",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "异常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "8",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "POST",
+			"ip": "192.169.39.11",
+			"timeConsuming":"15",
+			"isAbnormal": "正常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "9",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "正常",
+			"operator": "admin",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "10",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"25",
+			"isAbnormal": "异常",
+			"operator": "admin",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "11",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "POST",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "正常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "12",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "正常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "13",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"12",
+			"isAbnormal": "正常",
+			"operator": "admin",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "14",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "POST",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "异常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		},
+		{
+			"logId": "15",
+			"url": "https://gitee.com/layuicms/layuicms2.0",
+			"method" : "GET",
+			"ip": "192.169.39.11",
+			"timeConsuming":"125",
+			"isAbnormal": "正常",
+			"operator": "驊驊龔頾",
+			"operatingTime": "2017-04-14 00:00:00"
+		}
+	]
+}

@@ -1,0 +1,14 @@
+{
+	"cmsName": "layuiCMS后台管理模版",
+	"version": "v2.0",
+	"author": "驊驊龔頾",
+	"homePage": "index.html",
+	"server": "windows",
+	"dataBase": "8.00.2039",
+	"maxUpload": "2M",
+	"userRights": "超级管理员",
+	"description": "这是马哥闲来无事做的一套基于layui的cms模版，纯静态页面，不包含数据库",
+	"powerby": "copyright @2017 驊驊龔頾",
+	"record": "京ICP备14040xxx号-1",
+	"keywords": "layuicms,马哥,layuicms2.0,后台模版,请叫我马哥,驊驊龔頾"
+}
