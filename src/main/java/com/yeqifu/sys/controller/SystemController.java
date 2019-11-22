@@ -30,4 +30,13 @@ public class SystemController {
         return "system/index/index";
     }
 
+    /**
+     * 跳转到登陆台
+     * @return
+     */
+    @RequestMapping("toDeskManager")
+    public String toDeskManager(){
+        return "system/index/deskManager";
+    }
+
 }
