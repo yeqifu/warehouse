@@ -52,5 +52,6 @@ shiro:
   authc-ulrs:
   - /**
 
+#修改端口号为8088
 server:
   port: 8088

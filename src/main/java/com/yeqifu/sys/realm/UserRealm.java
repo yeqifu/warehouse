@@ -53,6 +53,7 @@ public class UserRealm extends AuthorizingRealm {
         if (null!=user){
             ActiverUser activerUser = new ActiverUser();
             activerUser.setUser(user);
+            //生成盐
             ByteSource credentialsSalt=ByteSource.Util.bytes(user.getSalt());
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(activerUser,user.getPwd(),credentialsSalt,this.getName());
             return info;

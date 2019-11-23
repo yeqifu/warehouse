@@ -1,3 +1,9 @@
+.input-radius{
+    border-radius: 10px;
+    height: 30px;
+    margin-top: 4px;
+}
+
 /*公共样式*/
 .childrenBody{ padding:10px;}
 .layui-table-view{ margin:0 !important;}

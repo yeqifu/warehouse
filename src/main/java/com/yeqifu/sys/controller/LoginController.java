@@ -26,10 +26,12 @@ public class LoginController {
         Subject subject = SecurityUtils.getSubject();
         AuthenticationToken token = new UsernamePasswordToken(loginname,pwd);
         try {
+            //对用户进行认证登陆
             subject.login(token);
+            //通过subject获取以认证活动的user
             ActiverUser activerUser = (ActiverUser) subject.getPrincipal();
+            //将user存储到session中
             WebUtils.getSession().setAttribute("user",activerUser.getUser());
-
             return ResultObj.LOGIN_SUCCESS;
         } catch (AuthenticationException e) {
             e.printStackTrace();
