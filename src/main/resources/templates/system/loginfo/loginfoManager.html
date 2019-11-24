@@ -27,7 +27,8 @@
         <div class="layui-inline">
             <label class="layui-form-label">登陆名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="loginname" id="loginname" class="layui-input input-radius" placeholder="请输入登陆名称">
+                <input type="text" name="loginname" id="loginname" class="layui-input input-radius"
+                       placeholder="请输入登陆名称">
             </div>
         </div>
         <div class="layui-inline">
@@ -67,12 +68,12 @@
 <div>
     <table class="layui-hide" id="loginfoTable" lay-filter="loginfoTable"></table>
     <div id="loginfoToolBar" style="display: none">
-        <button type="button" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
-                class="layui-icon layui-icon-delete"></i>批量删除
+        <button type="button" lay-event="batchDelete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius">
+            <i class="layui-icon layui-icon-delete"></i>批量删除
         </button>
     </div>
     <div id="loginfoRowBar" style="display: none;">
-        <button type="button" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
+        <button type="button" lay-event="delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>删除
         </button>
     </div>
@@ -117,15 +118,80 @@
         });
 
         //监控模糊查询按钮事件
-        form.on("submit(doSearch)",function(data){
+        form.on("submit(doSearch)", function (data) {
             tableIns.reload({
-                where:data.field,
-                page:{
-                    curr:1
+                where: data.field,
+                page: {
+                    curr: 1
                 }
             });
             return false;
         });
+
+        //监控工具条事件
+        table.on("toolbar(loginfoTable)", function (obj) {
+            switch (obj.event) {
+                case 'batchDelete':
+                    batchDelete();
+                break;
+            };
+        });
+
+        //监控行工具条事件
+        table.on("tool(loginfoTable)",function (obj) {
+            //获取当前行数据
+            var data = obj.data;
+            switch (obj.event){
+                case 'delete':
+                    deleteInfo(data);
+                break;
+            };
+        });
+
+        //删除
+        function deleteInfo(data) {
+            layer.confirm('你确定要删除这条数据吗？',{icon: 3,title:'提示'},function (index) {
+                $.post("/loginfo/deleteLoginfo",{id:data.id},function (res) {
+                    if (res.code==200){
+                        tableIns.reload();
+                    }
+                    layer.msg(res.msg);
+                });
+                layer.close(index);
+            });
+        }
+
+        //批量删除
+        function batchDelete() {
+            //得到选中行
+            var checkStatus = table.checkStatus('loginfoTable');
+            var dataLength = checkStatus.data.length;
+            if (dataLength>0){
+                layer.confirm('你确定要删除这些数据吗？',{icon: 3,title: '提示'},function (index) {
+                    //获取选中行数据
+                    var data = checkStatus.data;
+                    var ids = "";
+                    $.each(data,function (index, item) {
+                        if (index==0){
+                            ids+="ids="+item.id;
+                        }else {
+                            ids+="&ids="+item.id;
+                        }
+                    });
+                    $.post("/loginfo/batchDeleteLoginfo",ids,function (res) {
+                        if (res.code==200){
+                            //重新刷新表格
+                            tableIns.reload();
+                        }
+                        layer.msg(res.msg);
+                    });
+                    layer.close(index);
+                });
+            }else {
+                layer.msg("请选中操作行")
+            }
+        }
+
 
     });
 

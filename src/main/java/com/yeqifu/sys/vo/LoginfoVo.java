@@ -18,6 +18,9 @@ public class LoginfoVo extends Loginfo {
     private Integer page;
     private Integer limit;
 
+    //接收多个id
+    private Integer[] ids;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date startTime;
 
