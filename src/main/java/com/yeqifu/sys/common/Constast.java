@@ -23,6 +23,10 @@ public class Constast {
      */
     public static final String TYPE_MENU = "menu";
     public static final String TYPE_PERMISSION = "permission";
+
+    /**
+     * 用户类型   0 超级管理员   1 管理员   2普通用户
+     */
     public static final Integer USER_TYPE_SUPER = 0;
 
     /**
