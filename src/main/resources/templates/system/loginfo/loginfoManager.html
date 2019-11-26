@@ -114,7 +114,17 @@
                 {field: 'loginip', title: '登陆IP', align: 'center'},
                 {field: 'logintime', title: '登陆时间', align: 'center'},
                 {fixed: 'right', title: '操作', toolbar: '#loginfoRowBar', align: 'center'}
-            ] ]
+            ] ],
+            done:function (data, curr, count) {
+                //不是第一页时，如果当前返回的数据为0那么就返回上一页
+                if(data.data.length==0&&curr!=1){
+                    tableIns.reload({
+                        page:{
+                            curr:curr-1
+                        }
+                    })
+                }
+            }
         });
 
         //监控模糊查询按钮事件

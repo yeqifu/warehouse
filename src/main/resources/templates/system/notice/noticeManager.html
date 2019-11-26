@@ -11,8 +11,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="/resources/favicon.ico">
-    <!--<link rel="stylesheet" href="resources/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" href="resources/css/public.css" media="all" />-->
     <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}"
           media="all"/>
     <link rel="stylesheet" href="resources/css/public.css" th:href="@{/resources/css/public.css}" media="all"/>
@@ -163,7 +161,17 @@
                 {field: 'opername', title: '操作人', align: 'center'},
                 {field: 'createtime', title: '创建时间', align: 'center'},
                 {fixed: 'right', title: '操作', toolbar: '#noticeRowBar', align: 'center'}
-            ] ]
+            ] ],
+            done:function (data, curr, count) {
+                //不是第一页时，如果当前返回的数据为0那么就返回上一页
+                if(data.data.length==0&&curr!=1){
+                    tableIns.reload({
+                        page:{
+                            curr:curr-1
+                        }
+                    })
+                }
+            }
         });
 
         //初始化富文本编译器
