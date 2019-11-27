@@ -101,7 +101,8 @@ public class DeptController {
         Map<String,Object> map = new HashMap<String,Object>();
         QueryWrapper<Dept> queryWrapper = new QueryWrapper<>();
         queryWrapper.orderByDesc("ordernum");
-        List<Dept> list = deptService.list(queryWrapper);
+        IPage<Dept> page = new Page<>(1,1);
+        List<Dept> list = deptService.page(page,queryWrapper).getRecords();
         if (list.size()>0){
             map.put("value",list.get(0).getOrdernum()+1);
         }else {

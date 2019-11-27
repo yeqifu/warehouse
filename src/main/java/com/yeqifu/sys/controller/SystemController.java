@@ -84,4 +84,31 @@ public class SystemController {
         return "system/dept/deptRight";
     }
 
+    /**
+     * 跳转到菜单管理
+     * @return
+     */
+    @RequestMapping("toMenuManager")
+    public String toMenuManager(){
+        return "system/menu/menuManager";
+    }
+
+    /**
+     * 跳转到菜单管理--left
+     * @return
+     */
+    @RequestMapping("toMenuLeft")
+    public String toMenuLeft(){
+        return "system/menu/menuLeft";
+    }
+
+    /**
+     * 跳转到菜单管理--right
+     * @return
+     */
+    @RequestMapping("toMenuRight")
+    public String toMenuRight(){
+        return "system/menu/menuRight";
+    }
+
 }

@@ -12,4 +12,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = false)
 public class PermissionVo extends Permission {
 
+    private Integer page=1;
+    private Integer limit=10;
 }
