@@ -79,7 +79,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">父级部门</label>
             <div class="layui-input-block">
-                <input type="hidden" name="pid" id="pid">
+                <input type="hidden" name="pid" id="pid" lay-verify="required">
                 <ul id="deptTree" class="dtree" data-id="0"></ul>
             </div>
         </div>
@@ -133,7 +133,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block" style="text-align: center;padding-right: 7%">
-                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" id="doSubmit"><i
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit" id="doSubmit"><i
                         class="layui-icon layui-icon-search layui-icon-normal"></i>提交
                 </button>
                 <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
@@ -193,6 +193,15 @@
                         }
                     })
                 }
+                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
+                if (data.data.length==0 && curr==1){
+                    tableIns.reload({
+                        where: "",
+                        page:{
+                            curr:1
+                        }
+                    })
+                }
             }
         });
 
@@ -242,11 +251,15 @@
                 title:'添加部门',
                 success:function () {
                     $("#dataFrm")[0].reset();
+                    //设置下拉树中父节点的值为空
+                    $("#pid").val("");
                     url="/dept/addDept";
                     //初始化排序码
                     $.get("/dept/loadDeptMaxOrderNum",function (res) {
                         $("#ordernum").val(res.value);
                     });
+                    //设置下拉树的value值为空
+                    selectTree.selectVal("");
                 }
             });
         }
@@ -271,7 +284,22 @@
             });
         }
 
-        $("#doSubmit").click(function () {
+        form.on("submit(doSubmit)",function (data) {
+            $.post(url,data.field,function (res) {
+                if (res.code==200){
+                    tableIns.reload();
+                    //重新加载添加弹出层的下拉树
+                    selectTree.reload();
+                    //重新加载左边的部门树
+                    window.parent.left.deptTree.reload();
+                }
+                layer.msg(res.msg);
+                layer.close(mainIndex);
+            });
+            return false;
+        });
+
+        /*$("#doSubmit").click(function () {
             var data = $("#dataFrm").serialize();
             $.post(url,data,function (res) {
                 if (res.code==200){
@@ -284,7 +312,7 @@
                 layer.msg(res.msg);
                 layer.close(mainIndex);
             });
-        });
+        });*/
 
         //删除
         function deleteDept(data) {

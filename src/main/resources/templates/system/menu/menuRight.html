@@ -65,7 +65,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">父级菜单</label>
             <div class="layui-input-block">
-                <input type="hidden" name="pid" id="pid">
+                <input type="hidden" name="pid" id="pid" lay-verify="required">
                 <ul id="menuTree" class="dtree" data-id="0"></ul>
             </div>
         </div>
@@ -125,7 +125,7 @@
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block" style="text-align: center;padding-right: 7%">
-                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" id="doSubmit"><i
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit" id="doSubmit"><i
                         class="layui-icon layui-icon-search layui-icon-normal"></i>提交
                 </button>
                 <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
@@ -161,11 +161,11 @@
             page: true,
             height: "full-130",
             cols: [ [
-                {field: 'id', title: 'ID', align: 'center',width:'50'},
+                {field: 'id', title: 'ID', align: 'center',width:'80'},
                 {field: 'pid', title: '父级菜单ID', align: 'center',width:'100'},
                 {field: 'title', title: '菜单名称', align: 'center',width:'150'},
                 {field: 'href', title: '菜单地址', align: 'center',width:'200'},
-                {field: 'icon', title: '菜单图标', align: 'center',width:'100',templet:function (d) {
+                {field: 'icon', title: '菜单图标', align: 'center',width:'90',templet:function (d) {
                     return '<font class="layui-icon">'+d.icon+'</font>';
                 }},
                 {field: 'available', title: '是否可用', align: 'center',width:'100',templet:function (d) {
@@ -174,7 +174,7 @@
                 {field: 'open', title: '是否展开', align: 'center',width:'100',templet:function (d) {
                     return d.open==1?'<font color="blue">展开</font>':'<font color="red">不展开</font>';
                 }},
-                {field: 'ordernum', title: '排序码', align: 'center',width:'100'},
+                {field: 'ordernum', title: '排序码', align: 'center',width:'80'},
                 {field: 'target', title: 'TARGET', align: 'center',width:'80',hide:true},
                 {fixed: 'right', title: '操作', toolbar: '#menuRowBar', align: 'center',width:'180'}
             ] ],
@@ -184,6 +184,15 @@
                     tableIns.reload({
                         page: {
                             curr: curr - 1
+                        }
+                    })
+                }
+                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
+                if (data.data.length==0 && curr==1){
+                    tableIns.reload({
+                        where: "",
+                        page:{
+                            curr:1
                         }
                     })
                 }
@@ -236,11 +245,15 @@
                 title:'添加菜单',
                 success:function () {
                     $("#dataFrm")[0].reset();
+                    //设置下拉树中父节点的值为空
+                    $("#pid").val("");
                     url="/menu/addMenu";
                     //初始化排序码
                     $.get("/menu/loadMenuMaxOrderNum",function (res) {
                         $("#ordernum").val(res.value);
                     });
+                    //设置下拉树的value值为空
+                    selectTree.selectVal("");
                 }
             });
         }
@@ -265,7 +278,22 @@
             });
         }
 
-        $("#doSubmit").click(function () {
+        form.on("submit(doSubmit)",function (data) {
+            $.post(url,data.field,function (res) {
+                if (res.code==200){
+                    tableIns.reload();
+                    //重新加载添加弹出层的下拉树
+                    selectTree.reload();
+                    //重新加载左边的菜单树
+                    window.parent.left.menuTree.reload();
+                }
+                layer.msg(res.msg);
+                layer.close(mainIndex);
+            });
+            return false;
+        });
+
+        /*$("#doSubmit").click(function () {
             var data = $("#dataFrm").serialize();
             $.post(url,data,function (res) {
                 if (res.code==200){
@@ -278,7 +306,7 @@
                 layer.msg(res.msg);
                 layer.close(mainIndex);
             });
-        });
+        });*/
 
         //删除
         function deleteMenu(data) {
