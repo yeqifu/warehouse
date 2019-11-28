@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>公告管理页面</title>
+    <title>角色管理页面</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta http-equiv="Access-Control-Allow-Origin" content="*">
@@ -11,6 +11,8 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="/resources/favicon.ico">
+    <!--<link rel="stylesheet" href="resources/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="resources/css/public.css" media="all" />-->
     <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}"
           media="all"/>
     <link rel="stylesheet" href="resources/css/public.css" th:href="@{/resources/css/public.css}" media="all"/>
@@ -23,16 +25,16 @@
 <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form">
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">公告标题</label>
+            <label class="layui-form-label">角色名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="title" id="title" class="layui-input input-radius"
-                       placeholder="请输入共告标题">
+                <input type="text" name="name" id="name" class="layui-input input-radius"
+                       placeholder="请输入角色名称">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">操作人</label>
+            <label class="layui-form-label">角色备注</label>
             <div class="layui-input-inline">
-                <input type="text" name="opername" id="opername" class="layui-input input-radius" placeholder="请输入操作人名称">
+                <input type="text" name="remark" id="remark" class="layui-input input-radius" placeholder="请输入角色备注">
             </div>
         </div>
         <div class="layui-inline">
@@ -64,19 +66,13 @@
 
 <!--数据表格-->
 <div>
-    <table class="layui-hide" id="noticeTable" lay-filter="noticeTable"></table>
-    <div id="noticeToolBar" style="display: none">
+    <table class="layui-hide" id="roleTable" lay-filter="roleTable"></table>
+    <div id="roleToolBar" style="display: none">
         <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
-            <i class="layui-icon layui-icon-add-1"></i>添加公告
-        </button>
-        <button type="button" lay-event="batchDelete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius">
-            <i class="layui-icon layui-icon-delete"></i>批量删除
+            <i class="layui-icon layui-icon-add-1"></i>添加
         </button>
     </div>
-    <div id="noticeRowBar" style="display: none;">
-        <button type="button" lay-event="show" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius"><i
-                class="layui-icon layui-icon-tips"></i>查看
-        </button>
+    <div id="roleRowBar" style="display: none;">
         <button type="button" lay-event="update" class="layui-btn layui-btn-sm layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>编辑
         </button>
@@ -87,24 +83,36 @@
 </div>
 
 <!--添加和修改弹出层-->
-<div id="addOrUpdateDiv" style="display: none;padding: 10px;margin-right: 4%">
+<div id="addOrUpdateDiv" style="display: none;padding: 10px;padding-right: 5%">
     <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
         <div class="layui-form-item">
-            <label class="layui-form-label">公告标题</label>
-            <div class="layui-input-block">
-                <input type="hidden" name="id">
-                <input type="text" name="title" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入公告标题">
+            <div class="layui-inline">
+                <label class="layui-form-label">角色名称</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">
+                    <input type="text" name="name" lay-verify="required" autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入角色名称">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否可用</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="available" value="1" title="可用" checked="">
+                    <input type="radio" name="available" value="0" title="不可用">
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <label class="layui-form-label">公告内容</label>
-            <div class="layui-input-block">
-                <textarea class="layui-textarea" name="content" id="content" placeholder="请输入公告内容" ></textarea>
+            <div class="layui-inline">
+                <label class="layui-form-label">角色备注</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" class="layui-textarea" name="remark" cols="200"></textarea>
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block" style="text-align: center;padding-right: 7%">
-                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" id="doSubmit"><i
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit" id="doSubmit"><i
                         class="layui-icon layui-icon-search layui-icon-normal"></i>提交
                 </button>
                 <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
@@ -115,27 +123,15 @@
     </form>
 </div>
 
-<!--查看公告弹出层-->
-<div id="showNoticeDiv" style="display: none;padding: 10px">
-    <h3 id="notice_title" style="text-align: center"></h3>
-    <div style="text-align: right;margin-top: 2%">
-        发布人：<span id="notice_opername"></span>
-        发布时间：<span id="notice_createtime"></span>
-    </div>
-    <hr>
-    <div id="notice_content"></div>
-</div>
-
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
 
 <script type="text/javascript">
-    layui.use(['jquery', 'form', 'layer', 'laydate', 'table','layedit'], function () {
+    layui.use(['jquery', 'form', 'layer', 'laydate', 'table'], function () {
         var $ = layui.jquery;
         var form = layui.form;
         var layer = layui.layer;
         var laydate = layui.laydate;
         var table = layui.table;
-        var layedit = layui.layedit;
         //初始化时间选择器
         laydate.render({
             elem: "#startTime",
@@ -146,21 +142,20 @@
             type: "datetime"
         });
 
-        //初始化表格 加载数据
+        //初始化表格
         var tableIns = table.render({
-            elem: "#noticeTable",
-            title: "公告数据表格",
-            url: "/notice/loadAllNotice",
-            toolbar: "#noticeToolBar",
+            elem: "#roleTable",
+            title: "角色数据表格",
+            url: "/role/loadAllRole",
+            toolbar: "#roleToolBar",
             page: true,
             height: "full-190",
             cols: [ [
-                {type: 'checkbox', fixed: 'left'},
                 {field: 'id', title: 'ID', align: 'center'},
-                {field: 'title', title: '公告标题', align: 'center'},
-                {field: 'opername', title: '操作人', align: 'center'},
+                {field: 'name', title: '角色名称', align: 'center'},
+                {field: 'remark', title: '角色备注', align: 'center'},
                 {field: 'createtime', title: '创建时间', align: 'center'},
-                {fixed: 'right', title: '操作', toolbar: '#noticeRowBar', align: 'center'}
+                {fixed: 'right', title: '操作', toolbar: '#roleRowBar', align: 'center'}
             ] ],
             done:function (data, curr, count) {
                 //不是第一页时，如果当前返回的数据为0那么就返回上一页
@@ -183,9 +178,6 @@
             }
         });
 
-        //初始化富文本编译器
-        var editIndex = layedit.build('content');
-
         //监控模糊查询按钮事件
         form.on("submit(doSearch)", function (data) {
             tableIns.reload({
@@ -198,11 +190,8 @@
         });
 
         //监控工具条事件
-        table.on("toolbar(noticeTable)", function (obj) {
+        table.on("toolbar(roleTable)", function (obj) {
             switch (obj.event) {
-                case 'batchDelete':
-                    batchDelete();
-                break;
                 case 'add':
                     openAddLayer();
                 break;
@@ -210,129 +199,75 @@
         });
 
         //监控行工具条事件
-        table.on("tool(noticeTable)",function (obj) {
+        table.on("tool(roleTable)",function (obj) {
             //获取当前行数据
             var data = obj.data;
             switch (obj.event){
-                case 'delete':
-                    deleteInfo(data);
-                break;
                 case 'update':
-                    updateNotice(data);
-                break;
-                case 'show':
-                    showNotice(data);
+                    updateRole(data);
+                    break;
+                case 'delete':
+                    deleteRole(data);
                 break;
             };
         });
 
+        var mainIndex;
+        var url;
+
+        //打开添加弹出层
+        function openAddLayer() {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['800px','350px'],
+                title:'添加角色',
+                success:function () {
+                    $("#dataFrm")[0].reset();
+                    url="/role/addRole";
+                }
+            });
+        }
+
+        //打开修改弹出层
+        function updateRole(data) {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['800px','350px'],
+                title:'修改角色',
+                success:function () {
+                    //清空原有的数据
+                    $("#dataFrm")[0].reset();
+                    //装载新的数据
+                    form.val("dataFrm",data);
+                    url="/role/updateRole";
+                }
+            });
+        }
+
+        //提交按钮事件
+        form.on("submit(doSubmit)",function (data) {
+            $.post(url,data.field,function (res) {
+                if (res.code==200){
+                    tableIns.reload();
+                }
+                layer.msg(res.msg);
+                layer.close(mainIndex);
+            });
+            return false;
+        })
+
         //删除
-        function deleteInfo(data) {
-            layer.confirm('你确定要删除【'+data.title+'】这条公告吗？',{icon: 3,title:'提示'},function (index) {
-                $.post("/notice/deleteNotice",{id:data.id},function (res) {
+        function deleteRole(data) {
+            layer.confirm('你确定要删除【'+data.name+'】这条数据吗？',{icon: 3,title:'提示'},function (index) {
+                $.post("/role/deleteRole",{id:data.id},function (res) {
                     if (res.code==200){
                         tableIns.reload();
                     }
                     layer.msg(res.msg);
                 });
                 layer.close(index);
-            });
-        }
-
-        //批量删除
-        function batchDelete() {
-            //得到选中行
-            var checkStatus = table.checkStatus('noticeTable');
-            var dataLength = checkStatus.data.length;
-            if (dataLength>0){
-                layer.confirm('你确定要删除这些公告吗？',{icon: 3,title: '提示'},function (index) {
-                    //获取选中行数据
-                    var data = checkStatus.data;
-                    var ids = "";
-                    $.each(data,function (index, item) {
-                        if (index==0){
-                            ids+="ids="+item.id;
-                        }else {
-                            ids+="&ids="+item.id;
-                        }
-                    });
-                    $.post("/notice/batchDeleteNotice",ids,function (res) {
-                        if (res.code==200){
-                            //重新刷新表格
-                            tableIns.reload();
-                        }
-                        layer.msg(res.msg);
-                    });
-                    layer.close(index);
-                });
-            }else {
-                layer.msg("请选中操作行")
-            }
-        }
-
-        var mainIndex;
-        var url;
-
-        //打开添加的弹出层
-        function openAddLayer() {
-            mainIndex = layer.open({
-                type:1,
-                content:$("#addOrUpdateDiv"),
-                area:['800px','550px'],
-                title:'添加公告',
-                success:function () {
-                    $("#dataFrm")[0].reset();
-                    //重置富文本编译器的内容为空
-                    layedit.setContent(editIndex,"");
-                    url="/notice/addNotice";
-                }
-            });
-        };
-
-        //打开修改的弹出层
-        function updateNotice(data) {
-            mainIndex = layer.open({
-                type:1,
-                content:$("#addOrUpdateDiv"),
-                area:['800px','550px'],
-                title:'修改公告',
-                success:function () {
-                    $("#dataFrm")[0].reset();
-                    //装载新的数据
-                    form.val("dataFrm",data);
-                    layedit.setContent(editIndex,data.content);
-                    url:"/notice/updateNotice";
-                }
-            });
-        };
-
-        $("#doSubmit").click(function () {
-            //同步富文本和textarea里面的内容
-            layedit.sync(editIndex);
-            var data = $("#dataFrm").serialize();
-            $.post(url,data,function (res) {
-                if (res.code==200){
-                    tableIns.reload();
-                }
-                //提示操作是否成功，且关闭弹出层
-                layer.msg(res.msg);
-                layer.close(mainIndex);
-            });
-        });
-
-        //打开查看的弹出层
-        function showNotice(data) {
-            mainIndex = layer.open({
-                type:1,
-                content:$("#showNoticeDiv"),
-                area:['800px','550px'],
-                title:'查看公告',
-                success:function () {
-                    $("#notice_title").html(data.title);
-                    $("#notice_opername").html(data.opername);
-                    $("#notice_createtime").html(data.createtime);
-                    $("#notice_content").html(data.content);
-                }
             });
         }
 

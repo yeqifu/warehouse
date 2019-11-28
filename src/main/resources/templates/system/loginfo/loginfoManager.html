@@ -124,6 +124,15 @@
                         }
                     })
                 }
+                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
+                if (data.data.length==0 && curr==1){
+                    tableIns.reload({
+                        where: "",
+                        page:{
+                            curr:1
+                        }
+                    })
+                }
             }
         });
 
