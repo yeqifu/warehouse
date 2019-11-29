@@ -81,6 +81,7 @@
 			<artifactId>mybatis-plus-boot-starter</artifactId>
 			<version>${mybatisplus.version}</version>
 		</dependency>
+
 		<!--mybatisplus代码生成器-->
 		<dependency>
 			<groupId>com.baomidou</groupId>
@@ -139,7 +140,11 @@
 			<artifactId>hutool-all</artifactId>
 			<version>${hutool.version}</version>
 		</dependency>
-
+		<!-- commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+		</dependency>
 
 	</dependencies>
 

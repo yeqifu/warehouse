@@ -1,4 +1,3 @@
-
 #配置数据源
 spring:
   datasource:
@@ -31,8 +30,7 @@ spring:
 
 #配置mybatisplus
 mybatis-plus:
-  mapper-locations:
-  -classpath: mapper/*/*Mapper.xml
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
   global-config:
     db-config:
       id-type: auto

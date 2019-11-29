@@ -44,8 +44,10 @@ public class RoleController {
         QueryWrapper<Role> queryWrapper = new QueryWrapper<Role>();
         queryWrapper.like(StringUtils.isNotBlank(roleVo.getName()),"name",roleVo.getName());
         queryWrapper.like(StringUtils.isNotBlank(roleVo.getRemark()),"remark",roleVo.getRemark());
+        queryWrapper.eq(roleVo.getAvailable()!=null,"available",roleVo.getAvailable());
         queryWrapper.ge(roleVo.getStartTime()!=null,"createtime",roleVo.getStartTime());
         queryWrapper.le(roleVo.getEndTime()!=null,"createtime",roleVo.getEndTime());
+        queryWrapper.orderByDesc("createtime");
         roleService.page(page,queryWrapper);
         return new DataGridView(page.getTotal(),page.getRecords());
     }
@@ -85,19 +87,18 @@ public class RoleController {
 
     /**
      * 删除角色
-     * @param roleVo
+     * @param id
      * @return
      */
     @RequestMapping("deleteRole")
-    public ResultObj deleteRole(RoleVo roleVo){
+    public ResultObj deleteRole(Integer id){
         try {
-            roleService.removeById(roleVo);
+            this.roleService.removeById(id);
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
             return ResultObj.DELETE_ERROR;
         }
-
     }
 
 }

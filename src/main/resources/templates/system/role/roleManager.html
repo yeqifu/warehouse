@@ -53,11 +53,18 @@
         </div>
     </div>
     <div class="layui-form-item">
-        <div class="layui-input-block" style="text-align: center;padding-right: 15%;">
+        <div class="layui-inline">
+            <label class="layui-form-label">是否可用</label>
+            <div class="layui-input-inline">
+                <input type="radio" name="available" value="1" title="可用">
+                <input type="radio" name="available" value="0" title="不可用">
+            </div>
+        </div>
+        <div class="layui-inline" style="margin-left: 10%">
             <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-submit="" lay-filter="doSearch"><i
                     class="layui-icon layui-icon-search layui-icon-normal"></i>查询
             </button>
-            <button type="reset" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm"><i
+            <button type="reset" id="resetRole" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm"><i
                     class="layui-icon layui-icon-refresh"></i><span>重置</span>
             </button>
         </div>
@@ -78,6 +85,9 @@
         </button>
         <button type="button" lay-event="delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>删除
+        </button>
+        <button type="button" lay-event="selectPermission" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius"><i
+                class="layui-icon layui-icon-auz"></i>分配权限
         </button>
     </div>
 </div>
@@ -154,8 +164,11 @@
                 {field: 'id', title: 'ID', align: 'center'},
                 {field: 'name', title: '角色名称', align: 'center'},
                 {field: 'remark', title: '角色备注', align: 'center'},
+                {field: 'available', title: '是否可用', align: 'center',templet:function (d) {
+                    return d.available==1?'<font color="blue">可用</font>':'<font color="red">不可用</font>';
+                }},
                 {field: 'createtime', title: '创建时间', align: 'center'},
-                {fixed: 'right', title: '操作', toolbar: '#roleRowBar', align: 'center'}
+                {fixed: 'right', title: '操作', toolbar: '#roleRowBar', align: 'center',width:280}
             ] ],
             done:function (data, curr, count) {
                 //不是第一页时，如果当前返回的数据为0那么就返回上一页
@@ -178,10 +191,17 @@
             }
         });
 
+        //点击重置按钮时，重置表单的值
+        $("#resetRole").click(function () {
+            $("#searchFrm")[0].reset();
+        });
+
         //监控模糊查询按钮事件
         form.on("submit(doSearch)", function (data) {
+            var params = $("#searchFrm").serialize();
             tableIns.reload({
-                where: data.field,
+//                where: data.field,
+                url:"/role/loadAllRole?"+params,
                 page: {
                     curr: 1
                 }
@@ -208,6 +228,9 @@
                     break;
                 case 'delete':
                     deleteRole(data);
+                break;
+                case 'selectPermission':
+                    selectPermission(data);
                 break;
             };
         });
@@ -256,7 +279,7 @@
                 layer.close(mainIndex);
             });
             return false;
-        })
+        });
 
         //删除
         function deleteRole(data) {
