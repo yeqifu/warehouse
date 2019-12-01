@@ -101,10 +101,10 @@ public class MenuController {
         IPage<Permission> page = new Page<>(permissionVo.getPage(),permissionVo.getLimit());
         //进行模糊查询
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(permissionVo.getId()!=null,"id",permissionVo.getId()).or().eq(permissionVo.getId()!=null,"pid",permissionVo.getId());
         //只能查询菜单
         queryWrapper.eq("type",Constast.TYPE_MENU);
         queryWrapper.like(StringUtils.isNotBlank(permissionVo.getTitle()),"title",permissionVo.getTitle());
-        queryWrapper.eq(permissionVo.getId()!=null,"id",permissionVo.getId()).or().eq(permissionVo.getId()!=null,"pid",permissionVo.getId());
         queryWrapper.orderByAsc("ordernum");
         //进行查询
         permissionService.page(page,queryWrapper);

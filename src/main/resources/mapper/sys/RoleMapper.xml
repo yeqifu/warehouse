@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeqifu.sys.mapper.RoleMapper">
-<delete id="deleteRolePermissionByRid">
-    delete from sys_role_permission where rid = #{pid}
-</delete>
-<delete id="deleteUserRoleByRid">
-    delete from sys_user_role where rid = #{pid}
-</delete>
+    <!--根据角色ID删除sys_role_permission中的数据-->
+    <delete id="deleteRolePermissionByRid">
+        delete from sys_role_permission where rid = #{pid}
+    </delete>
+    <!--根据角色ID删除sys_user_role中的数据-->
+    <delete id="deleteUserRoleByRid">
+        delete from sys_user_role where rid = #{pid}
+    </delete>
+
+    <!--根据角色ID查询当前角色拥有的菜单ID和权限ID-->
+    <select id="queryRolePermissionIdsByRid" resultType="java.lang.Integer">
+        select pid from sys_role_permission where rid = #{roleId}
+    </select>
+
+    <!--保存角色和菜单权限之间的关系-->
+    <insert id="saveRolePermission">
+        insert into sys_role_permission(rid,pid) values (#{rid},#{pid})
+    </insert>
+
 </mapper>

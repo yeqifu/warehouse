@@ -44,7 +44,6 @@ public class PermissionController {
      */
     @RequestMapping("loadPermissionManagerLeftTreeJson")
     public DataGridView loadPermissionManagerLeftTreeJson(PermissionVo permissionVo){
-
         QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("type", Constast.TYPE_MENU);
         //查询出所有的权限，存放进list中
@@ -72,7 +71,7 @@ public class PermissionController {
         queryWrapper.eq("type",Constast.TYPE_PERMISSION);
         queryWrapper.like(StringUtils.isNotBlank(permissionVo.getTitle()),"title",permissionVo.getTitle());
         queryWrapper.like(StringUtils.isNotBlank(permissionVo.getPercode()),"percode",permissionVo.getPercode());
-        queryWrapper.eq(permissionVo.getId()!=null,"id",permissionVo.getId()).or().eq(permissionVo.getId()!=null,"pid",permissionVo.getId());
+        queryWrapper.eq(permissionVo.getId()!=null,"pid",permissionVo.getId());
         queryWrapper.orderByAsc("ordernum");
         //进行查询
         permissionService.page(page,queryWrapper);

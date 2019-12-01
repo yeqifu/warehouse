@@ -11,11 +11,10 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="/resources/favicon.ico">
-    <!--<link rel="stylesheet" href="resources/layui/css/layui.css" media="all" />
-    <link rel="stylesheet" href="resources/css/public.css" media="all" />-->
-    <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}"
-          media="all"/>
+    <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}" media="all"/>
     <link rel="stylesheet" href="resources/css/public.css" th:href="@{/resources/css/public.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/dtree.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
 </head>
 <body class="childrenBody">
 <!--查询条件-->
@@ -133,15 +132,22 @@
     </form>
 </div>
 
+<div id="selectRolePermissionDiv" style="display: none;">
+    <ul id="permissionTree" class="dtree" data-id="0"></ul>
+</div>
+
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
 
 <script type="text/javascript">
-    layui.use(['jquery', 'form', 'layer', 'laydate', 'table'], function () {
+    layui.extend({
+        dtree: '/resources/layui_ext/dtree/dtree'
+    }).use(['jquery', 'form', 'layer', 'laydate', 'table','dtree'], function () {
         var $ = layui.jquery;
         var form = layui.form;
         var layer = layui.layer;
         var laydate = layui.laydate;
         var table = layui.table;
+        var dtree = layui.dtree;
         //初始化时间选择器
         laydate.render({
             elem: "#startTime",
@@ -294,6 +300,47 @@
             });
         }
 
+        //打开分配权限弹出层
+        function selectPermission(data) {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#selectRolePermissionDiv"),
+                area:['400px','580px'],
+                title:'给'+data.name+'分配权限',
+                btn: ['<span class=layui-icon>&#xe605;确认分配</span>','<span class=layui-icon>&#x1006;取消分配</span>'],
+                btnAlign:'c',
+                yes: function(index, layero){
+                    var permissionData = dtree.getCheckbarNodesParam("permissionTree");
+                    var params = "rid="+data.id;
+                    console.log(params);
+                    $.each(permissionData,function (index, item) {
+                        params+="&ids="+item.nodeId;
+                    });
+                    $.post("/role/saveRolePermission",params,function (res) {
+                        layer.msg(res.msg);
+                    });
+                    layer.close(mainIndex);
+                },
+                btn2: function(index, layero){
+                    //关闭弹出层
+                },
+                success:function () {
+                    //根据角色ID请求权限和菜单tree的json数据
+                    dtree.render({
+                        elem:"#permissionTree",
+                        url:"/role/initPermissionByRoleId?roleId="+data.id,
+                        //使用layui风格的数据格式
+                        dataStyle:"layuiStyle",
+                        //配置data的风格为list
+                        dataFormat:"list",
+                        //修改response中返回数据的定义
+                        response:{message:"msg",statusCode:0},
+                        checkbar:true,
+                        checkbarType:"all"
+                    });
+                }
+            });
+        }
 
     });
 

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -29,4 +30,18 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param id 角色的id
      */
     void deleteUserRoleByRid(@Param("pid") Serializable id);
+
+    /**
+     * 根据角色ID查询当前角色拥有的菜单ID和权限ID
+     * @param roleId
+     * @return
+     */
+    List<Integer> queryRolePermissionIdsByRid(@Param("roleId") Integer roleId);
+
+    /**
+     * 保存角色和菜单权限之间的关系
+     * @param rid
+     * @param pid
+     */
+    void saveRolePermission(@Param("rid") Integer rid,@Param("pid") Integer pid);
 }

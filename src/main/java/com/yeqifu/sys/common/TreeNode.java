@@ -28,6 +28,11 @@ public class TreeNode {
     private List<TreeNode> children = new ArrayList<TreeNode>();
 
     /**
+     * 0为不选中  1为选中
+     */
+    private String checkArr="0";
+
+    /**
      * 首页左边导航菜单的构造器
      * @param id
      * @param pid
@@ -57,5 +62,21 @@ public class TreeNode {
         this.pid = pid;
         this.title = title;
         this.spread = spread;
+    }
+
+    /**
+     * 给角色分配权限的构造器
+     * @param id
+     * @param pid
+     * @param title
+     * @param spread
+     * @param checkArr
+     */
+    public TreeNode(Integer id, Integer pid, String title, Boolean spread, String checkArr) {
+        this.id = id;
+        this.pid = pid;
+        this.title = title;
+        this.spread = spread;
+        this.checkArr = checkArr;
     }
 }
