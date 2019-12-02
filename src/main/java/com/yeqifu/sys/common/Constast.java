@@ -25,9 +25,10 @@ public class Constast {
     public static final String TYPE_PERMISSION = "permission";
 
     /**
-     * 用户类型   0 超级管理员   1 管理员   2普通用户
+     * 用户类型   0 超级管理员   1 系统用户
      */
     public static final Integer USER_TYPE_SUPER = 0;
+    public static final Integer USER_TYPE_NORMAL = 1;
 
     /**
      * 菜单是否展开 0不展开  1展开

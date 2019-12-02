@@ -5,6 +5,7 @@ import com.yeqifu.sys.mapper.RoleMapper;
 import com.yeqifu.sys.service.IRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  * @since 2019-11-28
  */
 @Service
+@Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
     @Override

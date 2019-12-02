@@ -99,7 +99,7 @@
 
 
 /** 下拉树属性*/
-.dtree-select{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 99%;z-index: 123;display: none;border:1px solid silver;top: 42px;}
+.dtree-select{position: absolute;max-height: 500px;height: 350px;overflow: auto;width: 99%;z-index: 900;display: none;border:1px solid silver;top: 42px;}
 .dtree-select-show{display: block!important;}
 
 /* 简单适配*/

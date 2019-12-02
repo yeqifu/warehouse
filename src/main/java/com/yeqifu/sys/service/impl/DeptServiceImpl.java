@@ -23,8 +23,8 @@ import java.io.Serializable;
 public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements IDeptService {
 
     @Override
-    public Dept getOne(Wrapper<Dept> queryWrapper) {
-        return super.getOne(queryWrapper);
+    public Dept getById(Serializable id) {
+        return super.getById(id);
     }
 
     @Override
@@ -40,5 +40,10 @@ public class DeptServiceImpl extends ServiceImpl<DeptMapper, Dept> implements ID
     @Override
     public boolean removeById(Serializable id){
         return super.removeById(id);
+    }
+
+    @Override
+    public boolean save(Dept entity) {
+        return super.save(entity);
     }
 }
