@@ -20,4 +20,10 @@
         insert into sys_role_permission(rid,pid) values (#{rid},#{pid})
     </insert>
 
+    <!--根据用户id删除用户角色中间表的数据-->
+    <delete id="deleteRoleUserByUid">
+        delete from sys_user_role where uid = #{id}
+    </delete>
+
+
 </mapper>

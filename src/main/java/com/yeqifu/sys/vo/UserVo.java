@@ -3,6 +3,9 @@ package com.yeqifu.sys.vo;
 import com.yeqifu.sys.entity.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 /**
  * @Author: 落亦-

@@ -11,10 +11,33 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
     <link rel="icon" href="/resources/favicon.ico">
-    <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}"
+          media="all"/>
     <link rel="stylesheet" th:href="@{/resources/css/public.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/dtree.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
+    <style>
+        input#search_deptTree_select_input_id {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+        input#deptTree_select_input_id {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+        input#leaderdeptTree_select_input_id {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+        input.layui-input.layui-unselect {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+    </style>
 </head>
 <body>
 <!--查询条件-->
@@ -50,7 +73,8 @@
             <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-submit="" lay-filter="doSearch"><i
                     class="layui-icon layui-icon-search layui-icon-normal"></i>查询
             </button>
-            <button type="reset" onclick="javascript:document.getElementById('search_deptid').value=''" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm"><i
+            <button type="reset" onclick="javascript:document.getElementById('search_deptid').value=''"
+                    class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm"><i
                     class="layui-icon layui-icon-refresh"></i><span>重置</span>
             </button>
         </div>
@@ -62,7 +86,7 @@
     <table class="layui-hide" id="userTable" lay-filter="userTable"></table>
     <div id="userToolBar" style="display: none">
         <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
-            <i class="layui-icon layui-icon-add-1"></i>添加部门
+            <i class="layui-icon layui-icon-add-1"></i>添加用户
         </button>
     </div>
     <div id="userRowBar" style="display: none;">
@@ -85,37 +109,85 @@
 <div id="addOrUpdateDiv" style="display: none;padding: 10px;padding-right: 5%">
     <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
         <div class="layui-form-item">
-            <label class="layui-form-label">父级部门</label>
-            <div class="layui-input-block">
-                <input type="hidden" name="deptid" id="deptid">
-                <ul id="deptTree" class="dtree" data-id="0"></ul>
+            <div class="layui-inline">
+                <label class="layui-form-label">所属部门</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="deptid" id="deptid">
+                    <ul id="deptTree" class="dtree" data-id="0"></ul>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">入职时间</label>
+                <div class="layui-input-block">
+                    <input type="text" name="hiredate" id="hiredate" placeholder="yyyy-MM-dd HH:mm:ss" autocomplete="off" style="width: 217px" class="layui-input input-radius">
+                </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">部门名称</label>
+                <label class="layui-form-label">领导部门</label>
+                <div class="layui-input-block">
+                    <ul id="leaderdeptTree" class="dtree" data-id="0"></ul>
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">直属领导</label>
+                <div class="layui-input-block">
+                    <select name="mgr" id="mgr">
+                        <option value="">请选择直属领导</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户名称</label>
                 <div class="layui-input-block">
                     <input type="hidden" name="id">
-                    <input type="text" name="name" lay-verify="required" autocomplete="off"
-                           class="layui-input input-radius" placeholder="请输入部门名称">
+                    <input type="text" name="name" id="username" lay-verify="required" autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入用户名称">
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">部门地址</label>
+            <div class="layui-inline" style="padding-left: 4%">
+                <label class="layui-form-label">登陆名称</label>
                 <div class="layui-input-block">
-                    <input type="text" name="address" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入部门地址">
+                    <input type="text" name="loginname" id="loginname" lay-verify="required" autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入登陆名称">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">部门备注</label>
+                <label class="layui-form-label">用户地址</label>
                 <div class="layui-input-block">
-                    <textarea placeholder="请输入内容" class="layui-textarea" name="remark" cols="200"></textarea>
+                    <input type="text" name="address" id="address" class="layui-input input-radius" placeholder="请输入用户地址">
+                </div>
+            </div>
+            <div class="layui-inline" style="padding-left: 4%">
+                <label class="layui-form-label">排序码</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">
+                    <input type="text" name="ordernum" id="ordernum" lay-verify="required|number" autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入排序码">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户备注</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入用户备注" class="layui-textarea" name="remark" cols="200"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">用户性别</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="sex" value="1" title="男" checked="">
+                    <input type="radio" name="sex" value="0" title="女">
+                </div>
+            </div>
             <div class="layui-inline">
                 <label class="layui-form-label">是否可用</label>
                 <div class="layui-input-block">
@@ -123,28 +195,14 @@
                     <input type="radio" name="available" value="0" title="不可用">
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">是否展开</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="open" value="1" title="展开" checked="">
-                    <input type="radio" name="open" value="0" title="不展开">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">排序码</label>
-                <div class="layui-input-block">
-                    <input type="text" id="ordernum" name="ordernum" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入部门排序码[>0]">
-                </div>
-            </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-input-block" style="text-align: center;padding-right: 7%">
-                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit" id="doSubmit"><i
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit"
+                        id="doSubmit"><i
                         class="layui-icon layui-icon-search layui-icon-normal"></i>提交
                 </button>
-                <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
+                <button type="reset" onclick="javascript:document.getElementById('deptid').value=''" class="layui-btn layui-btn-radius layui-btn-warm"><i
                         class="layui-icon layui-icon-refresh"></i><span>重置</span>
                 </button>
             </div>
@@ -161,12 +219,19 @@
 
     layui.extend({
         dtree: '/resources/layui_ext/dtree/dtree'
-    }).use(['jquery', 'form', 'layer', 'laydate', 'table', 'layedit','dtree'], function () {
+    }).use(['jquery', 'form', 'layer', 'laydate', 'table', 'layedit', 'dtree','laydate'], function () {
         var $ = layui.jquery;
         var form = layui.form;
         var layer = layui.layer;
         var table = layui.table;
         var dtree = layui.dtree;
+        var laydate = layui.laydate;
+
+        //初始化时间选择器
+        laydate.render({
+            elem: "#hiredate",
+            type: "datetime"
+        });
 
         //初始化表格 加载数据
         tableIns = table.render({
@@ -177,23 +242,27 @@
             page: true,
             height: "full-180",
             cols: [ [
-                {field: 'id', title: 'ID', align: 'center',width:'50'},
-                {field: 'name', title: '用户名', align: 'center',width:'100'},
-                {field: 'loginname', title: '登陆名称', align: 'center',width:'120'},
-                {field: 'deptname', title: '所属部门', align: 'center',width:'150'},
-                {field: 'leadername', title: '直属领导', align: 'center',width:'150'},
-                {field: 'remark', title: '用户备注', align: 'center',width:'120'},
-                {field: 'address', title: '用户地址', align: 'center',width:'100'},
-                {field: 'hiredate', title: '入职时间', align: 'center',width:'160'},
-                {field: 'imgpath', title: '用户头像', align: 'center',width:'160'},
-                {field: 'sex', title: '是否可用', align: 'center',width:'100',templet:function (d) {
-                    return d.sex==1?'<font color="blue">男</font>':'<font color="red">女</font>';
-                }},
-                {field: 'available', title: '是否可用', align: 'center',width:'100',templet:function (d) {
-                    return d.available==1?'<font color="blue">可用</font>':'<font color="red">不可用</font>';
-                }},
-                {field: 'ordernum', title: '排序码', align: 'center',width:'80'},
-                {fixed: 'right', title: '操作', toolbar: '#userRowBar', align: 'center',width:'330'}
+                {field: 'id', title: 'ID', align: 'center', width: '50'},
+                {field: 'name', title: '用户名', align: 'center', width: '130'},
+                {field: 'loginname', title: '登陆名称', align: 'center', width: '130'},
+                {field: 'deptname', title: '所属部门', align: 'center', width: '130'},
+                {field: 'leadername', title: '直属领导', align: 'center', width: '120'},
+                {field: 'remark', title: '用户备注', align: 'center', width: '120'},
+                {field: 'address', title: '用户地址', align: 'center', width: '100'},
+                {field: 'hiredate', title: '入职时间', align: 'center', width: '160'},
+                {field: 'imgpath', title: '用户头像', align: 'center', width: '160'},
+                {
+                    field: 'sex', title: '是否可用', align: 'center', width: '100', templet: function (d) {
+                    return d.sex == 1 ? '<font color="blue">男</font>' : '<font color="red">女</font>';
+                }
+                },
+                {
+                    field: 'available', title: '是否可用', align: 'center', width: '100', templet: function (d) {
+                    return d.available == 1 ? '<font color="blue">可用</font>' : '<font color="red">不可用</font>';
+                }
+                },
+                {field: 'ordernum', title: '排序码', align: 'center', width: '80'},
+                {fixed: 'right', title: '操作', toolbar: '#userRowBar', align: 'center', width: '330'}
             ] ],
             done: function (data, curr, count) {
                 //不是第一页时，如果当前返回的数据为0那么就返回上一页
@@ -205,11 +274,11 @@
                     })
                 }
                 //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
-                if (data.data.length==0 && curr==1){
+                if (data.data.length == 0 && curr == 1) {
                     tableIns.reload({
                         where: "",
-                        page:{
-                            curr:1
+                        page: {
+                            curr: 1
                         }
                     })
                 }
@@ -233,7 +302,8 @@
                 case 'add':
                     openAddLayer();
                     break;
-            };
+            }
+            ;
         });
 
         //监控行工具条事件
@@ -247,7 +317,8 @@
                 case 'update':
                     updateUser(data);
                     break;
-            };
+            }
+            ;
         });
 
         var mainIndex;
@@ -256,21 +327,23 @@
         //打开添加弹出层
         function openAddLayer() {
             mainIndex = layer.open({
-                type:1,
-                content:$("#addOrUpdateDiv"),
-                area:['800px','500px'],
-                title:'添加部门',
-                success:function () {
+                type: 1,
+                content: $("#addOrUpdateDiv"),
+                area: ['800px', '550px'],
+                title: '添加用户',
+                success: function () {
                     $("#dataFrm")[0].reset();
                     //设置下拉树中父节点的值为空
-                    $("#pid").val("");
-                    url="/user/addUser";
+                    $("#deptid").val("");
+                    url = "/user/addUser";
                     //初始化排序码
-                    $.get("/user/loadUserMaxOrderNum",function (res) {
+                    $.get("/user/loadUserMaxOrderNum", function (res) {
                         $("#ordernum").val(res.value);
                     });
-                    //设置下拉树的value值为空
-                    selectTree.selectVal("");
+                    //重新渲染直属领导的下拉列表
+                    var html = "<option value='0'>请选择直属领导</option>";
+                    $("#mgr").html(html);
+                    form.render("select");
                 }
             });
         }
@@ -278,31 +351,52 @@
         //打开修改的弹出层
         function updateUser(data) {
             mainIndex = layer.open({
-                type:1,
-                content:$("#addOrUpdateDiv"),
-                area:['800px','500px'],
-                title:'修改部门',
-                success:function () {
+                type: 1,
+                content: $("#addOrUpdateDiv"),
+                area: ['800px', '550px'],
+                title: '修改用户',
+                success: function () {
                     //清空原有的数据
                     $("#dataFrm")[0].reset();
+                    $("#deptid").val("");
                     //装载新的数据
-                    form.val("dataFrm",data);
-                    //选中之前的父级部门  nodeId=data.pid
-                    dtree.dataInit("userTree",data.pid);
-                    dtree.selectVal("userTree");
-                    url="/user/updateUser";
+                    form.val("dataFrm", data);
+                    //选中之前的所属部门  nodeId=data.deptid
+                    dtree.dataInit("deptTree", data.deptid);
+                    dtree.selectVal("deptTree");
+
+                    //选中领导部门，首先拿到领导的id,如何再去数据库中查询出领导的信息，取出领导的部门
+                    var leaderid = data.mgr;
+                    $.get("/user/loadUserById",{id:leaderid},function (res) {
+                        var d = res.data;
+                        //查询领导的部门ID，如何重新加载领导部门的下拉列表
+                        dtree.dataInit("leaderdeptTree",d.deptid);
+                        dtree.selectVal("leaderdeptTree");
+                        //根据部门ID查询当前部门下面的领导列表
+                        $.get("/user/loadUsersByDeptId",{deptid:d.deptid},function (res) {
+                            var users = res.data;
+                            var dom_mgr=$("#mgr");
+                            var html = "<option value=''>请选择直属领导</option>";
+                            $.each(users,function (index, item) {
+                                html+="<option value='"+item.id+"'>"+item.name+"</option>";
+                            });
+                            dom_mgr.html(html);
+                            //选中一个
+                            dom_mgr.val(leaderid);
+
+                            //重新渲染
+                            form.render("select");
+                        })
+                    });
+                    url = "/user/updateUser";
                 }
             });
         }
 
-        form.on("submit(doSubmit)",function (data) {
-            $.post(url,data.field,function (res) {
-                if (res.code==200){
+        form.on("submit(doSubmit)", function (data) {
+            $.post(url, data.field, function (res) {
+                if (res.code == 200) {
                     tableIns.reload();
-                    //重新加载添加弹出层的下拉树
-                    selectTree.reload();
-                    //重新加载左边的部门树
-                    window.parent.left.userTree.reload();
                 }
                 layer.msg(res.msg);
                 layer.close(mainIndex);
@@ -313,13 +407,10 @@
         //删除
         function deleteUser(data) {
             layer.confirm('你确定要删除【' + data.name + '】这个用户吗？', {icon: 3, title: '提示'}, function (index) {
-                $.post("/user/deleteUser", {id: data.id},function (res) {
+//                $.post("/user/deleteUser", {id: data.id}, function (res) {
+                $.post("/user/deleteUser/"+data.id, function (res) {
                     if (res.code == 200) {
                         tableIns.reload();
-                        //刷新下拉树
-                        selectTree.reload();
-                        //刷新左边的部门树
-                        window.parent.left.userTree.reload();
                     }
                     layer.msg(res.msg);
                 });
@@ -333,14 +424,71 @@
             width: "100%", // 可以在这里指定树的宽度来填满div
             dataStyle: "layuiStyle", //使用layui风格的数据格式
             dataFormat: "list",     //配置data的风格为list
-            response:{message:"msg",statusCode:0},  //修改response中返回数据的定义
-            url: "/dept/loadManagerLeftTreeJson" // 使用url加载（可与data加载同时存在）
+            response: {message: "msg", statusCode: 0},  //修改response中返回数据的定义
+            url: "/dept/loadDeptManagerLeftTreeJson" // 使用url加载（可与data加载同时存在）
         });
 
         //监听点击的方法
-        dtree.on("node(search_deptTree)",function (obj) {
+        dtree.on("node(search_deptTree)", function (obj) {
             $("#search_deptid").val(obj.param.nodeId);
             console.log(obj.param.nodeId);
+        });
+
+
+
+        //初始化添加弹出层所属部门的下拉列表
+        var deptTree = dtree.renderSelect({
+            elem: "#deptTree",
+            width: "100%", // 可以在这里指定树的宽度来填满div
+            dataStyle: "layuiStyle", //使用layui风格的数据格式
+            dataFormat: "list",     //配置data的风格为list
+            response: {message: "msg", statusCode: 0},  //修改response中返回数据的定义
+            url: "/dept/loadDeptManagerLeftTreeJson" // 使用url加载（可与data加载同时存在）
+        });
+
+        //监听所属部门点击方法
+        dtree.on("node(deptTree)", function (obj) {
+            //将该部门的id赋值给隐藏域，
+            $("#deptid").val(obj.param.nodeId);
+            console.log(obj.param.nodeId);
+        });
+
+
+
+        //初始化添加弹出层领导部门的下拉列表
+        var leaderdeptTree = dtree.renderSelect({
+            elem: "#leaderdeptTree",
+            width: "100%", // 可以在这里指定树的宽度来填满div
+            dataStyle: "layuiStyle", //使用layui风格的数据格式
+            dataFormat: "list",     //配置data的风格为list
+            response: {message: "msg", statusCode: 0},  //修改response中返回数据的定义
+            url: "/dept/loadDeptManagerLeftTreeJson" // 使用url加载（可与data加载同时存在）
+        });
+
+        //监听点击的方法
+        dtree.on("node(leaderdeptTree)", function (obj) {
+            var deptid = obj.param.nodeId;
+            //根据部门ID查询当前部门下面的领导列表
+            $.get("/user/loadUsersByDeptId",{deptid:deptid},function (res) {
+                var users = res.data;
+                var dom_mgr=$("#mgr");
+                var html = "<option value=''>请选择直属领导</option>";
+                $.each(users,function (index, item) {
+                    html+="<option value='"+item.id+"'>"+item.name+"</option>";
+                });
+                dom_mgr.html(html);
+                //重新渲染
+                form.render("select");
+            })
+        });
+
+
+        //监听用户名失去焦点事件
+        $("#username").on("blur",function () {
+            var username = $(this).val();
+            $.get("/user/changeChineseToPinyin",{username:username},function (res) {
+                $("#loginname").val(res.value);
+            })
         });
 
 

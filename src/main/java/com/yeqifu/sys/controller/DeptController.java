@@ -40,7 +40,7 @@ public class DeptController {
      * @param deptVo
      * @return
      */
-    @RequestMapping("loadManagerLeftTreeJson")
+    @RequestMapping("loadDeptManagerLeftTreeJson")
     public DataGridView loadManagerLeftTreeJson(DeptVo deptVo){
         //查询出所有的部门，存放进list中
         List<Dept> list = deptService.list();

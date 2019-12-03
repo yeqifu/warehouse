@@ -44,4 +44,10 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @param pid
      */
     void saveRolePermission(@Param("rid") Integer rid,@Param("pid") Integer pid);
+
+    /**
+     * 根据用户id删除用户角色中间表的数据
+     * @param id
+     */
+    void deleteRoleUserByUid(@Param("id") Serializable id);
 }

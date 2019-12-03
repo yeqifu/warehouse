@@ -13,6 +13,11 @@ public class Constast {
     public static final Integer ERROR=-1;
 
     /**
+     * 用户默认密码
+     */
+    public static final String USER_DEFAULT_PWD="123456";
+
+    /**
      * 菜单可用状态  0不可用   1可用
      */
     public static final Object AVAILABLE_TRUE = 1;
