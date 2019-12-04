@@ -57,4 +57,15 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
             }
         }
     }
+
+    /**
+     * 查询当前用户拥有的角色ID集合
+     * @param id
+     * @return
+     */
+    @Override
+    public List<Integer> queryUserRoleIdsByUid(Integer id) {
+        return getBaseMapper().queryUserRoleIdsByUid(id);
+
+    }
 }

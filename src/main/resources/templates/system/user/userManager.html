@@ -210,6 +210,12 @@
     </form>
 </div>
 
+<!--给用户分配角色的弹出层-->
+<div style="display: none;padding: 10px;"  id="selectUserRoleDiv">
+    <table class="layui-hide" id="roleTable" lay-filter="roleTable"></table>
+</div>
+
+
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
 
 <script type="text/javascript">
@@ -317,6 +323,12 @@
                 case 'update':
                     updateUser(data);
                     break;
+                case 'resetPwd':
+                    resetPwd(data);
+                    break;
+                case 'selectRole':
+                    selectRole(data);
+                    break;
             }
             ;
         });
@@ -418,6 +430,16 @@
             });
         }
 
+        //重置密码
+        function resetPwd(data) {
+            layer.confirm('你确定要重置【' + data.name + '】这个用户的密码吗？', {icon: 3, title: '提示'}, function (index) {
+                $.post("/user/resetPwd/"+data.id, function (res) {
+                    layer.msg(res.msg);
+                });
+                layer.close(index);
+            });
+        }
+
         //初始化查询条件的下拉树
         var selectTree = dtree.renderSelect({
             elem: "#search_deptTree",
@@ -490,6 +512,58 @@
                 $("#loginname").val(res.value);
             })
         });
+
+
+        //打开分配角色的弹出层
+        function selectRole(data) {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#selectUserRoleDiv"),
+                area:['650px','400px'],
+                title:'给'+data.name+'分配角色',
+                btn: ['<span class=layui-icon>&#xe605;确认分配</span>','<span class=layui-icon>&#x1006;取消分配</span>'],
+                btnAlign:'c',
+                yes: function(index, layero){
+                    var checkStatus = table.checkStatus('roleTable');
+                    var params = "uid="+data.id;
+                    $.each(checkStatus.data,function (index, item) {
+                        params+="&ids="+item.id;
+                    });
+                    $.post("/user/saveUserRole",params,function (res) {
+                        layer.msg(res.msg);
+                        layer.close(mainIndex);
+                    })
+                },
+                btn2: function(index, layero){
+                    //关闭弹出层
+                },
+                success:function () {
+                    initRoleTable(data);
+                }
+            });
+        }
+
+
+        var roleTableIns;
+        //初始化角色列表
+        function initRoleTable(data) {
+            console.log(data);
+            roleTableIns = table.render({
+                elem:'#roleTable',
+                url:'/user/initRoleByUserId',
+                //将用户id传到后台去
+                where:{
+                    id:data.id
+                },
+                cols:[ [
+                    {type:'checkbox',align:'center'},
+                    {field:'id',title:'ID',align:'center'},
+                    {field:'name',title:'角色名称',align:'center'},
+                    {field:'remark',title:'角色备注',align:'center'}
+                ] ]
+            });
+        }
+
 
 
     });

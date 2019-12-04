@@ -2,18 +2,28 @@ package com.yeqifu.sys.realm;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.yeqifu.sys.common.ActiverUser;
+import com.yeqifu.sys.common.Constast;
+import com.yeqifu.sys.entity.Permission;
 import com.yeqifu.sys.entity.User;
+import com.yeqifu.sys.service.IPermissionService;
+import com.yeqifu.sys.service.IRoleService;
 import com.yeqifu.sys.service.IUserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
 import org.apache.shiro.authc.SimpleAuthenticationInfo;
 import org.apache.shiro.authz.AuthorizationInfo;
+import org.apache.shiro.authz.SimpleAuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
  * @Author: 落亦-
@@ -28,6 +38,14 @@ public class UserRealm extends AuthorizingRealm {
     @Lazy
     private IUserService userService;
 
+    @Autowired
+    @Lazy
+    private IPermissionService permissionService;
+
+    @Autowired
+    @Lazy
+    private IRoleService roleService;
+
     @Override
     public String getName(){
         return this.getClass().getSimpleName();
@@ -40,7 +58,20 @@ public class UserRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        return null;
+        SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
+        ActiverUser activerUser = (ActiverUser) principalCollection.getPrimaryPrincipal();
+        User user = activerUser.getUser();
+        List<String> superPermission = new ArrayList<>();
+        superPermission.add("*:*");
+        List<String> permissions = activerUser.getPermission();
+        if (user.getType().equals(Constast.USER_TYPE_SUPER)){
+            authorizationInfo.addStringPermissions(superPermission);
+        }else {
+            if (null!=permissions&&permissions.size()>0){
+                authorizationInfo.addStringPermissions(permissions);
+            }
+        }
+        return authorizationInfo;
     }
 
     /**
@@ -58,6 +89,34 @@ public class UserRealm extends AuthorizingRealm {
         if (null!=user){
             ActiverUser activerUser = new ActiverUser();
             activerUser.setUser(user);
+
+            //根据用户ID查询percode
+            QueryWrapper<Permission> qw = new QueryWrapper<>();
+            //设置只能查询菜单
+            qw.eq("type", Constast.TYPE_PERMISSION);
+            //设置只能查询可用的菜单
+            qw.eq("available",Constast.AVAILABLE_TRUE);
+            Integer userId = user.getId();
+            //根据用户ID查询角色ID
+            List<Integer> currentUserRoleIds = roleService.queryUserRoleIdsByUid(userId);
+            //根据角色ID查询出权限ID
+            Set<Integer> pids = new HashSet<>();
+            for (Integer rid : currentUserRoleIds) {
+                List<Integer> permissionIds = roleService.queryRolePermissionIdsByRid(rid);
+                pids.addAll(permissionIds);
+            }
+            List<Permission> list = new ArrayList<>();
+            if (pids.size()>0){
+                qw.in("id",pids);
+                list = permissionService.list(qw);
+            }
+            List<String> percodes = new ArrayList<>();
+            for (Permission permission : list) {
+                percodes.add(permission.getPercode());
+            }
+            //放到activerUser
+            activerUser.setPermission(percodes);
+
             //生成盐
             ByteSource credentialsSalt=ByteSource.Util.bytes(user.getSalt());
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(activerUser,user.getPwd(),credentialsSalt,this.getName());

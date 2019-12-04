@@ -50,4 +50,20 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
 
         return super.removeById(id);
     }
+
+    /**
+     * 保存用户和角色的关系
+     * @param uid 用户的ID
+     * @param ids 用户拥有的角色的ID的数组
+     */
+    @Override
+    public void saveUserRole(Integer uid, Integer[] ids) {
+        //1.根据用户ID删除sys_user_role里面的数据
+        roleMapper.deleteRoleUserByUid(uid);
+        if (null!=ids&&ids.length>0){
+            for (Integer rid : ids) {
+                roleMapper.insertUserRole(uid,rid);
+            }
+        }
+    }
 }

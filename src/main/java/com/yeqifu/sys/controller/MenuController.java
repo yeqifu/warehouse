@@ -9,6 +9,8 @@ import com.yeqifu.sys.entity.Permission;
 import com.yeqifu.sys.entity.User;
 import com.yeqifu.sys.service.IDeptService;
 import com.yeqifu.sys.service.IPermissionService;
+import com.yeqifu.sys.service.IRoleService;
+import com.yeqifu.sys.service.IUserService;
 import com.yeqifu.sys.vo.DeptVo;
 import com.yeqifu.sys.vo.PermissionVo;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +31,12 @@ public class MenuController {
     @Autowired
     private IPermissionService permissionService;
 
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private IRoleService roleService;
+
     @RequestMapping("loadIndexLeftMenuJson")
     public DataGridView loadIndexLeftMenuJson(PermissionVo permissionVo){
         //查询所有菜单
@@ -46,8 +54,28 @@ public class MenuController {
             //用户类型为超级管理员
             list = permissionService.list(queryWrapper);
         }else {
-            //用户类型为 管理员和普通用户
-            list = permissionService.list(queryWrapper);
+            //用户类型为 普通用户
+            //根据用户ID+角色+权限去查询
+            Integer userId = user.getId();
+            //1.根据用户ID查询角色
+            List<Integer> currentUserRoleIds = roleService.queryUserRoleIdsByUid(userId);
+            //2.根据角色ID查询菜单ID和权限ID
+            //使用set去重
+            Set<Integer> pids = new HashSet<>();
+            for (Integer rid : currentUserRoleIds) {
+                //根据角色ID查询菜单ID和权限ID
+                List<Integer> permissionIds = roleService.queryRolePermissionIdsByRid(rid);
+                //将菜单ID和权限ID放入Set中去重
+                pids.addAll(permissionIds);
+            }
+            //3.根据角色ID查询权限
+            if (pids.size()>0){
+                queryWrapper.in("id",pids);
+                list = permissionService.list(queryWrapper);
+            }else {
+                list=new ArrayList<>();
+            }
+
         }
 
         List<TreeNode> treeNodes = new ArrayList<TreeNode>();
