@@ -49,25 +49,25 @@
 
 ### 预览效果
 登陆页面
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/login.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/login.PNG)
 部门管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/dept.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/dept.PNG)
 菜单管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/menu.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/menu.PNG)
 权限管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/permission.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/permission.PNG)
 角色管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/role.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/role.PNG)
 用户管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/user.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/user.PNG)
 登陆日志管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/loginfo.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/loginfo.PNG)
 系统公告管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/notice.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/notice.PNG)
 客户管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/customer.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/customer.PNG)
 供应商管理
-!()[https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/provider.PNG]
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/provider.PNG)
 
 
 
