@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>公告管理页面</title>
@@ -66,21 +67,21 @@
 <div>
     <table class="layui-hide" id="noticeTable" lay-filter="noticeTable"></table>
     <div id="noticeToolBar" style="display: none">
-        <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+        <button type="button" lay-event="add" shiro:hasPermission="notice:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>添加公告
         </button>
-        <button type="button" lay-event="batchDelete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius">
+        <button type="button" lay-event="batchDelete" shiro:hasPermission="notice:batchdelete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius">
             <i class="layui-icon layui-icon-delete"></i>批量删除
         </button>
     </div>
     <div id="noticeRowBar" style="display: none;">
-        <button type="button" lay-event="show" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius"><i
+        <button type="button" lay-event="show" shiro:hasPermission="notice:view" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius"><i
                 class="layui-icon layui-icon-tips"></i>查看
         </button>
-        <button type="button" lay-event="update" class="layui-btn layui-btn-sm layui-btn-radius"><i
+        <button type="button" lay-event="update" shiro:hasPermission="notice:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>编辑
         </button>
-        <button type="button" lay-event="delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
+        <button type="button" lay-event="delete" shiro:hasPermission="notice:delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>删除
         </button>
     </div>

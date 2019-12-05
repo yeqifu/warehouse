@@ -30,4 +30,23 @@ public class WebUtils {
         return getRequest().getSession();
     }
 
+    public static ServletRequestAttributes getServletRequestAttributes() {
+        return (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+    }
+
+    /**
+     * 得到当前线程的请求对象
+     * @return
+     */
+    public static HttpServletRequest getHttpServletRequest() {
+        return getServletRequestAttributes().getRequest();
+    }
+
+    /**
+     * 得到session对象
+     */
+    public static HttpSession getHttpSession() {
+        return getHttpServletRequest().getSession();
+    }
+
 }

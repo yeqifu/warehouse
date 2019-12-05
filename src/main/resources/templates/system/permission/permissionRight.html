@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>Right</title>
@@ -52,15 +53,15 @@
 <div>
     <table class="layui-hide" id="permissionTable" lay-filter="permissionTable"></table>
     <div id="permissionToolBar" style="display: none">
-        <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+        <button type="button" lay-event="add" shiro:hasPermission="permission:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>添加权限
         </button>
     </div>
     <div id="permissionRowBar" style="display: none;">
-        <button type="button" lay-event="update" class="layui-btn layui-btn-sm layui-btn-radius"><i
+        <button type="button" lay-event="update" shiro:hasPermission="permission:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>编辑
         </button>
-        <button type="button" lay-event="delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
+        <button type="button" lay-event="delete" shiro:hasPermission="permission:delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>删除
         </button>
     </div>

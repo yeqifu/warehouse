@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="loginHtml">
+<html class="loginHtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 	<meta charset="utf-8">
 	<title>登录--仓库管理系统</title>
@@ -26,8 +26,8 @@
 		</div>
 		<div class="layui-form-item input-item" id="imgCode">
 			<label for="code">验证码</label>
-			<input type="text" placeholder="请输入验证码" autocomplete="off" id="code" value="jgmj" class="layui-input">
-			<img src="/resources/images/code.jpg">
+			<input type="text" placeholder="请输入验证码" autocomplete="off" id="code" name="code" class="layui-input">
+			<img id="img" th:src="@{/login/getCode}" onclick="this.src=this.src+'?'">
 		</div>
 		<div class="layui-form-item">
 			<button class="layui-btn layui-block" lay-filter="login" lay-submit>登录</button>
@@ -47,12 +47,6 @@
 	        layer = parent.layer === undefined ? layui.layer : top.layer
 	        $ = layui.jquery;
 
-	  /*   $(".loginBody .seraph").click(function(){
-	        layer.msg("这只是做个样式，至于功能，你见过哪个后台能这样登录的？还是老老实实的找管理员去注册吧",{
-	            time:5000
-	        });
-	    }) */
-
 	    //登录按钮
 	    form.on("submit(login)",function(data){
             var btn =  $(this);
@@ -64,9 +58,9 @@
                 layer.msg(rs.msg);
                 if(rs.code != 200){
                     layer.msg(rs.msg);
-                    /*$.get("/login/getCode",function (code) {
+                    $.get("/login/getCode",function (code) {
                         $("#img").attr("src","/login/getCode");
-                    })*/
+                    })
                 }else{
                     //跳转到templates/system/index/index.html页面
                     layer.msg(rs.msg);

@@ -45,6 +45,7 @@ shiro:
   - /index.html*
   - /sys/toLogin*
   - /login/login*
+  - /login/getCode
   - /resources/**
   login-url: /index.html
   log-out-url: /login/logout*

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
 <head>
     <meta charset="UTF-8">
     <title>用户管理</title>
@@ -85,21 +86,21 @@
 <div>
     <table class="layui-hide" id="userTable" lay-filter="userTable"></table>
     <div id="userToolBar" style="display: none">
-        <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+        <button type="button" lay-event="add" shiro:hasPermission="user:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>添加用户
         </button>
     </div>
     <div id="userRowBar" style="display: none;">
-        <button type="button" lay-event="update" class="layui-btn layui-btn-xs layui-btn-radius"><i
+        <button type="button" lay-event="update" shiro:hasPermission="user:update" class="layui-btn layui-btn-xs layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>编辑
         </button>
-        <button type="button" lay-event="delete" class="layui-btn layui-btn-xs layui-btn-danger layui-btn-radius"><i
+        <button type="button" lay-event="delete" shiro:hasPermission="user:delete" class="layui-btn layui-btn-xs layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>删除
         </button>
-        <button type="button" lay-event="resetPwd" class="layui-btn layui-btn-xs layui-btn-danger layui-btn-radius"><i
+        <button type="button" lay-event="resetPwd" shiro:hasPermission="user:resetPwd" class="layui-btn layui-btn-xs layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>重置密码
         </button>
-        <button type="button" lay-event="selectRole" class="layui-btn layui-btn-xs layui-btn-danger layui-btn-radius"><i
+        <button type="button" lay-event="selectRole" shiro:hasPermission="user:selectRole" class="layui-btn layui-btn-xs layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>分配角色
         </button>
     </div>
