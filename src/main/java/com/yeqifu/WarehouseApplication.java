@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-@MapperScan(basePackages = {"com.yeqifu.sys.mapper"})
+@MapperScan(basePackages = {"com.yeqifu.*.mapper"})
 public class WarehouseApplication {
 
 	public static void main(String[] args) {
