@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>Right</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="/resources/favicon.ico">
+    <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/css/public.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/dtree.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
+</head>
+<body>
+<!--查询条件-->
+<fieldset class="layui-elem-field layui-field-title" style="margin-top: 15px;">
+    <legend>搜索条件</legend>
+</fieldset>
+<form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form">
+    <div class="layui-form-item">
+        <div class="layui-inline">
+            <label class="layui-form-label">供应商</label>
+            <div class="layui-input-inline">
+                <select name="providerid" id="select_providerid">
+                    <option value="0">请选择供应商</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="goodsname" id="goodsname" class="layui-input input-radius"
+                       placeholder="请输入商品名称">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">生产批号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="productcode" id="productcode" class="layui-input input-radius" placeholder="请输入生产批号">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">批准文号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="promitcode" id="promitcode" class="layui-input input-radius" placeholder="请输入批准文号">
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item">
+
+        <div class="layui-inline">
+            <label class="layui-form-label">商品描述</label>
+            <div class="layui-input-inline">
+                <input type="text" name="description" id="description" class="layui-input input-radius"
+                       placeholder="请输入商品描述">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">商品规格</label>
+            <div class="layui-input-inline">
+                <input type="text" name="size" id="size" class="layui-input input-radius" placeholder="请输入商品规格">
+            </div>
+        </div>
+        <div class="layui-inline" style="padding-left: 3%">
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-radius" lay-submit="" lay-filter="doSearch"><i
+                    class="layui-icon layui-icon-search layui-icon-normal"></i>查询
+            </button>
+            <button type="reset" class="layui-btn layui-btn-sm layui-btn-radius layui-btn-warm"><i
+                    class="layui-icon layui-icon-refresh"></i><span>重置</span>
+            </button>
+        </div>
+    </div>
+</form>
+
+<!--数据表格-->
+<div>
+    <table class="layui-hide" id="goodsTable" lay-filter="goodsTable"></table>
+    <div id="goodsToolBar" style="display: none">
+        <button type="button" lay-event="add" shiro:hasPermission="goods:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+            <i class="layui-icon layui-icon-add-1"></i>添加商品
+        </button>
+    </div>
+    <div id="goodsRowBar" style="display: none;">
+        <button type="button" lay-event="update" shiro:hasPermission="goods:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
+                class="layui-icon layui-icon-edit"></i>编辑
+        </button>
+        <button type="button" lay-event="delete" shiro:hasPermission="goods:delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
+                class="layui-icon layui-icon-delete"></i>删除
+        </button>
+    </div>
+</div>
+
+<!--添加和修改弹出层-->
+<div id="addOrUpdateDiv" style="display: none;padding: 10px;padding-right: 5%">
+    <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品名称</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">
+                    <input type="text" name="goodsname" lay-verify="required" autocomplete="off"
+                           class="layui-input input-radius" placeholder="请输入商品名称">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">商品地址</label>
+                <div class="layui-input-block">
+                    <input type="text" name="address" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入商品地址">
+                </div>
+            </div>
+
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">商品电话</label>
+                <div class="layui-input-block">
+                    <input type="text" name="telephone" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入商品电话">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">邮编</label>
+                <div class="layui-input-block">
+                    <input type="text" name="zip" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入邮编">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">联系人</label>
+                <div class="layui-input-block">
+                    <input type="text" name="connectionpersion" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入联系人姓名">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">联系电话</label>
+                <div class="layui-input-block">
+                    <input type="text" name="phone" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入联系人电话">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">开户银行</label>
+                <div class="layui-input-block">
+                    <input type="text" id="bank" name="bank" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">银行账户</label>
+                <div class="layui-input-block">
+                    <input type="text" id="account" name="account" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">email</label>
+                <div class="layui-input-block">
+                    <input type="text" id="email" name="email" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入email">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">传真</label>
+                <div class="layui-input-block">
+                    <input type="text" id="fax" name="fax" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入传真">
+                </div>
+            </div>
+            <div class="layui-inline">
+                <label class="layui-form-label">是否可用</label>
+                <div class="layui-input-block">
+                    <input type="radio" name="available" value="1" title="可用" checked="">
+                    <input type="radio" name="available" value="0" title="不可用">
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;padding-right: 7%">
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doSubmit" id="doSubmit"><i
+                        class="layui-icon layui-icon-search layui-icon-normal"></i>提交
+                </button>
+                <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
+                        class="layui-icon layui-icon-refresh"></i><span>重置</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript" src="/resources/layui/layui.js"></script>
+
+<script type="text/javascript">
+
+    //提升数据表格的作用域，因为底下还有一个reloadTable方法
+    var tableIns;
+
+    layui.use(['jquery', 'form', 'layer', 'table'], function () {
+        var $ = layui.jquery;
+        var form = layui.form;
+        var layer = layui.layer;
+        var table = layui.table;
+
+        //初始化表格 加载数据
+        tableIns = table.render({
+            elem: "#goodsTable",
+            title: "商品数据表格",
+            url: "/goods/loadAllGoods",
+            toolbar: "#goodsToolBar",
+            page: true,
+            height: "full-180",
+            cols: [ [
+                {field: 'id', title: 'ID', align: 'center',width:'50'},
+                {field: 'goodsname', title: '商品名称', align: 'center',width:'150'},
+                {field: 'providername', title: '供应商', align: 'center',width:'150'},
+                {field: 'produceplace', title: '商品产地', align: 'center',width:'150'},
+                {field: 'size', title: '规格', align: 'center',width:'120'},
+                {field: 'goodspackage', title: '包装', align: 'center',width:'120'},
+                {field: 'productcode', title: '生产批号', align: 'center',width:'130'},
+                {field: 'promitcode', title: '批准文号', align: 'center',width:'130'},
+                {field: 'description', title: '商品描述', align: 'center',width:'150'},
+                {field: 'price', title: '销售价格', align: 'center',width:'90'},
+                {field: 'number', title: '数量', align: 'center',width:'90'},
+                {field: 'dangernum', title: '库存预警值', align: 'center',width:'100'},
+                {field: 'goodsimg', title: '商品图片', align: 'center',width:'150'},
+                {field: 'available', title: '是否可用', align: 'center',width:'100',templet:function (d) {
+                    return d.available==1?'<font color="blue">可用</font>':'<font color="red">不可用</font>';
+                }},
+                {fixed: 'right', title: '操作', toolbar: '#goodsRowBar', align: 'center',width:'180'}
+            ] ],
+            done: function (data, curr, count) {
+                //不是第一页时，如果当前返回的数据为0那么就返回上一页
+                if (data.data.length == 0 && curr != 1) {
+                    tableIns.reload({
+                        page: {
+                            curr: curr - 1
+                        }
+                    })
+                }
+                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
+                if (data.data.length==0 && curr==1){
+                    tableIns.reload({
+                        where: "",
+                        page:{
+                            curr:1
+                        }
+                    })
+                }
+            }
+        });
+
+        //初始化查询条件的下拉列表
+        $.get("/provider/loadAllProviderForSelect",function (res) {
+            var data = res.data;
+            var dom = $("#select_providerid");
+            var html = '<option value="0">请选择供应商</option>';
+            $.each(data,function (index, item) {
+                html += '<option value="'+item.id+'">'+item.providername+'</option>';
+            })
+            dom.html(html);
+            //重新渲染下拉列表
+            form.render("select");
+        });
+
+        //监控模糊查询按钮事件
+        form.on("submit(doSearch)", function (data) {
+            tableIns.reload({
+                where: data.field,
+                page: {
+                    curr: 1
+                }
+            });
+            return false;
+        });
+
+        //监控工具条事件
+        table.on("toolbar(goodsTable)", function (obj) {
+            switch (obj.event) {
+                case 'add':
+                    openAddLayer();
+                    break;
+                case 'deleteBatch':
+                    batchDeleteGoods();
+                    break;
+            };
+        });
+
+        //监控行工具条事件
+        table.on("tool(goodsTable)", function (obj) {
+            //获取当前行数据
+            var data = obj.data;
+            switch (obj.event) {
+                case 'delete':
+                    deleteGoods(data);
+                    break;
+                case 'update':
+                    updateGoods(data);
+                    break;
+            };
+        });
+
+        var mainIndex;
+        var url;
+
+        //打开添加弹出层
+        function openAddLayer() {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['700px','500px'],
+                title:'添加商品',
+                success:function () {
+                    $("#dataFrm")[0].reset();
+                    url="/goods/addGoods";
+                }
+            });
+        }
+
+        //打开修改的弹出层
+        function updateGoods(data) {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#addOrUpdateDiv"),
+                area:['700px','500px'],
+                title:'修改商品',
+                success:function () {
+                    //清空原有的数据
+                    $("#dataFrm")[0].reset();
+                    //装载新的数据
+                    form.val("dataFrm",data);
+                    url="/goods/updateGoods";
+                }
+            });
+        }
+
+        form.on("submit(doSubmit)",function (data) {
+            $.post(url,data.field,function (res) {
+                if (res.code==200){
+                    tableIns.reload();
+                }
+                layer.msg(res.msg);
+                layer.close(mainIndex);
+            });
+            return false;
+        });
+
+
+        //删除
+        function deleteGoods(data) {
+            layer.confirm('你确定要删除【' + data.goodsname + '】这个商品吗？', {icon: 3, title: '提示'}, function (index) {
+                $.post("/goods/deleteGoods", {id: data.id},function (res) {
+                    if (res.code == 200) {
+                        tableIns.reload();
+                    }
+                    layer.msg(res.msg);
+                });
+                layer.close(index);
+            });
+        }
+
+
+
+    });
+
+
+</script>
+
+</body>
+</html>

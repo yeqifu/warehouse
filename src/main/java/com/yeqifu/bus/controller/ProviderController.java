@@ -7,6 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.yeqifu.bus.entity.Provider;
 import com.yeqifu.bus.service.IProviderService;
 import com.yeqifu.bus.vo.ProviderVo;
+import com.yeqifu.sys.common.Constast;
 import com.yeqifu.sys.common.DataGridView;
 import com.yeqifu.sys.common.ResultObj;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -117,7 +119,18 @@ public class ProviderController {
             e.printStackTrace();
             return ResultObj.DELETE_ERROR;
         }
+    }
 
+    /**
+     * 加载所有可用的供应商
+     * @return
+     */
+    @RequestMapping("loadAllProviderForSelect")
+    public DataGridView loadAllProviderForSelect(){
+        QueryWrapper<Provider> queryWrapper = new QueryWrapper();
+        queryWrapper.eq("available", Constast.AVAILABLE_TRUE);
+        List<Provider> list = providerService.list(queryWrapper);
+        return new DataGridView(list);
     }
 
 
