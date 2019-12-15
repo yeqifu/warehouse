@@ -16,6 +16,28 @@
     <link rel="stylesheet" th:href="@{/resources/css/public.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/dtree.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
+    <style>
+        input#search_provideridTree_select_input_id {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+        input#provideridTree_select_input_id {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+        input#leaderprovideridTree_select_input_id {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+        input.layui-input.layui-unselect {
+            border-radius: 10px;
+            height: 30px;
+            margin-top: 4px;
+        }
+    </style>
 </head>
 <body>
 <!--查询条件-->
@@ -99,83 +121,93 @@
 <!--添加和修改弹出层-->
 <div id="addOrUpdateDiv" style="display: none;padding: 10px;padding-right: 5%">
     <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">商品名称</label>
-                <div class="layui-input-block">
-                    <input type="hidden" name="id">
-                    <input type="text" name="goodsname" lay-verify="required" autocomplete="off"
-                           class="layui-input input-radius" placeholder="请输入商品名称">
+        <div class="layui-col-md12 layui-col-xs12">
+            <div class="layui-row layui-col-space10">
+                <div class="layui-col-md9 layui-col-xs7">
+                    <div class="layui-form-item magt3">
+                        <label class="layui-form-label">供应商</label>
+                        <div class="layui-input-block">
+                            <select name="providerid" id="providerid">
+                                <option value="0">请选择供应商</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商品名称</label>
+                        <div class="layui-input-block">
+                            <input type="hidden" name="id">
+                            <input type="text" class="layui-input input-radius" name="goodsname" lay-verify="required" placeholder="请输入商品名称">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">商品描述</label>
+                        <div class="layui-input-block">
+                            <input type="text" class="layui-input input-radius" name="description" lay-verify="required" placeholder="请输入商品描述">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md3 layui-col-xs5">
+                    <div class="layui-upload-list thumbBox mag0 magt3">
+                        <input type="hidden" name="goodsimg" value="/images/noDefaultImage.jpg">
+                        <img class="layui-upload-img thumbImg" src="/file/showImageByPath?path=images/noDefaultImage.jpg">
+                    </div>
                 </div>
             </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">商品地址</label>
-                <div class="layui-input-block">
-                    <input type="text" name="address" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入商品地址">
+            <div class="layui-form-item magb0">
+                <div class="layui-inline">
+                    <label class="layui-form-label">产地</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="produceplace" lay-verify="" placeholder="请输入商品产地">
+                    </div>
                 </div>
-            </div>
-
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">商品电话</label>
-                <div class="layui-input-block">
-                    <input type="text" name="telephone" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入商品电话">
+                <div class="layui-inline">
+                    <label class="layui-form-label">包装</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="goodspackage" lay-verify="" placeholder="请输入商品包装">
+                    </div>
                 </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">邮编</label>
-                <div class="layui-input-block">
-                    <input type="text" name="zip" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入邮编">
+                <div class="layui-inline">
+                    <label class="layui-form-label">规格</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="size" lay-verify="" placeholder="请输入商品规格">
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">联系人</label>
-                <div class="layui-input-block">
-                    <input type="text" name="connectionpersion" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入联系人姓名">
+                <div class="layui-inline">
+                    <label class="layui-form-label">生产批号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="productcode" lay-verify="" placeholder="请输入商品生产批号">
+                    </div>
                 </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">联系电话</label>
-                <div class="layui-input-block">
-                    <input type="text" name="phone" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入联系人电话">
+                <div class="layui-inline">
+                    <label class="layui-form-label">批准文号</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="promitcode" lay-verify="" placeholder="请输入商品批准文号">
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">开户银行</label>
-                <div class="layui-input-block">
-                    <input type="text" id="bank" name="bank" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
+                <div class="layui-inline">
+                    <label class="layui-form-label">销售价格</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="price" lay-verify="" placeholder="请输入商品销售价格">
+                    </div>
                 </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">银行账户</label>
-                <div class="layui-input-block">
-                    <input type="text" id="account" name="account" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
+                <div class="layui-inline">
+                    <label class="layui-form-label">库存量</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="number" lay-verify="" placeholder="请输入商品库存量">
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">email</label>
-                <div class="layui-input-block">
-                    <input type="text" id="email" name="email" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入email">
+                <div class="layui-inline">
+                    <label class="layui-form-label">预警值</label>
+                    <div class="layui-input-inline">
+                        <input type="text" class="layui-input input-radius" name="dangernum" lay-verify="" placeholder="请输入商品预警值">
+                    </div>
                 </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">传真</label>
-                <div class="layui-input-block">
-                    <input type="text" id="fax" name="fax" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入传真">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">是否可用</label>
-                <div class="layui-input-block">
-                    <input type="radio" name="available" value="1" title="可用" checked="">
-                    <input type="radio" name="available" value="0" title="不可用">
+                <div class="layui-inline">
+                    <label class="layui-form-label">是否可用</label>
+                    <div class="layui-input-inline">
+                        <input type="radio" name="available" value="1" title="可用" checked="">
+                        <input type="radio" name="available" value="0" title="不可用" >
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,11 +232,12 @@
     //提升数据表格的作用域，因为底下还有一个reloadTable方法
     var tableIns;
 
-    layui.use(['jquery', 'form', 'layer', 'table'], function () {
+    layui.use(['jquery', 'form', 'layer', 'table','upload'], function () {
         var $ = layui.jquery;
         var form = layui.form;
         var layer = layui.layer;
         var table = layui.table;
+        var upload = layui.upload;
 
         //初始化表格 加载数据
         tableIns = table.render({
@@ -227,7 +260,9 @@
                 {field: 'price', title: '销售价格', align: 'center',width:'90'},
                 {field: 'number', title: '数量', align: 'center',width:'90'},
                 {field: 'dangernum', title: '库存预警值', align: 'center',width:'100'},
-                {field: 'goodsimg', title: '商品图片', align: 'center',width:'150'},
+                {field: 'goodsimg', title: '商品图片', align: 'center',width:'150', templet:function(d){
+                    return '<img width=40 height=40 src=/file/showImageByPath?path='+d.goodsimg+ ' />';
+                }},
                 {field: 'available', title: '是否可用', align: 'center',width:'100',templet:function (d) {
                     return d.available==1?'<font color="blue">可用</font>':'<font color="red">不可用</font>';
                 }},
@@ -304,6 +339,20 @@
             };
         });
 
+        //文件上传
+        upload.render({
+            elem: '.thumbBox',
+            url: '/file/uploadFile',
+            acceptMime:'image/*',
+            field:'mf',
+            method : "post",
+            done: function(res, index, upload){
+                var path=res.path;
+                $('.thumbImg').attr('src','/file/showImageByPath?path='+path);
+                $('.thumbBox').css("background","#fff");
+            }
+        });
+
         var mainIndex;
         var url;
 
@@ -317,6 +366,16 @@
                 success:function () {
                     $("#dataFrm")[0].reset();
                     url="/goods/addGoods";
+                    $.get("/provider/loadAllProviderForSelect",function(res){
+                        var data=res.data;
+                        var dom=$("#providerid");
+                        var html='<option value="0">请选择供应商</option>'
+                        $.each(data,function(index,item){
+                            html+='<option value="'+item.id+'">'+item.providername+'</option>'
+                        });
+                        dom.html(html);
+                        form.render("select");
+                    });
                 }
             });
         }
@@ -349,7 +408,6 @@
             return false;
         });
 
-
         //删除
         function deleteGoods(data) {
             layer.confirm('你确定要删除【' + data.goodsname + '】这个商品吗？', {icon: 3, title: '提示'}, function (index) {
@@ -362,7 +420,6 @@
                 layer.close(index);
             });
         }
-
 
 
     });
