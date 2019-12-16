@@ -36,7 +36,7 @@
 * Shiro
 * MybatisPlus
 #### 前端技术选型
-* LayUI、dtree
+* LayUI、DTree
 
 ### 开发环境
 * 操作系统：Windows 10
@@ -44,7 +44,7 @@
 * 开发工具：IDEA、Navicat、Git
 * 项目构建：Maven 3.5.2
 * 服务器：Tomcat 8.5
-* 数据库：MySQL 3.5.0
+* 数据库：MySQL 5.0
 * 代码托管平台：GitHub
 
 ### 预览效果
