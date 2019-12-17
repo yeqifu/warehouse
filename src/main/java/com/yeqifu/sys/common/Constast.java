@@ -40,4 +40,9 @@ public class Constast {
      */
     public static final Integer OPEN_TRUE = 1;
     public static final Integer OPEN_FALSE = 0;
+
+    /**
+     * 商品默认图片
+     */
+    public static final String DEFAULT_IMG= "/images/noDefaultImage.jpg";
 }

@@ -18,9 +18,8 @@ import java.util.Properties;
  */
 public class AppFileUtils {
 
-    //文件上传的保存路径
     /**
-     * 默认值
+     * 文件上传的保存路径  默认值
      */
     public static String UPLOAD_PATH="E:/upload/";
 
@@ -41,11 +40,13 @@ public class AppFileUtils {
 
     /**
      * 根据文件老名字得到新名字
-     * @param oldName
-     * @return
+     * @param oldName 文件老名字
+     * @return 新名字由32位随机数加图片后缀组成
      */
     public static String createNewFileName(String oldName) {
+        //获取文件名后缀
         String stuff=oldName.substring(oldName.lastIndexOf("."), oldName.length());
+        //将UUID与文件名后缀进行拼接，生成新的文件名
         return IdUtil.simpleUUID().toUpperCase()+stuff;
     }
 
@@ -75,4 +76,34 @@ public class AppFileUtils {
         }
         return null;
     }
+
+    /**
+     * 更该图片的名字 去掉_temp
+     * @param goodsimg
+     * @return
+     */
+    public static String renameFile(String goodsimg) {
+        File file = new File(UPLOAD_PATH,goodsimg);
+        String replace = goodsimg.replace("_temp","");
+        if (file.exists()){
+            file.renameTo(new File(UPLOAD_PATH,replace));
+        }
+        return replace;
+    }
+
+    /**
+     * 根据老路径删除图片
+     * @param oldPath
+     */
+    public static void removeFileByPath(String oldPath) {
+        //图片的路径不是默认图片的路径
+        if (!oldPath.equals(Constast.DEFAULT_IMG)){
+            File file = new File(UPLOAD_PATH,oldPath);
+            if (file.exists()){
+                file.delete();
+            }
+        }
+    }
+
+
 }

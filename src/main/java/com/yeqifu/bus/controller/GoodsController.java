@@ -9,11 +9,13 @@ import com.yeqifu.bus.entity.Provider;
 import com.yeqifu.bus.service.IGoodsService;
 import com.yeqifu.bus.service.IProviderService;
 import com.yeqifu.bus.vo.GoodsVo;
+import com.yeqifu.sys.common.AppFileUtils;
+import com.yeqifu.sys.common.Constast;
 import com.yeqifu.sys.common.DataGridView;
+import com.yeqifu.sys.common.ResultObj;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -55,16 +57,80 @@ public class GoodsController {
 
         List<Goods> records = page.getRecords();
         for (Goods goods : records) {
-            Provider provider = providerService.getById(goods.getId());
+            Provider provider = providerService.getById(goods.getProviderid());
             if (null!=provider){
                 goods.setProvidername(provider.getProvidername());
+
             }
         }
 
-
         return new DataGridView(page.getTotal(),page.getRecords());
-
     }
+
+    /**
+     * 添加商品
+     * @param goodsVo
+     * @return
+     */
+    @RequestMapping("addGoods")
+    public ResultObj addGoods(GoodsVo goodsVo){
+        try {
+            if (goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().endsWith("_temp")){
+                String newName = AppFileUtils.renameFile(goodsVo.getGoodsimg());
+                goodsVo.setGoodsimg(newName);
+            }
+            goodsService.save(goodsVo);
+            return ResultObj.ADD_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultObj.ADD_ERROR;
+        }
+    }
+
+    /**
+     * 修改商品
+     * @param goodsVo
+     * @return
+     */
+    @RequestMapping("updateGoods")
+    public ResultObj updateGoods(GoodsVo goodsVo){
+        try {
+            //商品图片不是默认图片
+            if (!(goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().equals(Constast.DEFAULT_IMG))){
+                if (goodsVo.getGoodsimg().endsWith("_temp")){
+                    String newName = AppFileUtils.renameFile(goodsVo.getGoodsimg());
+                    goodsVo.setGoodsimg(newName);
+                    //删除原先的图片
+                    String oldPath = goodsService.getById(goodsVo.getId()).getGoodsimg();
+                    AppFileUtils.removeFileByPath(oldPath);
+                }
+            }
+            goodsService.updateById(goodsVo);
+            return ResultObj.UPDATE_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultObj.UPDATE_ERROR;
+        }
+    }
+
+    /**
+     * 删除商品
+     * @param id
+     * @return
+     */
+    @RequestMapping("deleteGoods")
+    public ResultObj deleteGoods(Integer id,String goodsimg){
+        try {
+            //删除商品的图片
+            AppFileUtils.removeFileByPath(goodsimg);
+            goodsService.removeById(id);
+            return ResultObj.DELETE_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultObj.DELETE_ERROR;
+        }
+    }
+
 
 }
 

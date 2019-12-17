@@ -148,7 +148,7 @@
                 </div>
                 <div class="layui-col-md3 layui-col-xs5">
                     <div class="layui-upload-list thumbBox mag0 magt3">
-                        <input type="hidden" name="goodsimg" value="/images/noDefaultImage.jpg">
+                        <input type="hidden" name="goodsimg" id="goodsimg" value="images/noDefaultImage.jpg">
                         <img class="layui-upload-img thumbImg" src="/file/showImageByPath?path=images/noDefaultImage.jpg">
                     </div>
                 </div>
@@ -157,49 +157,49 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">产地</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="produceplace" lay-verify="" placeholder="请输入商品产地">
+                        <input type="text" class="layui-input input-radius" name="produceplace" placeholder="请输入商品产地">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">包装</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="goodspackage" lay-verify="" placeholder="请输入商品包装">
+                        <input type="text" class="layui-input input-radius" name="goodspackage" placeholder="请输入商品包装">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">规格</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="size" lay-verify="" placeholder="请输入商品规格">
+                        <input type="text" class="layui-input input-radius" name="size" placeholder="请输入商品规格">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">生产批号</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="productcode" lay-verify="" placeholder="请输入商品生产批号">
+                        <input type="text" class="layui-input input-radius" name="productcode" placeholder="请输入商品生产批号">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">批准文号</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="promitcode" lay-verify="" placeholder="请输入商品批准文号">
+                        <input type="text" class="layui-input input-radius" name="promitcode" placeholder="请输入商品批准文号">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">销售价格</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="price" lay-verify="" placeholder="请输入商品销售价格">
+                        <input type="text" class="layui-input input-radius" name="price" placeholder="请输入商品销售价格">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">库存量</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="number" lay-verify="" placeholder="请输入商品库存量">
+                        <input type="text" class="layui-input input-radius" name="number" placeholder="请输入商品库存量">
                     </div>
                 </div>
                 <div class="layui-inline">
                     <label class="layui-form-label">预警值</label>
                     <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="dangernum" lay-verify="" placeholder="请输入商品预警值">
+                        <input type="text" class="layui-input input-radius" name="dangernum" placeholder="请输入商品预警值">
                     </div>
                 </div>
                 <div class="layui-inline">
@@ -350,6 +350,8 @@
                 var path=res.path;
                 $('.thumbImg').attr('src','/file/showImageByPath?path='+path);
                 $('.thumbBox').css("background","#fff");
+                //给隐藏域赋值
+                $("#goodsimg").val(path);
             }
         });
 
@@ -376,6 +378,9 @@
                         dom.html(html);
                         form.render("select");
                     });
+                    //设置默认为无图片
+                    $(".thumbImg").attr("src",'/file/showImageByPath?path=images/noDefaultImage.jpg');
+                    $("#goodsimg").val('/images/noDefaultImage.jpg');
                 }
             });
         }
@@ -392,6 +397,23 @@
                     $("#dataFrm")[0].reset();
                     //装载新的数据
                     form.val("dataFrm",data);
+                    //图片进行回显
+                    $(".thumbImg").attr("src",'/file/showImageByPath?path='+data.goodsimg);
+                    //下拉列表的回显
+                    $.get("/provider/loadAllProviderForSelect",function(res){
+                        var redata=res.data;
+                        var dom=$("#providerid");
+                        var html='<option value="0">请选择供应商</option>'
+                        $.each(redata,function(index,item){
+                            if (data.providerid===item.id){
+                                html+='<option value="'+item.id+'" selected>'+item.providername+'</option>'
+                            }else {
+                                html+='<option value="'+item.id+'">'+item.providername+'</option>'
+                            }
+                        });
+                        dom.html(html);
+                        form.render("select");
+                    });
                     url="/goods/updateGoods";
                 }
             });
@@ -411,7 +433,7 @@
         //删除
         function deleteGoods(data) {
             layer.confirm('你确定要删除【' + data.goodsname + '】这个商品吗？', {icon: 3, title: '提示'}, function (index) {
-                $.post("/goods/deleteGoods", {id: data.id},function (res) {
+                $.post("/goods/deleteGoods", {id: data.id,goodsimg:data.goodsimg},function (res) {
                     if (res.code == 200) {
                         tableIns.reload();
                     }

@@ -23,12 +23,14 @@ public class FileController {
 
     /**
      * 文件上传
+     * @param mf
+     * @return
      */
     @RequestMapping("uploadFile")
     public Map<String,Object> uploadFile(MultipartFile mf) {
         //1.得到文件名
         String oldName = mf.getOriginalFilename();
-        //2.根据文件名生成新的文件名
+        //2.根据旧的文件名生成新的文件名
         String newName=AppFileUtils.createNewFileName(oldName);
         //3.得到当前日期的字符串
         String dirName= DateUtil.format(new Date(), "yyyy-MM-dd");
@@ -36,22 +38,21 @@ public class FileController {
         File dirFile=new File(AppFileUtils.UPLOAD_PATH,dirName);
         //5.判断当前文件夹是否存在
         if(!dirFile.exists()) {
-            //创建文件夹
+            //如果不存在则创建新文件夹
             dirFile.mkdirs();
         }
         //6.构造文件对象
-        File file=new File(dirFile, newName);
-        //7,把mf里面的图片信息写入file
+        File file=new File(dirFile, newName+"_temp");
+        //7.把mf里面的图片信息写入file
         try {
             mf.transferTo(file);
-        } catch (IOException e) {
+        } catch (IllegalStateException | IOException e) {
             e.printStackTrace();
         }
         Map<String,Object> map=new HashMap<String, Object>();
-        map.put("path",dirFile+"/"+newName);
+        map.put("path",dirName+"/"+newName+"_temp");
         return map;
     }
-
 
     /**
      * 图片下载
