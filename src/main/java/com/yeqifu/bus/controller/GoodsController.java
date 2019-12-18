@@ -53,17 +53,15 @@ public class GoodsController {
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getPromitcode()),"promitcode",goodsVo.getPromitcode());
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getDescription()),"description",goodsVo.getDescription());
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getSize()),"size",goodsVo.getSize());
+        queryWrapper.orderByDesc("id");
         goodsService.page(page,queryWrapper);
-
         List<Goods> records = page.getRecords();
         for (Goods goods : records) {
             Provider provider = providerService.getById(goods.getProviderid());
             if (null!=provider){
                 goods.setProvidername(provider.getProvidername());
-
             }
         }
-
         return new DataGridView(page.getTotal(),page.getRecords());
     }
 
@@ -131,6 +129,43 @@ public class GoodsController {
         }
     }
 
+    /**
+     * 加载所有可用的商品
+     * @return
+     */
+    @RequestMapping("loadAllGoodsForSelect")
+    public DataGridView loadAllGoodsForSelect(){
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>();
+        queryWrapper.eq("available",Constast.AVAILABLE_TRUE);
+        List<Goods> list = goodsService.list(queryWrapper);
+        for (Goods goods : list) {
+            Provider provider = providerService.getById(goods.getProviderid());
+            if (null!=provider){
+                goods.setProvidername(provider.getProvidername());
+            }
+        }
+        return new DataGridView(list);
+    }
+
+    /**
+     * 根据供应商ID查询商品信息
+     * @param providerid    供应商ID
+     * @return
+     */
+    @RequestMapping("loadGoodsByProviderId")
+    public DataGridView loadGoodsByProviderId(Integer providerid){
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>();
+        queryWrapper.eq("available",Constast.AVAILABLE_TRUE);
+        queryWrapper.eq(providerid!=null,"providerid",providerid);
+        List<Goods> list = goodsService.list(queryWrapper);
+        for (Goods goods : list) {
+            Provider provider = providerService.getById(goods.getProviderid());
+            if (null!=provider){
+                goods.setProvidername(provider.getProvidername());
+            }
+        }
+        return new DataGridView(list);
+    }
 
 }
 

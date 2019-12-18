@@ -85,6 +85,7 @@ public class UserRealm extends AuthorizingRealm {
 
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("loginname",authenticationToken.getPrincipal().toString());
+        //通过用户名从数据库中查询出该用户
         User user = userService.getOne(queryWrapper);
         if (null!=user){
             ActiverUser activerUser = new ActiverUser();
@@ -119,6 +120,13 @@ public class UserRealm extends AuthorizingRealm {
 
             //生成盐
             ByteSource credentialsSalt=ByteSource.Util.bytes(user.getSalt());
+            /**
+             * 参数说明：
+             * 参数1：活动的User
+             * 参数2：从数据库里面查询出来的密码(已经通过MD5加密)
+             * 参数3：从数据库里面查询出来的盐
+             * 参数4：当前类名
+             */
             SimpleAuthenticationInfo info = new SimpleAuthenticationInfo(activerUser,user.getPwd(),credentialsSalt,this.getName());
             return info;
         }

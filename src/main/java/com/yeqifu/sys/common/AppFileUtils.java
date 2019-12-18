@@ -46,7 +46,7 @@ public class AppFileUtils {
     public static String createNewFileName(String oldName) {
         //获取文件名后缀
         String stuff=oldName.substring(oldName.lastIndexOf("."), oldName.length());
-        //将UUID与文件名后缀进行拼接，生成新的文件名
+        //将UUID与文件名后缀进行拼接，生成新的文件名  生成的UUID为32位
         return IdUtil.simpleUUID().toUpperCase()+stuff;
     }
 

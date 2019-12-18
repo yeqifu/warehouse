@@ -2,12 +2,9 @@ package com.yeqifu.sys.controller;
 
 
 import cn.hutool.core.util.IdUtil;
-import cn.hutool.core.util.RandomUtil;
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.org.apache.regexp.internal.RE;
 import com.yeqifu.sys.common.Constast;
 import com.yeqifu.sys.common.DataGridView;
 import com.yeqifu.sys.common.PinyinUtils;
@@ -24,10 +21,8 @@ import org.apache.shiro.crypto.hash.Md5Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.ws.RequestWrapper;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -214,7 +209,7 @@ public class UserController {
         try {
             User user = new User();
             user.setId(id);
-            //设置盐
+            //设置盐  32位(大写英文字母(A-Z)加数字(0-9))
             String salt = IdUtil.simpleUUID().toUpperCase();
             user.setSalt(salt);
             //设置密码
@@ -252,7 +247,6 @@ public class UserController {
             }
             map.put("LAY_CHECKED",LAY_CHECKED);
         }
-
         return new DataGridView(Long.valueOf(listMaps.size()),listMaps);
     }
 
@@ -272,7 +266,6 @@ public class UserController {
             return ResultObj.DISPATCH_ERROR;
         }
     }
-
 
 
 }

@@ -19,6 +19,11 @@ spring:
         login-password: 123456
         url-pattern: /druid/*
 
+  servlet:
+      multipart:
+        max-file-size: 1MB
+        max-request-size: 10MB
+
   #thymeleaf的配置
   thymeleaf:
     cache: false
@@ -55,3 +60,5 @@ shiro:
 #修改端口号为8088
 server:
   port: 8088
+
+
