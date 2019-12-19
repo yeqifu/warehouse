@@ -48,4 +48,13 @@ public class BusinessController {
         return "business/inport/inportManager";
     }
 
+    /**
+     * 跳转到退货管理页面
+     * @return
+     */
+    @RequestMapping("toOutportManager")
+    public String toOutportManager(){
+        return "business/outport/outportManager";
+    }
+
 }

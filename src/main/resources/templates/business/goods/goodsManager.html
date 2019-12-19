@@ -252,10 +252,6 @@
                 {field: 'goodsname', title: '商品名称', align: 'center',width:'150'},
                 {field: 'providername', title: '供应商', align: 'center',width:'150'},
                 {field: 'produceplace', title: '商品产地', align: 'center',width:'150'},
-                {field: 'size', title: '规格', align: 'center',width:'120'},
-                {field: 'goodspackage', title: '包装', align: 'center',width:'120'},
-                {field: 'productcode', title: '生产批号', align: 'center',width:'130'},
-                {field: 'promitcode', title: '批准文号', align: 'center',width:'130'},
                 {field: 'description', title: '商品描述', align: 'center',width:'150'},
                 {field: 'price', title: '销售价格', align: 'center',width:'90'},
                 {field: 'number', title: '数量', align: 'center',width:'90'},
@@ -263,6 +259,10 @@
                 {field: 'goodsimg', title: '商品图片', align: 'center',width:'150', templet:function(d){
                     return '<img width=40 height=40 src=/file/showImageByPath?path='+d.goodsimg+ ' />';
                 }},
+                {field: 'size', title: '规格', align: 'center',width:'120'},
+                {field: 'goodspackage', title: '包装', align: 'center',width:'120'},
+                {field: 'productcode', title: '生产批号', align: 'center',width:'130'},
+                {field: 'promitcode', title: '批准文号', align: 'center',width:'130'},
                 {field: 'available', title: '是否可用', align: 'center',width:'100',templet:function (d) {
                     return d.available==1?'<font color="blue">可用</font>':'<font color="red">不可用</font>';
                 }},

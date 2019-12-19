@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+
 /**
  * <p>
  * InnoDB free: 9216 kB; (`providerid`) REFER `warehouse/bus_provider`(`id`); (`goo 服务实现类
@@ -40,6 +42,11 @@ public class InportServiceImpl extends ServiceImpl<InportMapper, Inport> impleme
         return super.save(entity);
     }
 
+    /**
+     * 更新商品进货
+     * @param entity
+     * @return
+     */
     @Override
     public boolean updateById(Inport entity) {
         //根据进货ID查询进货信息
@@ -51,5 +58,23 @@ public class InportServiceImpl extends ServiceImpl<InportMapper, Inport> impleme
         goodsMapper.updateById(goods);
         //更新进货单
         return super.updateById(entity);
+    }
+
+    /**
+     * 删除商品进货信息
+     * @param id
+     * @return
+     */
+    @Override
+    public boolean removeById(Serializable id) {
+        //根据进货ID查询进货信息
+        Inport inport = baseMapper.selectById(id);
+        //根据商品ID查询商品信息
+        Goods goods = goodsMapper.selectById(inport.getGoodsid());
+        //库存算法  当前库存-进货单数量
+        goods.setNumber(goods.getNumber()-inport.getNumber());
+        goodsMapper.updateById(goods);
+        //更新商品的数量
+        return super.removeById(id);
     }
 }

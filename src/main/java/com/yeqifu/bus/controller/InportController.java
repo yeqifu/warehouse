@@ -122,13 +122,13 @@ public class InportController {
 
     /**
      * 删除进货商品
-     * @param inportVo
+     * @param id
      * @return
      */
     @RequestMapping("deleteInport")
-    public ResultObj deleteInport(InportVo inportVo){
+    public ResultObj deleteInport(Integer id){
         try {
-            inportService.removeById(inportVo);
+            inportService.removeById(id);
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();

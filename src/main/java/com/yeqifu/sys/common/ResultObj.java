@@ -32,6 +32,9 @@ public class ResultObj {
     public static final ResultObj DISPATCH_SUCCESS = new ResultObj(Constast.OK,"分配成功");
     public static final ResultObj DISPATCH_ERROR = new ResultObj(Constast.ERROR,"分配失败");
 
+    public static final ResultObj BACKINPORT_SUCCESS = new ResultObj(Constast.OK,"退货成功");
+    public static final ResultObj BACKINPORT_ERROR = new ResultObj(Constast.ERROR,"退货失败");
+
     private Integer code;
     private String msg;
 

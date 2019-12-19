@@ -116,9 +116,6 @@
         <button type="button" lay-event="add" shiro:hasPermission="inport:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>添加进货
         </button>
-        <button type="button" lay-event="deleteBatch" shiro:hasPermission="inport:create" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius">
-            <i class="layui-icon layui-icon-delete"></i>批量删除
-        </button>
     </div>
     <div id="inportRowBar" style="display: none;">
         <button type="button" lay-event="update" shiro:hasPermission="inport:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
@@ -126,6 +123,9 @@
         </button>
         <button type="button" lay-event="delete" shiro:hasPermission="inport:delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>删除
+        </button>
+        <button type="button" lay-event="back" shiro:hasPermission="inport:back" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius"><i
+                class="layui-icon layui-icon-delete"></i>退货
         </button>
     </div>
 </div>
@@ -140,6 +140,7 @@
                     <select name="providerid" id="providerid" lay-filter="providerid">
                         <option value="0">请选择供应商</option>
                     </select>
+                    <div class="mydiv" title="不可修改" style="position:absolute;width:100%;height:100%;left:0px;top:0px;background:#fff;opacity:0;filter:alpha(opacity=0)"> </div>
                 </div>
             </div>
             <div class="layui-inline">
@@ -149,6 +150,7 @@
                         <option value="0">请选择商品</option>
                     </select>
                 </div>
+                <div class="mydiv" title="不可修改" style="position:absolute;width:100%;height:100%;left:0px;top:0px;background:#fff;opacity:0;filter:alpha(opacity=0)"> </div>
             </div>
         </div>
         <div class="layui-form-item">
@@ -197,6 +199,42 @@
     </form>
 </div>
 
+<!--退货的弹出层-->
+<div id="backGoodsDiv" style="display: none;padding-right: 3%">
+    <form action="" method="post" class="layui-form" id="dataFrmBack" lay-filter="dataFrmBack">
+
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">退货数量</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="id">  <!-- 进货单ID  -->
+                    <input type="hidden" name="currentNumber" id="currentNumber">  <!-- 进货单中进货数量  -->
+                    <input type="text" name="number" lay-verify="required|checkNumber" autocomplete="off" class="layui-input input-radius" placeholder="请输入退货数量">
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">退货备注</label>
+                <div class="layui-input-block">
+                    <textarea name="remark" placeholder="请输入退货备注" class="layui-textarea" cols="200" rows="8"></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;padding-right: 7%">
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doBackSubmit" id="doBackSubmit"><i
+                        class="layui-icon layui-icon-search layui-icon-normal"></i>提交
+                </button>
+                <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
+                        class="layui-icon layui-icon-refresh"></i><span>重置</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+
+
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
 
 <script type="text/javascript">
@@ -233,14 +271,14 @@
                 {field: 'id', title: 'ID', align: 'center',width:'50'},
                 {field: 'providername', title: '供应商', align: 'center',width:'100'},
                 {field: 'goodsname', title: '商品名称', align: 'center',width:'150'},
-                {field: 'size', title: '商品规格', align: 'center',width:'100'},
                 {field: 'paytype', title: '支付类型', align: 'center',width:'90'},
                 {field: 'inporttime', title: '进货时间', align: 'center',width:'170'},
                 {field: 'operateperson', title: '操作员', align: 'center',width:'130'},
                 {field: 'number', title: '进货数量', align: 'center',width:'100'},
+                {field: 'size', title: '商品规格', align: 'center',width:'100'},
                 {field: 'inportprice', title: '进货价格', align: 'center',width:'120'},
                 {field: 'remark', title: '备注', align: 'center',width:'120'},
-                {fixed: 'right', title: '操作', toolbar: '#inportRowBar', align: 'center',width:'180'}
+                {fixed: 'right', title: '操作', toolbar: '#inportRowBar', align: 'center',width:'260'}
             ] ],
             done: function (data, curr, count) {
                 //不是第一页时，如果当前返回的数据为0那么就返回上一页
@@ -342,7 +380,10 @@
                     $("#dataFrm")[0].reset();
                     //初始化供应商的下拉列表
                     initProviderSelect();
+                    //使该div隐藏
+                    $(".mydiv").hide();
                     url="/inport/addInport";
+
                 }
             });
         }
@@ -363,6 +404,8 @@
                     initProviderSelect(data.providerid);
                     //商品进行反选
                     initGoodsSelect(data.providerid,data.goodsid);
+                    //禁用供应商和商品的下拉列表
+                    $(".mydiv").show();
                     url="/inport/updateInport";
                 }
             });
@@ -440,6 +483,47 @@
                 layer.close(index);
             });
         }
+
+        //打开退货的弹出层
+        function backInport(data) {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#backGoodsDiv"),
+                area:['600px','400px'],
+                title:'商品退货',
+                success:function () {
+                    //清空原有的数据
+                    $("#dataFrmBack")[0].reset();
+                    //装载新的数据   获得进货的ID以及当前进货单的进货数量
+                    form.val("dataFrmBack",{id:data.id,currentNumber:data.number});
+                }
+            });
+        }
+
+        //自定义验证规则
+        form.verify({
+           checkNumber: function (value) {
+               var currentNumber = $("#currentNumber").val();
+               //value为退货的数量    currentNumber为当前进货单的数量
+               if (parseInt(value)>currentNumber||parseInt(value)<1){
+                   return '退货数量只能在【0】-【'+currentNumber+'】之间';
+               }
+           }
+        });
+
+        //退货提交
+        form.on("submit(doBackSubmit)",function (data) {
+            $.post("/outport/addOutport",data.field,function (res) {
+                if (res.code==200){
+                    //重新加载表格数据
+                    tableIns.reload();
+                    //关闭退货弹出层
+                    layer.close(mainIndex);
+                }
+                layer.msg(res.msg);
+            });
+            return false;
+        })
 
 
 
