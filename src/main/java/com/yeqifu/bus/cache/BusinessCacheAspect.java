@@ -2,6 +2,7 @@ package com.yeqifu.bus.cache;
 
 import com.yeqifu.bus.entity.Customer;
 import com.yeqifu.bus.entity.Goods;
+import com.yeqifu.sys.cache.CachePool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -32,7 +32,7 @@ public class BusinessCacheAspect {
     /**
      * 声明一个缓存容器
      */
-    private Map<String,Object> CACHE_CONTAINER = new HashMap<>();
+    private Map<String,Object> CACHE_CONTAINER = CachePool.CACHE_CONTAINER;
 
 
     /**

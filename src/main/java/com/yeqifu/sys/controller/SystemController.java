@@ -155,5 +155,14 @@ public class SystemController {
     public String toUserManager(){
         return "system/user/userManager";
     }
-    
+
+    /**
+     * 跳转到缓存管理
+     * @return
+     */
+    @RequestMapping("toCacheManager")
+    public String toCacheManager(){
+        return "system/cache/cacheManager";
+    }
+
 }

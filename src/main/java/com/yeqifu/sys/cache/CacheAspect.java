@@ -2,8 +2,6 @@ package com.yeqifu.sys.cache;
 
 import com.yeqifu.sys.entity.Dept;
 import com.yeqifu.sys.entity.User;
-import com.yeqifu.sys.vo.DeptVo;
-import com.yeqifu.sys.vo.UserVo;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,7 +11,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -33,7 +30,7 @@ public class CacheAspect {
     /**
      * 声明一个缓存容器
      */
-    private Map<String,Object> CACHE_CONTAINER = new HashMap<>();
+    private Map<String,Object> CACHE_CONTAINER = CachePool.CACHE_CONTAINER;
 
 
     /**
