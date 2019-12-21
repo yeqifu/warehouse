@@ -57,4 +57,13 @@ public class BusinessController {
         return "business/outport/outportManager";
     }
 
+    /**
+     * 跳转到商品销售管理页面
+     * @return
+     */
+    @RequestMapping("toSalesManager")
+    public String toSalesManager(){
+        return "business/sales/salesManager";
+    }
+
 }

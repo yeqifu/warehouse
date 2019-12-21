@@ -4,21 +4,21 @@ package com.yeqifu.bus.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.org.apache.regexp.internal.RE;
 import com.yeqifu.bus.entity.Customer;
 import com.yeqifu.bus.service.ICustomerService;
 import com.yeqifu.bus.vo.CustomerVo;
+import com.yeqifu.sys.common.Constast;
 import com.yeqifu.sys.common.DataGridView;
 import com.yeqifu.sys.common.ResultObj;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * <p>
@@ -119,7 +119,18 @@ public class CustomerController {
             e.printStackTrace();
             return ResultObj.DELETE_ERROR;
         }
+    }
 
+    /**
+     * 加载所有客户的下拉列表
+     * @return
+     */
+    @RequestMapping("loadAllCustomerForSelect")
+    public DataGridView loadAllCustomerForSelect(){
+        QueryWrapper<Customer> queryWrapper = new QueryWrapper<Customer>();
+        queryWrapper.eq("available", Constast.AVAILABLE_TRUE);
+        List<Customer> list = customerService.list(queryWrapper);
+        return new DataGridView(list);
     }
 
 }

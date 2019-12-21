@@ -167,5 +167,7 @@ public class GoodsController {
         return new DataGridView(list);
     }
 
+
+
 }
 
