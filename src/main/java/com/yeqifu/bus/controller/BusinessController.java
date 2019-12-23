@@ -66,4 +66,13 @@ public class BusinessController {
         return "business/sales/salesManager";
     }
 
+    /**
+     * 跳转到商品销售管理页面
+     * @return
+     */
+    @RequestMapping("toSalesbackManager")
+    public String toSalesbackManager(){
+        return "business/salesback/salesbackManager";
+    }
+
 }

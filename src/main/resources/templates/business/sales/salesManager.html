@@ -67,10 +67,10 @@
 <form action="" method="post" id="searchFrm" lay-filter="searchFrm" class="layui-form">
     <div class="layui-form-item">
         <div class="layui-inline">
-            <label class="layui-form-label">供应商名称</label>
+            <label class="layui-form-label">客户名称</label>
             <div class="layui-input-inline">
-                <select name="providerid" id="select_providerid">
-                    <option value="0">请选择供应商</option>
+                <select name="customerid" id="select_customerid">
+                    <option value="0">请选择客户</option>
                 </select>
             </div>
         </div>
@@ -164,7 +164,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">销售价格</label>
                 <div class="layui-input-block">
-                    <input type="text" name="salesprice" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入销售价格">
+                    <input type="text" name="saleprice" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入销售价格">
                 </div>
             </div>
         </div>
@@ -289,7 +289,6 @@
                         }
                     })
                 }
-
             }
         });
 
@@ -309,9 +308,6 @@
             switch (obj.event) {
                 case 'add':
                     openAddLayer();
-                    break;
-                case 'deleteBatch':
-                    batchDeleteSales();
                     break;
             };
         });
@@ -336,7 +332,7 @@
         //初始化客户名称的下拉列表
         $.get("/customer/loadAllCustomerForSelect",function (res) {
             var data = res.data;
-            var dom = $("#select_providerid");
+            var dom = $("#select_customerid");
             var html = '<option value="0">请选择客户</option>';
             $.each(data,function (index, item) {
                 html += '<option value="'+item.id+'">'+item.customername+'</option>';
@@ -351,7 +347,7 @@
             var dom = $("#select_goodsid");
             var html = '<option value="0">请选择商品</option>';
             $.each(data,function (index, item) {
-                html += '<option value="'+item.id+'">'+item.goodsname+'-['+item.size+']-'+'['+item.customername+']'+'</option>';
+                html += '<option value="'+item.id+'">'+item.goodsname+'-['+item.size+']-'+'['+item.providername+']'+'</option>';
             });
             dom.html(html);
             //重新渲染下拉列表
@@ -370,7 +366,7 @@
                 title:'添加销售',
                 success:function () {
                     $("#dataFrm")[0].reset();
-                    //初始化供应商的下拉列表
+                    //初始化客户名称的下拉列表
                     initCustomerSelect();
                     //使该div隐藏
                     $(".mydiv").hide();
@@ -394,8 +390,22 @@
                     form.val("dataFrm",data);
                     //客户进行反选
                     initCustomerSelect(data.customerid);
-                    //商品进行反选
-                    initGoodsSelect(data.customerid,data.goodsid);
+                    //商品下拉列表的回显
+                    $.get("/goods/loadAllGoodsForSelect",function(res){
+                        var redata=res.data;
+                        var dom=$("#goodsid");
+                        var html='<option value="0">请选择供应商</option>'
+                        $.each(redata,function(index,item){
+                            if (data.goodsid===item.id){
+                                html+='<option value="'+item.id+'" selected>'+item.goodsname+'</option>'
+                            }else {
+                                html+='<option value="'+item.id+'">'+item.goodsname+'</option>'
+                            }
+                        });
+                        dom.html(html);
+                        form.render("select");
+                    });
+
                     //禁用供应商和商品的下拉列表
                     $(".mydiv").show();
                     url="/sales/updateSales";
@@ -418,7 +428,7 @@
                 dom.html(html);
                 //如果customerid有值就进行反选
                 if (customerid!=undefined){
-                    dom.val(providerid);
+                    dom.val(customerid);
                 }
                 //重新渲染下拉列表
                 form.render("select");
@@ -432,13 +442,13 @@
         });
 
         //加载商品的下拉列表
-        function initGoodsSelect(customerid, goodsid) {
-            $.get("/sales/loadGoodsByCustomerId",{customerid:customerid},function (res) {
+        function initGoodsSelect(goodsid) {
+            $.get("/goods/loadAllGoodsForSelect",function (res) {
                 var data = res.data;
                 var dom = $("#goodsid");
                 var html = '<option value="0">请选择商品</option>';
                 $.each(data,function (index, item) {
-                    html += '<option value="'+item.id+'">'+item.goodsname+'-['+item.size+']-'+'['+item.customername+']'+'</option>';
+                    html += '<option value="'+item.id+'">'+item.goodsname+'-['+item.size+']-'+'['+item.providername+']'+'</option>';
                 });
                 dom.html(html);
                 //如果goodsid有值就进行反选
@@ -482,7 +492,7 @@
                 type:1,
                 content:$("#backGoodsDiv"),
                 area:['600px','400px'],
-                title:'商品退货',
+                title:'商品销售退货',
                 success:function () {
                     //清空原有的数据
                     $("#dataFrmBack")[0].reset();
@@ -505,7 +515,7 @@
 
         //退货提交
         form.on("submit(doBackSubmit)",function (data) {
-            $.post("/outport/addOutport",data.field,function (res) {
+            $.post("/salesback/addSalesback",data.field,function (res) {
                 if (res.code==200){
                     //重新加载表格数据
                     tableIns.reload();

@@ -53,9 +53,9 @@ public class SalesController {
         IPage<Sales> page = new Page<>(salesVo.getPage(),salesVo.getLimit());
         QueryWrapper<Sales> queryWrapper = new QueryWrapper<Sales>();
         //根据客户进行模糊查询
-        queryWrapper.eq(salesVo.getCustomerid()!=null,"customerid",salesVo.getCustomerid());
+        queryWrapper.eq(salesVo.getCustomerid()!=null&&salesVo.getCustomerid()!=0,"customerid",salesVo.getCustomerid());
         //根据商品模糊查询
-        queryWrapper.eq(salesVo.getGoodsid()!=null,"goodsid",salesVo.getGoodsid());
+        queryWrapper.eq(salesVo.getGoodsid()!=null&&salesVo.getGoodsid()!=0,"goodsid",salesVo.getGoodsid());
         //根据时间进行模糊查询
         queryWrapper.ge(salesVo.getStartTime()!=null,"salestime",salesVo.getStartTime());
         queryWrapper.le(salesVo.getEndTime()!=null,"salestime",salesVo.getEndTime());
@@ -87,7 +87,7 @@ public class SalesController {
             User user = (User) WebUtils.getSession().getAttribute("user");
             //设置操作人
             salesVo.setOperateperson(user.getName());
-            //设置进货时间
+            //设置销售时间
             salesVo.setSalestime(new Date());
             salesService.save(salesVo);
             return ResultObj.ADD_SUCCESS;
@@ -128,25 +128,6 @@ public class SalesController {
             e.printStackTrace();
             return ResultObj.DELETE_ERROR;
         }
-    }
-
-    /**
-     * 根据客户ID查询商品信息
-     * @param customerid    客户ID
-     * @return
-     */
-    @RequestMapping("loadGoodsByCustomerId")
-    public DataGridView loadGoodsByCustomerId(Integer customerid){
-        QueryWrapper<Sales> queryWrapper = new QueryWrapper<Sales>();
-        queryWrapper.eq(customerid!=null,"customerid",customerid);
-        List<Sales> list = salesService.list(queryWrapper);
-        for (Sales sales : list) {
-            Customer customer = customerService.getById(sales.getCustomerid());
-            if (null!=customer){
-                sales.setCustomername(customer.getCustomername());
-            }
-        }
-        return new DataGridView(list);
     }
 
 }
