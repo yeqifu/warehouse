@@ -217,7 +217,7 @@
             var dom = $("#select_goodsid");
             var html = '<option value="0">请选择商品</option>';
             $.each(data,function (index, item) {
-                html += '<option value="'+item.id+'">'+item.goodsname+'-['+item.size+']-'+'['+item.customername+']'+'</option>';
+                html += '<option value="'+item.id+'">'+item.goodsname+'-['+item.size+']-'+'['+item.providername+']'+'</option>';
             });
             dom.html(html);
             //重新渲染下拉列表

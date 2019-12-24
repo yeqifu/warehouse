@@ -59,7 +59,7 @@ public class SalesbackController {
     }
 
     /**t
-     * 查询商品退货
+     * 查询商品销售退货
      * @param salesbackVo
      * @return
      */
@@ -74,25 +74,26 @@ public class SalesbackController {
         //对时间进行查询要求大于开始时间小于结束时间
         queryWrapper.ge(salesbackVo.getStartTime()!=null,"salesbacktime",salesbackVo.getStartTime());
         queryWrapper.le(salesbackVo.getEndTime()!=null,"salesbacktime",salesbackVo.getEndTime());
-        //通过进货时间对商品进行排序
+        //通过商品退货时间对商品进行排序
         queryWrapper.orderByDesc("salesbacktime");
-        IPage<Salesback> page1 = salesbackService.page(page, queryWrapper);
-        List<Salesback> records = page1.getRecords();
+        salesbackService.page(page, queryWrapper);
+        List<Salesback> records = page.getRecords();
         for (Salesback salesback : records) {
-            //设置客户姓名
+            System.out.println("============================");
             Customer customer = customerService.getById(salesback.getCustomerid());
             if (customer!=null){
-                customer.setCustomername(customer.getCustomername());
+                //设置客户姓名
+                salesback.setCustomername(customer.getCustomername());
             }
-            //设置商品名称和商品规格
             Goods goods = goodsService.getById(salesback.getGoodsid());
             if (goods!=null){
-                goods.setGoodsname(goods.getGoodsname());
-                goods.setSize(goods.getSize());
+                //设置商品名称
+                salesback.setGoodsname(goods.getGoodsname());
+                //设置商品规格
+                salesback.setSize(goods.getSize());
             }
-
         }
-        return new DataGridView(page1.getTotal(),page1.getRecords());
+        return new DataGridView(page.getTotal(),page.getRecords());
     }
 
     /**

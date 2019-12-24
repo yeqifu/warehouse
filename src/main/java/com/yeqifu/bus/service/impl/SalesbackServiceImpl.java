@@ -44,7 +44,7 @@ public class SalesbackServiceImpl extends ServiceImpl<SalesbackMapper, Salesback
         //2.根据商品ID查询商品信息
         Goods goods = goodsMapper.selectById(sales.getGoodsid());
         //3.修改商品的数量     商品的数量-退货的数量
-        goods.setNumber(goods.getNumber()-number);
+        goods.setNumber(goods.getNumber()+number);
 
         //修改进货的数量
         sales.setNumber(sales.getNumber()-number);
@@ -55,15 +55,23 @@ public class SalesbackServiceImpl extends ServiceImpl<SalesbackMapper, Salesback
 
         //5.添加退货单信息
         Salesback salesback = new Salesback();
-        salesback.setGoodsid(salesback.getGoodsid());
+        salesback.setGoodsid(sales.getGoodsid());
+
         salesback.setNumber(number);
         User user = (User) WebUtils.getSession().getAttribute("user");
         salesback.setOperateperson(user.getName());
-        salesback.setSalebackprice(salesback.getSalebackprice());
-        salesback.setPaytype(salesback.getPaytype());
+
+
+        salesback.setSalebackprice(sales.getSaleprice());
+        salesback.setPaytype(sales.getPaytype());
+
         salesback.setSalesbacktime(new Date());
         salesback.setRemark(remark);
-        salesback.setCustomerid(salesback.getCustomerid());
+
+
+        salesback.setCustomerid(sales.getCustomerid());
+
+
         getBaseMapper().insert(salesback);
     }
     

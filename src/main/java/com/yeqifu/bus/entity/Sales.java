@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -43,7 +42,7 @@ public class Sales implements Serializable {
 
     private String remark;
 
-    private BigDecimal saleprice;
+    private Double saleprice;
 
     private Integer goodsid;
 
