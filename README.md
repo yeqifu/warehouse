@@ -84,6 +84,8 @@
 ![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/loginfo.PNG)
 系统公告管理
 ![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/notice.PNG)
+缓存管理
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/cache.PNG)
 客户管理
 ![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/customer.PNG)
 供应商管理
@@ -94,9 +96,10 @@
 ![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/inport.PNG)
 商品退货管理
 ![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/output.PNG)
-缓存管理
-![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/cache.PNG)
-
+商品销售管理
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/sales.PNG)
+商品销售退货管理
+![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/salesback.PNG)
 
 
 
