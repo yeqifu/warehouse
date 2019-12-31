@@ -1,5 +1,6 @@
 package com.yeqifu.sys.controller;
 
+import com.yeqifu.sys.common.WebUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -37,6 +38,17 @@ public class SystemController {
     @RequestMapping("toChangePassword")
     public String toChangePassword(){
         return "system/user/changePassword";
+    }
+
+    /**
+     * 退出然后跳转到登陆页面
+     * @return
+     */
+    @RequestMapping("toSignOut")
+    public String toSignOut(){
+        //销毁session
+        WebUtils.getSession().removeAttribute("user");
+        return "system/index/login";
     }
 
     /**

@@ -45,4 +45,6 @@ public class Constast {
      * 商品默认图片
      */
     public static final String DEFAULT_IMG= "/images/noDefaultImage.jpg";
+
+    public static final Integer HASHITERATIONS = 2;
 }
