@@ -1,12 +1,11 @@
 package com.yeqifu.bus.service.impl;
 
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yeqifu.bus.entity.Goods;
 import com.yeqifu.bus.entity.Sales;
 import com.yeqifu.bus.mapper.GoodsMapper;
 import com.yeqifu.bus.mapper.SalesMapper;
 import com.yeqifu.bus.service.ISalesService;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.yeqifu.sys.common.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

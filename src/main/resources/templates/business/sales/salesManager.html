@@ -478,7 +478,9 @@
             layer.confirm('你确定要删除这条销售信息吗？', {icon: 3, title: '提示'}, function (index) {
                 $.post("/sales/deleteSales", {id: data.id},function (res) {
                     if (res.code == 200) {
-                        tableIns.reload();
+                        tableIns.reload({
+                            where:"",
+                        });
                     }
                     layer.msg(res.msg);
                 });

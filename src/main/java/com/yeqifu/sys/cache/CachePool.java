@@ -23,13 +23,13 @@ import java.util.Map;
 public class CachePool {
 
     /**
-     * 所有的缓存数据放到这个CACHE_CONTAINER类似于redis
+     * 所有的缓存数据放到这个CACHE_CONTAINER  类似于redis
      */
     public static volatile Map<String,Object> CACHE_CONTAINER = new HashMap<>();
 
     /**
      * 根据KEY删除缓存
-     * @param key
+     * @param key   键
      */
     public static void removeCacheByKey(String key){
         if (CACHE_CONTAINER.containsKey(key)){

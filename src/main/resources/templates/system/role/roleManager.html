@@ -186,15 +186,6 @@
                         }
                     })
                 }
-                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
-                if (data.data.length==0 && curr==1){
-                    tableIns.reload({
-                        where: "",
-                        page:{
-                            curr:1
-                        }
-                    })
-                }
             }
         });
 
@@ -293,7 +284,9 @@
             layer.confirm('你确定要删除【'+data.name+'】这条数据吗？',{icon: 3,title:'提示'},function (index) {
                 $.post("/role/deleteRole",{id:data.id},function (res) {
                     if (res.code==200){
-                        tableIns.reload();
+                        tableIns.reload({
+                            where:"",
+                        });
                     }
                     layer.msg(res.msg);
                 });

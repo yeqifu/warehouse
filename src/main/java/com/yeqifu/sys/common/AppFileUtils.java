@@ -21,7 +21,7 @@ public class AppFileUtils {
     /**
      * 文件上传的保存路径  默认值
      */
-    public static String UPLOAD_PATH="E:/upload/";
+    public static String UPLOAD_PATH="G:/upload/";
 
     static {
         //读取配置文件的存储地址

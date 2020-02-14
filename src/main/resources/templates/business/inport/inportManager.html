@@ -158,13 +158,13 @@
                 <label class="layui-form-label">进货数量</label>
                 <div class="layui-input-block">
                     <input type="hidden" name="id">
-                    <input type="text" name="number" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入进货数量">
+                    <input type="text" name="number" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入进货数量">
                 </div>
             </div>
             <div class="layui-inline">
                 <label class="layui-form-label">进货价格</label>
                 <div class="layui-input-block">
-                    <input type="text" name="inportprice" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入进货价格">
+                    <input type="text" name="inportprice" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入进货价格">
                 </div>
             </div>
         </div>
@@ -286,15 +286,6 @@
                     tableIns.reload({
                         page: {
                             curr: curr - 1
-                        }
-                    })
-                }
-                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
-                if (data.data.length==0 && curr==1){
-                    tableIns.reload({
-                        where: "",
-                        page:{
-                            curr:1
                         }
                     })
                 }
@@ -476,7 +467,9 @@
             layer.confirm('你确定要删除这条进货信息吗？', {icon: 3, title: '提示'}, function (index) {
                 $.post("/inport/deleteInport", {id: data.id},function (res) {
                     if (res.code == 200) {
-                        tableIns.reload();
+                        tableIns.reload({
+                            where:"",
+                        });
                     }
                     layer.msg(res.msg);
                 });

@@ -197,6 +197,21 @@ public class UserController {
     }
 
     /**
+     * 根据用户ID查询当前用户是否是其他用户的直属领导
+     * @param userId
+     * @return
+     */
+    @RequestMapping("queryMgrByUserId")
+    public ResultObj queryMgrByUserId(Integer userId){
+        Boolean isMgr = userService.queryMgrByUserId(userId);
+        if (isMgr){
+            return ResultObj.DELETE_ERROR_NEWS;
+        }else {
+            return ResultObj.DELETE_QUERY;
+        }
+    }
+
+    /**
      * 重置用户密码
      * @param id
      * @return

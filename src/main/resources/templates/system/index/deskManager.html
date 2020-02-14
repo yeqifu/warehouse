@@ -29,6 +29,19 @@
 		</div>
 	</div>
 
+	<!-- 查看公告的div -->
+	<div id="desk_viewNewsDiv" style="padding: 10px;display: none;">
+		<h2 id="view_title" align="center"></h2>
+		<hr>
+		<div style="text-align: right;">
+			发布人:<span id="view_opername"></span>
+			<span style="display: inline-block;width: 20px" ></span>
+			发布时间:<span id="view_createtime"></span>
+		</div>
+		<hr>
+		<div id="view_content"></div>
+	</div>
+
 	<script type="text/javascript" src="/resources/layui/layui.js"></script>
 	
 	<script type="text/javascript">
@@ -77,7 +90,7 @@
 	        parent.addTab($(this));
 	    })
 	    //最新文章列表
-	    $.get("/resources/json/newsList.json",function(data){
+	    /*$.get("/resources/json/newsList.json",function(data){
 	        var hotNewsHtml = '';
 	        for(var i=0;i<5;i++){
 	            hotNewsHtml += '<tr>'
@@ -87,8 +100,42 @@
 	        }
 	        $(".hot_news").html(hotNewsHtml);
 	        $(".userAll span").text(data.length);
-	    })
-	})
+	    })*/
+
+		$.get("/notice/loadAllNotice?page=1&limit=10",function(data){
+			var hotNewsHtml = '';
+			if(data.count>0){
+				for(var i=0;i<data.count;i++){
+					hotNewsHtml += '<tr ondblclick="viewNews('+data.data[i].id+')">'
+							+'<td align="left"><a href="javascript:;"> '+data.data[i].title+'</a></td>'
+							+'<td>'+data.data[i].createtime.substring(0,10)+'</td>'
+							+'</tr>';
+				}
+			}else {
+				hotNewsHtml+='<h3 style="text-align: center">暂无公告！！！</h3>';
+			}
+			$(".hot_news").html(hotNewsHtml);
+			$(".userAll span").text(data.length);
+		});
+
+	});
+
+	function viewNews(id){
+		$.get("/notice/loadNoticeById",{id:id},function(news){
+			layer.open({
+				type:1,
+				title:'查看公告',
+				content:$("#desk_viewNewsDiv"),
+				area:['800px','550px'],
+				success:function(index){
+					$("#view_title").html(news.data.title);
+					$("#view_opername").html(news.data.opername);
+					$("#view_createtime").html(news.data.createtime);
+					$("#view_content").html(news.data.content);
+				}
+			});
+		});
+	}
 
 	</script>
 </body>

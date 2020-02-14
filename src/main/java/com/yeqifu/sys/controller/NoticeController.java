@@ -4,7 +4,6 @@ package com.yeqifu.sys.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.org.apache.regexp.internal.RE;
 import com.yeqifu.sys.common.DataGridView;
 import com.yeqifu.sys.common.ResultObj;
 import com.yeqifu.sys.common.WebUtils;
@@ -15,7 +14,6 @@ import com.yeqifu.sys.vo.NoticeVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.Serializable;
@@ -57,6 +55,17 @@ public class NoticeController {
         queryWrapper.orderByDesc("createtime");
         noticeService.page(page,queryWrapper);
         return new DataGridView(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 根据公告ID查询一条公告
+     * @param id    公告ID
+     * @return
+     */
+    @RequestMapping("loadNoticeById")
+    public DataGridView loadNoticeById(Integer id){
+        Notice notice = noticeService.getById(id);
+        return new DataGridView(notice);
     }
 
     /**

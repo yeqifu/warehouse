@@ -101,7 +101,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">供应商电话</label>
                 <div class="layui-input-block">
-                    <input type="text" name="telephone" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入供应商电话">
+                    <input type="text" name="telephone" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入供应商电话">
                 </div>
             </div>
             <div class="layui-inline">
@@ -135,7 +135,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">银行账户</label>
                 <div class="layui-input-block">
-                    <input type="text" id="account" name="account" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
+                    <input type="text" id="account" name="account" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
                 </div>
             </div>
         </div>
@@ -219,15 +219,6 @@
                     tableIns.reload({
                         page: {
                             curr: curr - 1
-                        }
-                    })
-                }
-                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
-                if (data.data.length==0 && curr==1){
-                    tableIns.reload({
-                        where: "",
-                        page:{
-                            curr:1
                         }
                     })
                 }
@@ -322,7 +313,9 @@
             layer.confirm('你确定要删除【' + data.providername + '】这个供应商吗？', {icon: 3, title: '提示'}, function (index) {
                 $.post("/provider/deleteProvider", {id: data.id},function (res) {
                     if (res.code == 200) {
-                        tableIns.reload();
+                        tableIns.reload({
+                            where:"",
+                        });
                     }
                     layer.msg(res.msg);
                 });
@@ -350,7 +343,9 @@
                     $.post("/provider/batchDeleteProvider",ids,function (res) {
                         if (res.code==200){
                             //重新刷新表格
-                            tableIns.reload();
+                            tableIns.reload({
+                                where:"",
+                            });
                         }
                         layer.msg(res.msg);
                     });

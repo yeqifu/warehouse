@@ -117,7 +117,9 @@
             layer.confirm('你确定要删除【'+data.key+'】这条缓存吗？',{icon: 3,title:'提示'},function (index) {
                 $.post("/cache/deleteCache",{key:data.key},function (res) {
                     if (res.code==200){
-                        tableIns.reload();
+                        tableIns.reload({
+                            where:"",
+                        });
                     }
                     layer.msg(res.msg);
                 });

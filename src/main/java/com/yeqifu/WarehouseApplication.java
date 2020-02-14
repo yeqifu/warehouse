@@ -27,7 +27,7 @@ public class WarehouseApplication {
 		 */
 		factory.setMaxFileSize(DataSize.parse("102400KB"));
 		/**
-		 * 总上传数据大小
+		 * 总上传数据大小6
 		 */
 		factory.setMaxRequestSize(DataSize.parse("102400KB"));
 		return factory.createMultipartConfig();

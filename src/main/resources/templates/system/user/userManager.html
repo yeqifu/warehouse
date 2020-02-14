@@ -280,15 +280,6 @@
                         }
                     })
                 }
-                //当是第一页时，如果当前返回的数据为0并且当前为第一页  给一个空的查询条件，并给curr赋初值为1
-                if (data.data.length == 0 && curr == 1) {
-                    tableIns.reload({
-                        where: "",
-                        page: {
-                            curr: 1
-                        }
-                    })
-                }
             }
         });
 
@@ -420,14 +411,22 @@
         //删除
         function deleteUser(data) {
             layer.confirm('你确定要删除【' + data.name + '】这个用户吗？', {icon: 3, title: '提示'}, function (index) {
-//                $.post("/user/deleteUser", {id: data.id}, function (res) {
-                $.post("/user/deleteUser/"+data.id, function (res) {
-                    if (res.code == 200) {
-                        tableIns.reload();
+                //查询该用户是否是其他用户的直属领导，如果是，提示删除失败
+                $.get("/user/queryMgrByUserId", {userId: data.id}, function (res) {
+                    if (res.code==-1){
+                        layer.msg(res.msg);
+                    }else {
+                        $.post("/user/deleteUser/"+data.id, function (res) {
+                            if (res.code == 200) {
+                                tableIns.reload({
+                                    where:"",
+                                });
+                            }
+                            layer.msg(res.msg);
+                        });
+                        layer.close(index);
                     }
-                    layer.msg(res.msg);
                 });
-                layer.close(index);
             });
         }
 

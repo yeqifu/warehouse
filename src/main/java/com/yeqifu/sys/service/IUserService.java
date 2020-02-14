@@ -19,4 +19,11 @@ public interface IUserService extends IService<User> {
      * @param ids 用户拥有的角色的ID的数组
      */
     void saveUserRole(Integer uid, Integer[] ids);
+
+    /**
+     * 查询当前用户是否是其他用户的直属领导
+     * @param userId
+     * @return
+     */
+    Boolean queryMgrByUserId(Integer userId);
 }

@@ -229,7 +229,9 @@
             layer.confirm('你确定要删除这条退货信息吗？', {icon: 3, title: '提示'}, function (index) {
                 $.post("/salesback/deleteSalesback", {id: data.id},function (res) {
                     if (res.code == 200) {
-                        tableIns.reload();
+                        tableIns.reload({
+                            where:"",
+                        });
                     }
                     layer.msg(res.msg);
                 });
