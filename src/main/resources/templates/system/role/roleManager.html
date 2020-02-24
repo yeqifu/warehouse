@@ -281,7 +281,7 @@
 
         //删除
         function deleteRole(data) {
-            layer.confirm('你确定要删除【'+data.name+'】这条数据吗？',{icon: 3,title:'提示'},function (index) {
+            layer.confirm('你确定要删除【'+data.name+'】这条数据吗？如果您删除该角色，那么所有拥有该角色的用户将没有角色，请重新给这些用户分配角色！',{icon: 3,title:'提示'},function (index) {
                 $.post("/role/deleteRole",{id:data.id},function (res) {
                     if (res.code==200){
                         tableIns.reload({

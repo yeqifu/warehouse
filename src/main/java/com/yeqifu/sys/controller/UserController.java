@@ -144,8 +144,10 @@ public class UserController {
             //设置盐
             String salt = IdUtil.simpleUUID().toUpperCase();
             userVo.setSalt(salt);
-            //设置密码
+            //设置默认密码
             userVo.setPwd(new Md5Hash(Constast.USER_DEFAULT_PWD,salt,2).toString());
+            //设置用户默认头像
+            userVo.setImgpath(Constast.DEFAULT_IMG_USER);
             userService.save(userVo);
             return ResultObj.ADD_SUCCESS;
         } catch (Exception e) {
@@ -320,7 +322,36 @@ public class UserController {
     public User getNowUser(){
         //1.获取当前session中的user
         User user = (User) WebUtils.getSession().getAttribute("user");
+        System.out.println("*****************************************");
+        System.out.println(user);
         return user;
+    }
+
+
+    /**
+     * 修改用户
+     * @param userVo
+     * @return
+     */
+    @RequestMapping("updateUserInfo")
+    public ResultObj updateUserInfo(UserVo userVo){
+        try {
+            //用户头像不是默认图片
+            if (!(userVo.getImgpath()!=null&&userVo.getImgpath().equals(Constast.DEFAULT_IMG_GOODS))){
+                if (userVo.getImgpath().endsWith("_temp")){
+                    String newName = AppFileUtils.renameFile(userVo.getImgpath());
+                    userVo.setImgpath(newName);
+                    //删除原先的图片
+                    String oldPath = userService.getById(userVo.getId()).getImgpath();
+                    AppFileUtils.removeFileByPath(oldPath);
+                }
+            }
+            userService.updateById(userVo);
+            return ResultObj.UPDATE_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultObj.UPDATE_ERROR;
+        }
     }
 
 }

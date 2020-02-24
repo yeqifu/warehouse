@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:type="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>个人资料</title>
@@ -13,9 +13,10 @@
     <link rel="stylesheet" href="/resources/css/public.css" media="all" />
 </head>
 <body class="childrenBody">
-<form class="layui-form layui-row">
+<form class="layui-form layui-row" method="post">
     <div class="layui-col-md3 layui-col-xs12 user_right">
-        <div class="layui-upload-list">
+        <div class="layui-upload-list userFace">
+            <input type="hidden" name="imgpath" id="imgpath">
             <img class="layui-upload-img layui-circle userFaceBtn userAvatar" id="userFace">
         </div>
         <button type="button" class="layui-btn layui-btn-primary userFaceBtn"><i class="layui-icon">&#xe67c;</i> 掐指一算，我要换一个头像了</button>
@@ -25,6 +26,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-block">
+                <input type="hidden" class="id" name="id">
                 <input type="text" value="" id="name" th:value="${session.user.name}" disabled class="layui-input layui-disabled">
             </div>
         </div>
@@ -110,12 +112,12 @@
                 <textarea placeholder="请输入内容" class="layui-textarea myself"></textarea>
             </div>
         </div>-->
-        <!--<div class="layui-form-item">
+        <div class="layui-form-item">
             <div class="layui-input-block">
                 <button class="layui-btn" lay-submit="" lay-filter="changeUser">立即提交</button>
-                <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                <!--<button type="reset" class="layui-btn layui-btn-primary">重置</button>-->
             </div>
-        </div>-->
+        </div>
     </div>
 </form>
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
@@ -124,16 +126,19 @@
 
 <script type="text/javascript">
 
-    layui.use(['jquery','upload'],function () {
+    layui.use(['jquery','upload','form'],function () {
 
         var $ = layui.jquery;
         var upload = layui.upload;
+        var form = layui.form;
 
         //获得当前用户的登陆名
         var loginname = $("#loginname");
         $.get('/user/getNowUser',function (res) {
             var name = $("#name");
             name.val(res.name);
+            var id = $(".id");
+            id.val(res.id);
             var loginname = $("#loginname");
             loginname.val(res.loginname);
             var remark = $("#remark");
@@ -144,9 +149,37 @@
             var imgpath = res.imgpath;
             $('#userFace').attr('src','/file/showImageByPath?path='+imgpath);
 
-
-
         });
+
+
+        //上传头像
+        upload.render({
+            elem: '.userFaceBtn',
+            url: '/file/uploadFile',
+            acceptMime:'image/*',
+            field:'mf',
+            method : "post",
+            done: function(res, index, upload){
+                var path=res.path;
+                $('#userFace').attr('src','/file/showImageByPath?path='+path);
+                $('.userFace').css("background","#fff");
+                //给隐藏域赋值
+                $("#imgpath").val(path);
+            }
+        });
+
+        //提交个人资料
+        form.on("submit(changeUser)",function(data){
+            var index = layer.msg('提交中，请稍候',{icon: 16,time:false,shade:0.8});
+            $.post("/user/updateUserInfo", data.field, function (res) {
+                layer.msg(res.msg);
+            });
+            setTimeout(function(){
+                layer.close(index);
+                layer.msg("提交成功！");
+            },2000);
+            return false; //阻止表单跳转。如果需要表单跳转，去掉这段即可。
+        })
     });
 
 

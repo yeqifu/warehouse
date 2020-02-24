@@ -94,7 +94,7 @@ public class GoodsController {
     public ResultObj updateGoods(GoodsVo goodsVo){
         try {
             //商品图片不是默认图片
-            if (!(goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().equals(Constast.DEFAULT_IMG))){
+            if (!(goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().equals(Constast.DEFAULT_IMG_GOODS))){
                 if (goodsVo.getGoodsimg().endsWith("_temp")){
                     String newName = AppFileUtils.renameFile(goodsVo.getGoodsimg());
                     goodsVo.setGoodsimg(newName);

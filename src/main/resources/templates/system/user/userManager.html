@@ -257,7 +257,9 @@
                 {field: 'remark', title: '用户备注', align: 'center', width: '120'},
                 {field: 'address', title: '用户地址', align: 'center', width: '100'},
                 {field: 'hiredate', title: '入职时间', align: 'center', width: '160'},
-                {field: 'imgpath', title: '用户头像', align: 'center', width: '160'},
+                {field: 'imgpath', title: '用户头像', align: 'center', width: '160', templet:function(d){
+                        return '<img width=40 height=40 src=/file/showImageByPath?path='+d.imgpath+ ' />';
+                }},
                 {
                     field: 'sex', title: '是否可用', align: 'center', width: '100', templet: function (d) {
                     return d.sex == 1 ? '<font color="blue">男</font>' : '<font color="red">女</font>';

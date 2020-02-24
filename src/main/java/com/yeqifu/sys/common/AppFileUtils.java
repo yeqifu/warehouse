@@ -97,7 +97,7 @@ public class AppFileUtils {
      */
     public static void removeFileByPath(String oldPath) {
         //图片的路径不是默认图片的路径
-        if (!oldPath.equals(Constast.DEFAULT_IMG)){
+        if (!oldPath.equals(Constast.DEFAULT_IMG_GOODS)){
             File file = new File(UPLOAD_PATH,oldPath);
             if (file.exists()){
                 file.delete();
