@@ -44,11 +44,11 @@ public class PermissionController {
      */
     @RequestMapping("loadPermissionManagerLeftTreeJson")
     public DataGridView loadPermissionManagerLeftTreeJson(PermissionVo permissionVo){
-        QueryWrapper<Permission> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<Permission> queryWrapper = new QueryWrapper<Permission>();
         queryWrapper.eq("type", Constast.TYPE_MENU);
         //查询出所有的权限，存放进list中
         List<Permission> list = permissionService.list(queryWrapper);
-        List<TreeNode> treeNodes = new ArrayList<>();
+        List<TreeNode> treeNodes = new ArrayList<TreeNode>();
         //将权限放入treeNodes中，组装成json
         for (Permission permission : list) {
             Boolean open = permission.getOpen()==1?true:false;

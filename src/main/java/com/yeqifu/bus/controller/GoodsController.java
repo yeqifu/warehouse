@@ -45,8 +45,8 @@ public class GoodsController {
      */
     @RequestMapping("loadAllGoods")
     public DataGridView loadAllGoods(GoodsVo goodsVo){
-        IPage<Goods> page = new Page<>(goodsVo.getPage(),goodsVo.getLimit());
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper();
+        IPage<Goods> page = new Page<Goods>(goodsVo.getPage(),goodsVo.getLimit());
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>();
         queryWrapper.eq(goodsVo.getProviderid()!=null&&goodsVo.getProviderid()!=0,"providerid",goodsVo.getProviderid());
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getGoodsname()),"goodsname",goodsVo.getGoodsname());
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getProductcode()),"productcode",goodsVo.getProductcode());
@@ -113,7 +113,7 @@ public class GoodsController {
 
     /**
      * 删除商品
-     * @param id
+     * @param id 商品id
      * @return
      */
     @RequestMapping("deleteGoods")
@@ -121,7 +121,8 @@ public class GoodsController {
         try {
             //删除商品的图片
             AppFileUtils.removeFileByPath(goodsimg);
-            goodsService.removeById(id);
+//            goodsService.removeById(id);
+            goodsService.deleteGoodsById(id);
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();

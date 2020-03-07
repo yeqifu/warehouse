@@ -24,7 +24,7 @@ public class AppFileUtils {
     public static String UPLOAD_PATH="G:/upload/";
 
     static {
-        //读取配置文件的存储地址
+        //通过反射的方式，读取配置文件的存储地址
         InputStream stream = AppFileUtils.class.getClassLoader().getResourceAsStream("file.properties");
         Properties properties=new Properties();
         try {
@@ -79,12 +79,12 @@ public class AppFileUtils {
 
     /**
      * 更该图片的名字 去掉_temp
-     * @param goodsimg
+     * @param goodsImg
      * @return
      */
-    public static String renameFile(String goodsimg) {
-        File file = new File(UPLOAD_PATH,goodsimg);
-        String replace = goodsimg.replace("_temp","");
+    public static String renameFile(String goodsImg) {
+        File file = new File(UPLOAD_PATH,goodsImg);
+        String replace = goodsImg.replace("_temp","");
         if (file.exists()){
             file.renameTo(new File(UPLOAD_PATH,replace));
         }

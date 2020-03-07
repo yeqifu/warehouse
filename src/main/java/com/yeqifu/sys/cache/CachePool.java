@@ -82,7 +82,6 @@ public class CachePool {
             CACHE_CONTAINER.put("goods:"+goods.getId(),goods);
         }
 
-
     }
 
 

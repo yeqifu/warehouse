@@ -63,9 +63,6 @@
         <button type="button" lay-event="add" shiro:hasPermission="provider:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>添加供应商
         </button>
-        <button type="button" lay-event="deleteBatch" shiro:hasPermission="provider:create" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius">
-            <i class="layui-icon layui-icon-delete"></i>批量删除
-        </button>
     </div>
     <div id="providerRowBar" style="display: none;">
         <button type="button" lay-event="update" shiro:hasPermission="provider:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
@@ -310,7 +307,7 @@
 
         //删除
         function deleteProvider(data) {
-            layer.confirm('你确定要删除【' + data.providername + '】这个供应商吗？', {icon: 3, title: '提示'}, function (index) {
+            layer.confirm('你确定要删除【' + data.providername + '】这个供应商吗？删除该供应商将同时删除该供应商所供应的所有商品，以及和商品有关的进货、退货、销售进货、销售退货的所有信息！', {icon: 3, title: '提示'}, function (index) {
                 $.post("/provider/deleteProvider", {id: data.id},function (res) {
                     if (res.code == 200) {
                         tableIns.reload({
@@ -321,39 +318,6 @@
                 });
                 layer.close(index);
             });
-        }
-
-        //批量删除
-        function batchDeleteProvider() {
-            //得到选中行
-            var checkStatus = table.checkStatus('providerTable');
-            var dataLength = checkStatus.data.length;
-            if (dataLength>0){
-                layer.confirm('你确定要删除这些供应商数据吗？',{icon: 3,title: '提示'},function (index) {
-                    //获取选中行数据
-                    var data = checkStatus.data;
-                    var ids = "";
-                    $.each(data,function (index, item) {
-                        if (index==0){
-                            ids+="ids="+item.id;
-                        }else {
-                            ids+="&ids="+item.id;
-                        }
-                    });
-                    $.post("/provider/batchDeleteProvider",ids,function (res) {
-                        if (res.code==200){
-                            //重新刷新表格
-                            tableIns.reload({
-                                where:"",
-                            });
-                        }
-                        layer.msg(res.msg);
-                    });
-                    layer.close(index);
-                });
-            }else {
-                layer.msg("请选中操作行")
-            }
         }
 
 

@@ -93,7 +93,8 @@ public class CustomerController {
     @RequestMapping("deleteCustomer")
     public ResultObj deleteCustomer(Integer id){
         try {
-            customerService.removeById(id);
+//            customerService.removeById(id);
+            customerService.deleteCustomerById(id);
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();

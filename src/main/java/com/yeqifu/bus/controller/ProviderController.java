@@ -15,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -85,15 +82,16 @@ public class ProviderController {
         }
     }
 
+
     /**
      * 删除一个供应商
-     * @param id 供应商的ID
+     * @param id
      * @return
      */
     @RequestMapping("deleteProvider")
     public ResultObj deleteProvider(Integer id){
         try {
-            providerService.removeById(id);
+            providerService.deleteProviderById(id);
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,25 +99,6 @@ public class ProviderController {
         }
     }
 
-    /**
-     * 批量删除供应商
-     * @param providerVo 选中的供应商
-     * @return
-     */
-    @RequestMapping("batchDeleteProvider")
-    public ResultObj batchDeleteProvider(ProviderVo providerVo){
-        try {
-            Collection<Serializable> idList = new ArrayList<Serializable>();
-            for (Integer id : providerVo.getIds()) {
-                idList.add(id);
-            }
-            providerService.removeByIds(idList);
-            return ResultObj.DELETE_SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultObj.DELETE_ERROR;
-        }
-    }
 
     /**
      * 加载所有可用的供应商
@@ -127,7 +106,7 @@ public class ProviderController {
      */
     @RequestMapping("loadAllProviderForSelect")
     public DataGridView loadAllProviderForSelect(){
-        QueryWrapper<Provider> queryWrapper = new QueryWrapper();
+        QueryWrapper<Provider> queryWrapper = new QueryWrapper<Provider>();
         queryWrapper.eq("available", Constast.AVAILABLE_TRUE);
         List<Provider> list = providerService.list(queryWrapper);
         return new DataGridView(list);

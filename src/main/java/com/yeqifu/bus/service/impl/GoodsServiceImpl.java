@@ -40,4 +40,18 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
     public Goods getById(Serializable id) {
         return super.getById(id);
     }
+
+    @Override
+    public void deleteGoodsById(Integer id) {
+        //根据商品id删除商品销售信息
+        this.getBaseMapper().deleteSaleByGoodsId(id);
+        //根据商品id删除商品销售退货信息
+        this.getBaseMapper().deleteSaleBackByGoodsId(id);
+        //根据商品id删除商品进货信息
+        this.getBaseMapper().deleteInportByGoodsId(id);
+        //根据商品id删除商品退货信息
+        this.getBaseMapper().deleteOutportByGoodsId(id);
+        //删除商品信息
+        this.removeById(id);
+    }
 }

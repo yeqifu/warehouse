@@ -22,6 +22,11 @@ import java.util.List;
 @Transactional
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IRoleService {
 
+    /**
+     * 删除角色时同时删除sys_user_role表和sys_role_permission表中的数据
+     * @param id    角色id
+     * @return
+     */
     @Override
     public boolean removeById(Serializable id) {
         //根据角色ID删除sys_role_permission表中的数据
@@ -33,7 +38,7 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     /**
      * 根据角色ID查询当前角色拥有的菜单ID和权限ID
-     * @param roleId
+     * @param roleId    角色id
      * @return
      */
     @Override
@@ -60,12 +65,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements IR
 
     /**
      * 查询当前用户拥有的角色ID集合
-     * @param id
+     * @param id    角色id
      * @return
      */
     @Override
     public List<Integer> queryUserRoleIdsByUid(Integer id) {
         return getBaseMapper().queryUserRoleIdsByUid(id);
-
     }
 }

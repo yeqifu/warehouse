@@ -2,4 +2,35 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeqifu.bus.mapper.GoodsMapper">
 
+    <!-- 根据商品id删除商品销售信息 -->
+    <delete id="deleteSaleByGoodsId">
+        delete from bus_sales where goodsid = #{goodsid}
+    </delete>
+
+    <!-- 根据商品id删除商品销售退货信息 -->
+    <delete id="deleteSaleBackByGoodsId">
+        delete from bus_salesback where goodsid = #{goodsid}
+    </delete>
+
+    <!-- 根据商品id删除商品进货信息 -->
+    <delete id="deleteInportByGoodsId">
+        delete from bus_inport where goodsid = #{goodsid}
+    </delete>
+
+    <!-- 根据商品id删除商品退货信息 -->
+    <delete id="deleteOutportByGoodsId">
+        delete from bus_outport where goodsid = #{goodsid}
+    </delete>
+
+    <!-- 根据客户id删除商品销售 -->
+    <delete id="deleteSaleByCustomerId">
+        delete from bus_sales where customerid = #{customerid}
+    </delete>
+
+    <!-- 根据客户id删除商品销售退货信息 -->
+    <delete id="deleteSaleBackByCustomerId">
+        delete from bus_salesback where customerid = #{customerid}
+    </delete>
+
+
 </mapper>

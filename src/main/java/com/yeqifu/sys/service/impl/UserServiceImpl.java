@@ -78,7 +78,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements IU
      */
     @Override
     public Boolean queryMgrByUserId(Integer userId) {
-        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
         queryWrapper.eq("mgr",userId);
         List<User> users = userMapper.selectList(queryWrapper);
         if (null!=users&&users.size()>0){

@@ -423,7 +423,7 @@
 
         //删除
         function deleteGoods(data) {
-            layer.confirm('你确定要删除【' + data.goodsname + '】这个商品吗？', {icon: 3, title: '提示'}, function (index) {
+            layer.confirm('你确定要删除【' + data.goodsname + '】这个商品吗？删除该商品，其商品进货、商品退货、商品销售、商品销售退货将会同步删除！', {icon: 3, title: '提示'}, function (index) {
                 $.post("/goods/deleteGoods", {id: data.id,goodsimg:data.goodsimg},function (res) {
                     if (res.code == 200) {
                         tableIns.reload({

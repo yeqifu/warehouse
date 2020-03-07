@@ -2,4 +2,20 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeqifu.bus.mapper.ProviderMapper">
 
+    <!-- 根据供应商id删除商品信息 -->
+    <delete id="deleteGoodsByProviderId">
+        delete from bus_goods where providerid = #{pid}
+    </delete>
+
+    <!-- 根据供应商id删除商品进货信息 -->
+    <delete id="deleteInportByProviderId">
+        delete from bus_inport where providerid = #{pid}
+    </delete>
+
+    <!-- 根据供应商id删除商品退货信息 -->
+    <delete id="deleteOutPortByProviderId">
+        delete from bus_outport where providerid = #{pid}
+    </delete>
+
+
 </mapper>

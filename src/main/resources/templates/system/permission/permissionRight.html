@@ -273,7 +273,7 @@
 
         //删除
         function deletePermission(data) {
-            layer.confirm('你确定要删除【' + data.title + '】这个权限吗？', {icon: 3, title: '提示'}, function (index) {
+            layer.confirm('你确定要删除【' + data.title + '】这个权限吗？如果该权限被删除，那个拥有该权限的角色也将失去该权限！', {icon: 3, title: '提示'}, function (index) {
                 $.post("/permission/deletePermission", {id: data.id},function (res) {
                     if (res.code == 200) {
                         tableIns.reload({

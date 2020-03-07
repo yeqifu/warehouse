@@ -300,7 +300,7 @@
                 type:1,
                 content:$("#selectRolePermissionDiv"),
                 area:['400px','580px'],
-                title:'给'+data.name+'分配权限',
+                title:'给【'+data.name+'】分配权限',
                 btn: ['<span class=layui-icon>&#xe605;确认分配</span>','<span class=layui-icon>&#x1006;取消分配</span>'],
                 btnAlign:'c',
                 yes: function(index, layero){
@@ -323,7 +323,7 @@
                     dtree.render({
                         elem:"#permissionTree",
                         url:"/role/initPermissionByRoleId?roleId="+data.id,
-                        //使用layui风格的数据格式
+                        //使用layUI风格的数据格式
                         dataStyle:"layuiStyle",
                         //配置data的风格为list
                         dataFormat:"list",
