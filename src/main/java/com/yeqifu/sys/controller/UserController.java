@@ -114,6 +114,9 @@ public class UserController {
         queryWrapper.eq("available",Constast.AVAILABLE_TRUE);
         queryWrapper.eq("type",Constast.USER_TYPE_NORMAL);
         List<User> list = userService.list(queryWrapper);
+        for (User user : list) {
+            System.out.println(user.toString());
+        }
         return new DataGridView(list);
     }
 

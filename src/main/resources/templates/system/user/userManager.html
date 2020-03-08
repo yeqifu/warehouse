@@ -491,9 +491,9 @@
 
         //监听点击的方法
         dtree.on("node(leaderdeptTree)", function (obj) {
-            var deptid = obj.param.nodeId;
+            var deptId = obj.param.nodeId;
             //根据部门ID查询当前部门下面的领导列表
-            $.get("/user/loadUsersByDeptId",{deptid:deptid},function (res) {
+            $.get("/user/loadUsersByDeptId",{deptId:deptId},function (res) {
                 var users = res.data;
                 var dom_mgr=$("#mgr");
                 var html = "<option value=''>请选择直属领导</option>";

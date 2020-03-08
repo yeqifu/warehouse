@@ -18,7 +18,7 @@
 	</blockquote>
 	<div class="layui-row layui-col-space10">
 		<div class="layui-col-lg6 layui-col-md12">
-			<blockquote class="layui-elem-quote title">最新文章 <i class="layui-icon layui-red">&#xe756;</i></blockquote>
+			<blockquote class="layui-elem-quote title">最新公告 <i class="layui-icon layui-red">&#xe756;</i></blockquote>
 			<table class="layui-table mag0" lay-skin="line">
 				<colgroup>
 					<col>
@@ -102,10 +102,10 @@
 	        $(".userAll span").text(data.length);
 	    })*/
 
-		$.get("/notice/loadAllNotice?page=1&limit=10",function(data){
+		$.get("/notice/loadAllNotice?page=1&limit=5",function(data){
 			var hotNewsHtml = '';
 			if(data.count>0){
-				for(var i=0;i<data.count;i++){
+				for(var i=0;i<5;i++){
 					hotNewsHtml += '<tr ondblclick="viewNews('+data.data[i].id+')">'
 							+'<td align="left"><a href="javascript:;"> '+data.data[i].title+'</a></td>'
 							+'<td>'+data.data[i].createtime.substring(0,10)+'</td>'

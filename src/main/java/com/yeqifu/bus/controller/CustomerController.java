@@ -15,9 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -93,7 +90,6 @@ public class CustomerController {
     @RequestMapping("deleteCustomer")
     public ResultObj deleteCustomer(Integer id){
         try {
-//            customerService.removeById(id);
             customerService.deleteCustomerById(id);
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
@@ -102,25 +98,6 @@ public class CustomerController {
         }
     }
 
-    /**
-     * 批量删除客户
-     * @param customerVo 选中的客户
-     * @return
-     */
-    @RequestMapping("batchDeleteCustomer")
-    public ResultObj batchDeleteCustomer(CustomerVo customerVo){
-        try {
-            Collection<Serializable> idList = new ArrayList<Serializable>();
-            for (Integer id : customerVo.getIds()) {
-                idList.add(id);
-            }
-            customerService.removeByIds(idList);
-            return ResultObj.DELETE_SUCCESS;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResultObj.DELETE_ERROR;
-        }
-    }
 
     /**
      * 加载所有客户的下拉列表
