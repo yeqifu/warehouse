@@ -10,6 +10,9 @@ import org.springframework.util.unit.DataSize;
 
 import javax.servlet.MultipartConfigElement;
 
+/**
+ * @author luoyi-
+ */
 @Configuration
 @SpringBootApplication
 @MapperScan(basePackages = {"com.yeqifu.*.mapper"})
@@ -32,6 +35,5 @@ public class WarehouseApplication {
 		factory.setMaxRequestSize(DataSize.parse("102400KB"));
 		return factory.createMultipartConfig();
 	}
-
 
 }

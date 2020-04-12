@@ -64,16 +64,20 @@ public class SalesController {
         for (Sales sales : records) {
             //设置客户姓名
             Customer customer = customerService.getById(sales.getCustomerid());
-            sales.setCustomername(customer.getCustomername());
+            if(null!=customer){
+                sales.setCustomername(customer.getCustomername());
+            }
             //设置商品名称
             Goods goods = goodsService.getById(sales.getGoodsid());
-            sales.setGoodsname(goods.getGoodsname());
-            //设置商品规格
-            sales.setSize(goods.getSize());
+            if (null!=goods){
+                //设置商品名称
+                sales.setGoodsname(goods.getGoodsname());
+                //设置商品规格
+                sales.setSize(goods.getSize());
+            }
         }
         return new DataGridView(page1.getTotal(),page1.getRecords());
     }
-
 
     /**
      * 添加商品销售信息
@@ -91,7 +95,7 @@ public class SalesController {
             salesVo.setSalestime(new Date());
             salesService.save(salesVo);
             return ResultObj.ADD_SUCCESS;
-        } catch (Exception e) {
+        }catch (Exception e) {
             e.printStackTrace();
             return ResultObj.ADD_ERROR;
         }
@@ -111,7 +115,6 @@ public class SalesController {
             e.printStackTrace();
             return ResultObj.UPDATE_ERROR;
         }
-
     }
 
     /**

@@ -1,11 +1,9 @@
 package com.yeqifu.sys.controller;
 
 
-import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.sun.org.apache.regexp.internal.RE;
 import com.yeqifu.sys.common.DataGridView;
 import com.yeqifu.sys.common.ResultObj;
 import com.yeqifu.sys.common.TreeNode;
@@ -15,7 +13,6 @@ import com.yeqifu.sys.vo.DeptVo;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
@@ -43,6 +40,8 @@ public class DeptController {
     @RequestMapping("loadDeptManagerLeftTreeJson")
     public DataGridView loadManagerLeftTreeJson(DeptVo deptVo){
         //查询出所有的部门，存放进list中
+//        QueryWrapper<Dept> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.eq('1');
         List<Dept> list = deptService.list();
 
         List<TreeNode> treeNodes = new ArrayList<>();

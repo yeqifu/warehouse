@@ -1,8 +1,9 @@
 package com.yeqifu.sys.config;
 
-import java.util.HashMap;
-import java.util.Map;
-import javax.servlet.Filter;
+import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
+import com.yeqifu.sys.common.Constast;
+import com.yeqifu.sys.realm.UserRealm;
+import lombok.Data;
 import org.apache.shiro.authc.credential.CredentialsMatcher;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;
@@ -19,10 +20,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.filter.DelegatingFilterProxy;
 
-import com.yeqifu.sys.realm.UserRealm;
-
-import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
-import lombok.Data;
+import javax.servlet.Filter;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @Author: 落亦-
@@ -37,11 +37,17 @@ public class ShiroAutoConfiguration {
 
     private static final String SHIRO_DIALECT = "shiroDialect";
     private static final String SHIRO_FILTER = "shiroFilter";
-    // 加密方式
+    /**
+     * 加密方式
+     */
     private String hashAlgorithmName = "md5";
-    // 散列次数
-    private int hashIterations = 2;
-    // 默认的登陆页面
+    /**
+     * 散列次数
+     */
+    private int hashIterations = Constast.HASHITERATIONS;
+    /**
+     * 默认的登陆页面
+     */
     private String loginUrl = "/index.html";
 
     private String[] anonUrls;

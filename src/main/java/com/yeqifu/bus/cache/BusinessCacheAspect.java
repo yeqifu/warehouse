@@ -113,7 +113,6 @@ public class BusinessCacheAspect {
      */
     @Around(value = POINTCUT_CUSTOMER_DELETE)
     public Object cacheCustomerDelete(ProceedingJoinPoint joinPoint) throws Throwable {
-
         //取出第一个参数
         Integer id = (Integer) joinPoint.getArgs()[0];
         Boolean isSuccess = (Boolean) joinPoint.proceed();
@@ -223,7 +222,6 @@ public class BusinessCacheAspect {
      */
     @Around(value = POINTCUT_GOODS_DELETE)
     public Object cacheGoodsDelete(ProceedingJoinPoint joinPoint) throws Throwable {
-
         //取出第一个参数
         Integer id = (Integer) joinPoint.getArgs()[0];
         Boolean isSuccess = (Boolean) joinPoint.proceed();

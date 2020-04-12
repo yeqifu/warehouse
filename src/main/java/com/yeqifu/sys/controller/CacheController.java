@@ -4,7 +4,10 @@ import com.yeqifu.sys.cache.CachePool;
 import com.yeqifu.sys.common.CacheBean;
 import com.yeqifu.sys.common.DataGridView;
 import com.yeqifu.sys.common.ResultObj;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import java.util.Set;
  * @Author: 落亦-
  * @Date: 2019/12/20 18:36
  */
+@Api(description = "缓存管理")
 @RestController
 @RequestMapping("cache")
 public class CacheController {
@@ -27,7 +31,8 @@ public class CacheController {
      * 查询所有缓存
      * @return
      */
-    @RequestMapping("loadAllCache")
+    @ApiOperation(value = "查询所有缓存",notes = "查询所有缓存")
+    @RequestMapping(value = "loadAllCache",method = RequestMethod.GET)
     public DataGridView loadAllCache(){
         List<CacheBean> list = new ArrayList<>();
 

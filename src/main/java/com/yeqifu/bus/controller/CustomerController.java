@@ -10,9 +10,13 @@ import com.yeqifu.bus.vo.CustomerVo;
 import com.yeqifu.sys.common.Constast;
 import com.yeqifu.sys.common.DataGridView;
 import com.yeqifu.sys.common.ResultObj;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -87,7 +91,9 @@ public class CustomerController {
      * @param id 客户的ID
      * @return
      */
-    @RequestMapping("deleteCustomer")
+    @ApiOperation(value = "删除一个客户",notes = "删除一个客户")
+    @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "客户ID",required = true,paramType = "query",dataType = "Integer")})
+    @RequestMapping(value = "deleteCustomer",method = RequestMethod.DELETE)
     public ResultObj deleteCustomer(Integer id){
         try {
             customerService.deleteCustomerById(id);

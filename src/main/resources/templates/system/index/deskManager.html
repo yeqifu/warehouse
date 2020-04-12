@@ -105,11 +105,21 @@
 		$.get("/notice/loadAllNotice?page=1&limit=5",function(data){
 			var hotNewsHtml = '';
 			if(data.count>0){
-				for(var i=0;i<5;i++){
-					hotNewsHtml += '<tr ondblclick="viewNews('+data.data[i].id+')">'
-							+'<td align="left"><a href="javascript:;"> '+data.data[i].title+'</a></td>'
-							+'<td>'+data.data[i].createtime.substring(0,10)+'</td>'
-							+'</tr>';
+				if(data.count<=5){
+					for(var i=0;i<data.count;i++){
+						hotNewsHtml += '<tr ondblclick="viewNews('+data.data[i].id+')">'
+								+'<td align="left"><a href="javascript:;"> '+data.data[i].title+'</a></td>'
+								+'<td>'+data.data[i].createtime.substring(0,10)+'</td>'
+								+'</tr>';
+					}
+				}
+				if (data.count>5){
+					for(var i=0;i<5;i++){
+						hotNewsHtml += '<tr ondblclick="viewNews('+data.data[i].id+')">'
+								+'<td align="left"><a href="javascript:;"> '+data.data[i].title+'</a></td>'
+								+'<td>'+data.data[i].createtime.substring(0,10)+'</td>'
+								+'</tr>';
+					}
 				}
 			}else {
 				hotNewsHtml+='<h3 style="text-align: center">暂无公告！！！</h3>';

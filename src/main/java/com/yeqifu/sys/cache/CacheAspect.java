@@ -32,7 +32,6 @@ public class CacheAspect {
      */
     private Map<String,Object> CACHE_CONTAINER = CachePool.CACHE_CONTAINER;
 
-
     /**
      * 声明部门的切面表达式
      */

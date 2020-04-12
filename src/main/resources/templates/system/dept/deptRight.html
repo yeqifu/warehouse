@@ -16,6 +16,12 @@
     <link rel="stylesheet" th:href="@{/resources/css/public.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/dtree.css}" media="all"/>
     <link rel="stylesheet" th:href="@{/resources/layui_ext/dtree/font/dtreefont.css}" media="all"/>
+    <style>
+        .disabled {
+            pointer-events:none; //使其不可点击
+            opacity:0.6;         //使其样式变为不可用
+        }
+    </style>
 </head>
 <body>
 <!--查询条件-->
@@ -79,7 +85,7 @@
     <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
         <div class="layui-form-item">
             <label class="layui-form-label">父级部门</label>
-            <div class="layui-input-block">
+            <div class="layui-input-block" id="parentDept">
                 <input type="hidden" name="pid" id="pid" lay-verify="required">
                 <ul id="deptTree" class="dtree" data-id="0"></ul>
             </div>
@@ -266,10 +272,15 @@
                 success:function () {
                     //清空原有的数据
                     $("#dataFrm")[0].reset();
+                    $("#parentDept").removeClass("disabled");
                     //装载新的数据
                     form.val("dataFrm",data);
                     //选中之前的父级部门  nodeId=data.pid
-                    dtree.dataInit("deptTree",data.pid);
+                    if (data.pid!=0){
+                        dtree.dataInit("deptTree",data.pid);
+                    }else {
+                        $("#parentDept").addClass("disabled");
+                    }
                     dtree.selectVal("deptTree");
                     url="/dept/updateDept";
                 }
