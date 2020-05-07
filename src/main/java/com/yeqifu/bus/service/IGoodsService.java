@@ -1,7 +1,9 @@
 package com.yeqifu.bus.service;
 
-import com.yeqifu.bus.entity.Goods;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.yeqifu.bus.entity.Goods;
+
+import java.util.List;
 
 /**
  * <p>
@@ -18,4 +20,10 @@ public interface IGoodsService extends IService<Goods> {
      * @param id
      */
     void deleteGoodsById(Integer id);
+
+    /**
+     * 加载所有的库存预警商品
+     * @return
+     */
+    List<Goods> loadAllWarning();
 }

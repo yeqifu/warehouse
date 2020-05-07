@@ -93,16 +93,16 @@ public class UserRealm extends AuthorizingRealm {
 
             //根据用户ID查询percode
             QueryWrapper<Permission> qw = new QueryWrapper<>();
-            //设置只能查询菜单
+            //设置只能查询所有可用的菜单
             qw.eq("type", Constast.TYPE_PERMISSION);
-            //设置只能查询可用的菜单
             qw.eq("available",Constast.AVAILABLE_TRUE);
             Integer userId = user.getId();
-            //根据用户ID查询角色ID
+            //根据用户ID查询角色ID，因为一个用户可能有多个角色，所以使用list进行存储
             List<Integer> currentUserRoleIds = roleService.queryUserRoleIdsByUid(userId);
-            //根据角色ID查询出权限ID
+            //声明一个Set对象pids用来存储查询出来的权限，使用Set可以过滤重复的权限
             Set<Integer> pids = new HashSet<>();
             for (Integer rid : currentUserRoleIds) {
+                //根据角色ID查询出权限ID
                 List<Integer> permissionIds = roleService.queryRolePermissionIdsByRid(rid);
                 pids.addAll(permissionIds);
             }

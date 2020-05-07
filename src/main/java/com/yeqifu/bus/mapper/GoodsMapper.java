@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.yeqifu.bus.entity.Goods;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  * InnoDB free: 9216 kB; (`providerid`) REFER `warehouse/bus_provider`(`id`) Mapper 接口
@@ -50,4 +52,9 @@ public interface GoodsMapper extends BaseMapper<Goods> {
      * @param id    客户id
      */
     void deleteSaleBackByCustomerId(Integer id);
+
+    /**
+     * 加载所有库存预警商品
+     */
+    List<Goods> loadAllWarning();
 }

@@ -32,5 +32,10 @@
         delete from bus_salesback where customerid = #{customerid}
     </delete>
 
+    <!--查询所有库存预警商品-->
+    <select id="loadAllWarning" resultType="com.yeqifu.bus.entity.Goods">
+        select * from bus_goods where dangernum > number
+    </select>
+
 
 </mapper>

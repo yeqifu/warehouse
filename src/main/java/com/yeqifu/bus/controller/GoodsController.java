@@ -53,6 +53,7 @@ public class GoodsController {
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getPromitcode()),"promitcode",goodsVo.getPromitcode());
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getDescription()),"description",goodsVo.getDescription());
         queryWrapper.like(StringUtils.isNotBlank(goodsVo.getSize()),"size",goodsVo.getSize());
+
         queryWrapper.orderByDesc("id");
         goodsService.page(page,queryWrapper);
         List<Goods> records = page.getRecords();
@@ -73,6 +74,8 @@ public class GoodsController {
     @RequestMapping("addGoods")
     public ResultObj addGoods(GoodsVo goodsVo){
         try {
+            System.out.println("====================================");
+            System.out.println(goodsVo.getGoodsimg());
             if (goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().endsWith("_temp")){
                 String newName = AppFileUtils.renameFile(goodsVo.getGoodsimg());
                 goodsVo.setGoodsimg(newName);
@@ -95,6 +98,7 @@ public class GoodsController {
         try {
             //商品图片不是默认图片
             if (!(goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().equals(Constast.DEFAULT_IMG_GOODS))){
+
                 if (goodsVo.getGoodsimg().endsWith("_temp")){
                     String newName = AppFileUtils.renameFile(goodsVo.getGoodsimg());
                     goodsVo.setGoodsimg(newName);
@@ -166,6 +170,12 @@ public class GoodsController {
             }
         }
         return new DataGridView(list);
+    }
+
+    @RequestMapping("loadAllWarningGoods")
+    public DataGridView loadAllWarningGoods(){
+        List<Goods> goods = goodsService.loadAllWarning();
+        return new DataGridView((long) goods.size(),goods);
     }
 
 

@@ -349,6 +349,11 @@ public class UserController {
                     //删除原先的图片
                     String oldPath = userService.getById(userVo.getId()).getImgpath();
                     AppFileUtils.removeFileByPath(oldPath);
+                    //获取存储在session中的user并重新设置user中的图片地址
+                    User user = (User) WebUtils.getSession().getAttribute("user");
+                    user.setImgpath(newName);
+                    //重新设置user
+                    WebUtils.getSession().setAttribute("user",user);
                 }
             }
             userService.updateById(userVo);

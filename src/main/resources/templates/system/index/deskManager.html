@@ -27,6 +27,16 @@
 				<tbody class="hot_news"></tbody>
 			</table>
 		</div>
+		<div class="layui-col-lg6 layui-col-md12">
+			<blockquote class="layui-elem-quote title">库存预警 <i class="layui-icon layui-red">&#xe756;</i></blockquote>
+			<table class="layui-table mag0" lay-skin="line">
+				<colgroup>
+					<col>
+					<col width="110">
+				</colgroup>
+				<tbody class="warningGoods"></tbody>
+			</table>
+		</div>
 	</div>
 
 	<!-- 查看公告的div -->
@@ -126,6 +136,22 @@
 			}
 			$(".hot_news").html(hotNewsHtml);
 			$(".userAll span").text(data.length);
+		});
+
+		$.get("/goods/loadAllWarningGoods?page=1&limit=5",function (data) {
+			var warningGoodsHtml='';
+			if(data.count>0){
+				if(data.count<=5){
+					for(var i=0;i<data.count;i++){
+						warningGoodsHtml += '<tr>'+'<td>商品名称：'+data.data[i].goodsname+'</td>'+'<td style="width: 100px;">当前库存：'+data.data[i].number+'</td>'+'</tr>';
+					}
+				}
+			}else {
+				warningGoodsHtml+='<h3 style="text-align: center">暂无预警商品！！！</h3>';
+			}
+			$(".warningGoods").html(warningGoodsHtml);
+			$(".userAll span").text(data.length);
+
 		});
 
 	});

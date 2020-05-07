@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -53,5 +54,15 @@ public class GoodsServiceImpl extends ServiceImpl<GoodsMapper, Goods> implements
         this.getBaseMapper().deleteOutportByGoodsId(id);
         //删除商品信息
         this.removeById(id);
+    }
+
+    /**
+     * 查询所有库存预警商品
+     * @return
+     */
+    @Override
+    public List<Goods> loadAllWarning() {
+        List<Goods> goods = baseMapper.loadAllWarning();
+        return goods;
     }
 }
