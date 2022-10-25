@@ -8,7 +8,7 @@
  Source Schema         : warehouse
 
  Target Server Type    : MySQL
- Target Server Version : 50729
+ Target Server Version : 507291
  File Encoding         : 65001
 
  Date: 09/03/2020 16:37:32
