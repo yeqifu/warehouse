@@ -102,4 +102,4 @@
 ![](https://github.com/yeqifu/warehouse/blob/master/src/main/resources/static/images/salesback.PNG)
 
 ### 讨论
-有问题请在([issue])中讨论 或联系我QQ：1784525940，请注明来意，伸手党勿加~
+有问题请在([issue])讨论 或联系我QQ：1784525940，你请注明来意。该项目是开源的，如果clone到本地运行不起来，或者需要我讲解之类的，我可以有偿讲解，伸手党勿加~
