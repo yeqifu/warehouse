@@ -58,8 +58,13 @@ public class FileController {
      * 图片下载
      */
     @RequestMapping("showImageByPath")
-    public ResponseEntity<Object> showImageByPath(String path){
-        return AppFileUtils.createResponseEntity(path);
+    public ResponseEntity<byte[]> showImageByPath(String path) {
+        // 规范路径，防止路径穿越
+        Path normalizedPath = Paths.get(AppFileUtils.UPLOAD_PATH, path).normalize();
+        if (!normalizedPath.startsWith(AppFileUtils.UPLOAD_PATH)) {
+            // 如果路径越界，则返回错误响应
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     }
 
 }
