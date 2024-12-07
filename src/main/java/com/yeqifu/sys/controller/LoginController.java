@@ -24,8 +24,7 @@ import java.io.IOException;
 import java.util.Date;
 
 /**
- * 登陆前端控制器
- * @Author: 落亦-
+ * 登陆控制
  * @Date: 2019/11/21 21:33
  */
 @RestController
@@ -44,13 +43,9 @@ public class LoginController {
             Subject subject = SecurityUtils.getSubject();
             AuthenticationToken token = new UsernamePasswordToken(userVo.getLoginname(),userVo.getPwd());
             try {
-                //对用户进行认证登陆
                 subject.login(token);
-                //通过subject获取以认证活动的user
                 ActiverUser activerUser = (ActiverUser) subject.getPrincipal();
-                //将user存储到session中
                 WebUtils.getSession().setAttribute("user",activerUser.getUser());
-                //记录登陆日志
                 Loginfo entity = new Loginfo();
                 entity.setLoginname(activerUser.getUser().getName()+"-"+activerUser.getUser().getLoginname());
                 entity.setLoginip(WebUtils.getRequest().getRemoteAddr());
@@ -69,7 +64,7 @@ public class LoginController {
     }
 
     /**
-     * 得到登陆验证码
+     *
      * @param response
      * @param session
      * @throws IOException

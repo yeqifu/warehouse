@@ -846,7 +846,7 @@ INSERT INTO `sys_user` VALUES (11, '斯嘉丽约翰逊', 'sijialiyuehanxun', 'f8
 INSERT INTO `sys_user` VALUES (12, '托尼', 'tuoni', '1403e113a2936d4509e9c13b8849f4b5', '美国', 1, '钢铁侠', 7, '2019-12-03 00:00:00', 11, 1, 11, 1, '2020-02-24/8258FCECC0D64A1DB3B457E7D51D6AB5.jpg', '571059AF59E64A7D92FECB93FA1B0AEF');
 INSERT INTO `sys_user` VALUES (13, '贾维斯', 'jiaweisi', '98f28b861888f4274cb423345dce4bcc', '美国', 1, '人工智能', 3, '2019-12-03 00:00:00', 12, 1, 12, 1, '2020-02-24/8258FCECC0D64A1DB3B457E7D51D6AB5.jpg', '7258E2D93A3F429085B34BBD8E345CE7');
 INSERT INTO `sys_user` VALUES (14, '李九', 'lijiu', '9356d33c67f21e23b448d6198e414f77', '九江', 1, '测试', 4, '2020-03-05 16:00:00', 10, 1, 13, 1, '/images/defaultusertitle.jpg', 'D3FBF5E33F4D42FDACE85178FE84E95A');
-INSERT INTO `sys_user` VALUES (17, '张十', 'zhangshi', 'e99ddd2f81f17319e7a767573c674975', '南昌', 1, '测试', 4, '2020-03-06 03:30:12', 11, 1, 14, 1, '/images/defaultUserTitle.jpg', '5C6E7D2E2D8C4A8CB9DD4A9DF64DDB57');
+INSERT INTO `sys_user` VALUES (17, '张八', 'zhangba', 'e99ddd2f81f17319e7a767573c674975', '南昌', 1, '测试', 4, '2020-03-06 03:30:12', 11, 1, 14, 1, '/images/defaultUserTitle.jpg', '5C6E7D2E2D8C4A8CB9DD4A9DF64DDB57');
 
 -- ----------------------------
 -- Table structure for sys_user_role
