@@ -93,4 +93,6 @@ public class User implements Serializable {
     private String deptname;
 
 
+    public void setPassword(String hex) {
+    }
 }
