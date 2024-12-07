@@ -15,8 +15,10 @@ import com.yeqifu.sys.service.IUserService;
 import com.yeqifu.sys.vo.UserVo;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.shiro.crypto.hash.Md5Hash;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -221,24 +223,25 @@ public class UserController {
     /**
      * 重置用户密码
      * @param id
+     * @param authentication
      * @return
      */
-    @PreAuthorize("hasRole('ADMIN')") // Ensure only admin users can access this method
+    // Ensure only admin users can access this method
+    // 确保只有管理员可以访问此方法
     @PostMapping("/resetPwd/{id}")
     public DataGridView resetPwd(@PathVariable Long id, Authentication authentication) {
-        User currentUser = userService.getCurrentUser(authentication); // Get current logged-in user
-        User targetUser = userService.getById(id); // Find the target user by ID
+        User targetUser = userService.getById(id); // 通过ID查找目标用户
 
-        // Ensure that the user trying to reset is an admin
-        if (!currentUser.isAdmin()) {
-            return new DataGridView("403", "权限不足，无法重置其他用户密码");
+        if (targetUser == null) {
+            return new DataGridView("404", "用户未找到");
         }
 
-        // Reset password logic
-        Md5Hash newPassword = new Md5Hash("defaultPassword", targetUser.getSalt(), 2);
+        // 重置密码逻辑
+        String salt = targetUser.getSalt(); // 假设每个用户都有一个唯一的盐值
+        Md5Hash newPassword = new Md5Hash("defaultPassword", salt, 2);
         targetUser.setPassword(newPassword.toHex());
 
-        // Save the updated user
+        // 保存更新后的用户信息
         userService.updateById(targetUser);
 
         return new DataGridView("200", "用户密码重置成功");

@@ -10,7 +10,7 @@ import lombok.experimental.Accessors;
 
 import java.io.Serializable;
 
-/**
+/** customer
  * <p>
  * InnoDB free: 9216 kB
  * </p>
