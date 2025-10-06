@@ -219,33 +219,6 @@ public class UserController {
     }
 
     /**
-     * 重置用户密码
-     * @param id
-     * @return
-     */
-    @PreAuthorize("hasRole('ADMIN')") // Ensure only admin users can access this method
-    @PostMapping("/resetPwd/{id}")
-    public DataGridView resetPwd(@PathVariable Long id, Authentication authentication) {
-        User currentUser = userService.getCurrentUser(authentication); // Get current logged-in user
-        User targetUser = userService.getById(id); // Find the target user by ID
-
-        // Ensure that the user trying to reset is an admin
-        if (!currentUser.isAdmin()) {
-            return new DataGridView("403", "权限不足，无法重置其他用户密码");
-        }
-
-        // Reset password logic
-        Md5Hash newPassword = new Md5Hash("defaultPassword", targetUser.getSalt(), 2);
-        targetUser.setPassword(newPassword.toHex());
-
-        // Save the updated user
-        userService.updateById(targetUser);
-
-        return new DataGridView("200", "用户密码重置成功");
-    }
-}
-
-    /**
      * 根据用户id查询角色并选中已拥有的角色
      * @param id 用户id
      * @return
