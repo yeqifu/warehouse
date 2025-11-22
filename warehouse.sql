@@ -871,3 +871,31 @@ INSERT INTO `sys_user_role` VALUES (3, 8);
 INSERT INTO `sys_user_role` VALUES (17, 10);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for wms_warehouse
+-- ----------------------------
+DROP TABLE IF EXISTS `wms_warehouse`;
+CREATE TABLE `wms_warehouse`  (
+  `id`           int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `code`         varchar(32)  NOT NULL COMMENT '仓库编码（唯一）',
+  `name`         varchar(64)  NOT NULL COMMENT '仓库名称',
+  `type`         varchar(32)           DEFAULT NULL COMMENT '仓库类型：常温/冷链/危险品等',
+  `region`       varchar(64)           DEFAULT NULL COMMENT '所属区域/城市',
+  `address`      varchar(255)          DEFAULT NULL COMMENT '详细地址',
+  `manager`      varchar(64)           DEFAULT NULL COMMENT '负责人',
+  `phone`        varchar(32)           DEFAULT NULL COMMENT '联系方式',
+  `capacity`     int(11)               DEFAULT NULL COMMENT '理论容量（件/立方）',
+  `available`    int(1)                DEFAULT 1 COMMENT '状态【0停用1启用】',
+  `remark`       varchar(255)          DEFAULT NULL COMMENT '备注',
+  `createtime`   datetime(0)           DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updatetime`   datetime(0)           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_wms_warehouse_code` (`code`) USING BTREE,
+  KEY `idx_wms_warehouse_available` (`available`) USING BTREE,
+  KEY `idx_wms_warehouse_region` (`region`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8
+  COLLATE = utf8_general_ci
+  ROW_FORMAT = Dynamic;
