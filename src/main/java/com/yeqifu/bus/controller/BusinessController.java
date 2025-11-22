@@ -75,4 +75,13 @@ public class BusinessController {
         return "business/salesback/salesbackManager";
     }
 
+    /**
+     * 跳转到仓库管理页面
+     * @return
+     */
+    @RequestMapping("toWarehouseManager")
+    public String toWarehouseManager(){
+        return "business/warehouse/warehouseManager";
+    }
+
 }
