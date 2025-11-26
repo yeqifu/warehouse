@@ -871,3 +871,61 @@ INSERT INTO `sys_user_role` VALUES (3, 8);
 INSERT INTO `sys_user_role` VALUES (17, 10);
 
 SET FOREIGN_KEY_CHECKS = 1;
+
+-- ----------------------------
+-- Table structure for wms_warehouse
+-- ----------------------------
+DROP TABLE IF EXISTS `wms_warehouse`;
+CREATE TABLE `wms_warehouse`  (
+  `id`           int(11) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `code`         varchar(32)  NOT NULL COMMENT '仓库编码（唯一）',
+  `name`         varchar(64)  NOT NULL COMMENT '仓库名称',
+  `type`         varchar(32)           DEFAULT NULL COMMENT '仓库类型：常温/冷链/危险品等',
+  `region`       varchar(64)           DEFAULT NULL COMMENT '所属区域/城市',
+  `address`      varchar(255)          DEFAULT NULL COMMENT '详细地址',
+  `manager`      varchar(64)           DEFAULT NULL COMMENT '负责人',
+  `phone`        varchar(32)           DEFAULT NULL COMMENT '联系方式',
+  `capacity`     int(11)               DEFAULT NULL COMMENT '理论容量（件/立方）',
+  `available`    int(1)                DEFAULT 1 COMMENT '状态【0停用1启用】',
+  `remark`       varchar(255)          DEFAULT NULL COMMENT '备注',
+  `createtime`   datetime(0)           DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updatetime`   datetime(0)           DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '最近更新时间',
+  PRIMARY KEY (`id`) USING BTREE,
+  UNIQUE KEY `uk_wms_warehouse_code` (`code`) USING BTREE,
+  KEY `idx_wms_warehouse_available` (`available`) USING BTREE,
+  KEY `idx_wms_warehouse_region` (`region`) USING BTREE
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8
+  COLLATE = utf8_general_ci
+  ROW_FORMAT = Dynamic;
+
+-- ----------------------------
+-- Table structure for wms_inventory_balance
+-- ----------------------------
+DROP TABLE IF EXISTS `wms_inventory_balance`;
+CREATE TABLE `wms_inventory_balance` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `warehouse_id` int(11) NOT NULL COMMENT '仓库ID，关联wms_warehouse',
+  `goods_id` int(11) NOT NULL COMMENT '商品ID，关联bus_goods',
+  `batch_no` varchar(64) NOT NULL DEFAULT '' COMMENT '批次号，空串表示未区分批次',
+  `loc_code` varchar(64) NOT NULL DEFAULT '' COMMENT '库位/货架编码',
+  `uom` varchar(16) NOT NULL DEFAULT 'EA' COMMENT '计量单位',
+  `quantity_on_hand` decimal(18,4) NOT NULL DEFAULT 0 COMMENT '账面库存',
+  `quantity_reserved` decimal(18,4) NOT NULL DEFAULT 0 COMMENT '已锁定数量',
+  `quantity_available` decimal(18,4) AS (`quantity_on_hand` - `quantity_reserved`) STORED COMMENT '可用库存',
+  `safety_stock` decimal(18,4) DEFAULT NULL COMMENT '安全库存',
+  `status` tinyint(1) NOT NULL DEFAULT 1 COMMENT '状态 1=可用 0=冻结',
+  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+  `last_counted_at` datetime DEFAULT NULL COMMENT '最近盘点时间',
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uk_inventory_wh_goods_batch_loc` (`warehouse_id`,`goods_id`,`batch_no`,`loc_code`),
+  KEY `idx_inventory_available_status` (`status`,`quantity_available`),
+  CONSTRAINT `fk_inventory_warehouse` FOREIGN KEY (`warehouse_id`) REFERENCES `wms_warehouse` (`id`),
+  CONSTRAINT `fk_inventory_goods` FOREIGN KEY (`goods_id`) REFERENCES `bus_goods` (`id`)
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8
+  COLLATE = utf8_general_ci
+  COMMENT = '商品库存现存量表';
