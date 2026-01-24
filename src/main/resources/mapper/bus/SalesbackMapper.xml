@@ -2,4 +2,25 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeqifu.bus.mapper.SalesbackMapper">
 
+    <!-- 获取退货总额 -->
+    <select id="getTotalSalesback" resultType="java.lang.Double">
+        SELECT COALESCE(SUM(number * price), 0) FROM bus_salesback
+    </select>
+
+    <!-- 获取退货商品数量 -->
+    <select id="getSalesbackCount" resultType="java.lang.Integer">
+        SELECT COALESCE(SUM(number), 0) FROM bus_salesback
+    </select>
+
+    <!-- 获取按月份统计的退货数据 -->
+    <select id="getSalesbackByMonth" resultType="java.util.Map">
+        SELECT 
+            DATE_FORMAT(salesbacktime, '%Y-%m') AS month,
+            SUM(number * price) AS totalSalesback,
+            SUM(number) AS salesbackCount
+        FROM bus_salesback
+        GROUP BY DATE_FORMAT(salesbacktime, '%Y-%m')
+        ORDER BY month
+    </select>
+
 </mapper>

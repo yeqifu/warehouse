@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset="UTF-8">
+    <title>数据可视化</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta http-equiv="Access-Control-Allow-Origin" content="*">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="icon" href="/resources/favicon.ico">
+    <link rel="stylesheet" href="resources/layui/css/layui.css" th:href="@{/resources/layui/css/layui.css}" media="all"/>
+    <link rel="stylesheet" th:href="@{/resources/css/public.css}" media="all"/>
+    <style>
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .stat-card p {
+            font-size: 16px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<!--统计卡片-->
+<div class="layui-row" style="margin: 20px 0;">
+    <div class="layui-col-md3">
+        <div class="stat-card">
+            <h3 id="totalSales">0</h3>
+            <p>销售总额</p>
+        </div>
+    </div>
+    <div class="layui-col-md3">
+        <div class="stat-card">
+            <h3 id="totalSalesback">0</h3>
+            <p>退货总额</p>
+        </div>
+    </div>
+    <div class="layui-col-md3">
+        <div class="stat-card">
+            <h3 id="salesCount">0</h3>
+            <p>销售商品数量</p>
+        </div>
+    </div>
+    <div class="layui-col-md3">
+        <div class="stat-card">
+            <h3 id="salesbackCount">0</h3>
+            <p>退货商品数量</p>
+        </div>
+    </div>
+</div>
+
+<!--图表容器-->
+<div class="layui-row" style="margin: 20px;">
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-header">月度销售趋势</div>
+            <div class="layui-card-body">
+                <div id="salesByMonth" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-header">月度退货趋势</div>
+            <div class="layui-card-body">
+                <div id="salesbackByMonth" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-row" style="margin: 20px;">
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-header">商品分类销售占比</div>
+            <div class="layui-card-body">
+                <div id="salesByCategory" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+    <div class="layui-col-md6">
+        <div class="layui-card">
+            <div class="layui-card-header">客户销售占比</div>
+            <div class="layui-card-body">
+                <div id="salesByCustomer" class="chart-container"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/resources/layui/layui.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<script type="text/javascript">
+    layui.use(['jquery', 'layer'], function() {
+        var $ = layui.jquery;
+        var layer = layui.layer;
+
+        // 获取统计数据
+        $.get('/visualization/getSalesStatistics', function(res) {
+            if (res.code === 0) {
+                $('#totalSales').text(res.data.totalSales.toFixed(2));
+                $('#totalSalesback').text(res.data.totalSalesback.toFixed(2));
+                $('#salesCount').text(res.data.salesCount);
+                $('#salesbackCount').text(res.data.salesbackCount);
+            }
+        });
+
+        // 初始化图表
+        var salesByMonthChart = echarts.init(document.getElementById('salesByMonth'));
+        var salesbackByMonthChart = echarts.init(document.getElementById('salesbackByMonth'));
+        var salesByCategoryChart = echarts.init(document.getElementById('salesByCategory'));
+        var salesByCustomerChart = echarts.init(document.getElementById('salesByCustomer'));
+
+        // 获取月度销售数据
+        $.get('/visualization/getSalesByMonth', function(res) {
+            if (res.code === 0) {
+                var months = res.data.map(item => item.month);
+                var totalSales = res.data.map(item => item.totalSales);
+                var salesCount = res.data.map(item => item.salesCount);
+
+                salesByMonthChart.setOption({
+                    title: { text: '月度销售趋势' },
+                    tooltip: { trigger: 'axis' },
+                    legend: { data: ['销售总额', '销售数量'] },
+                    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                    xAxis: { type: 'category', boundaryGap: false, data: months },
+                    yAxis: { type: 'value' },
+                    series: [
+                        { name: '销售总额', type: 'line', data: totalSales },
+                        { name: '销售数量', type: 'line', data: salesCount }
+                    ]
+                });
+            }
+        });
+
+        // 获取月度退货数据
+        $.get('/visualization/getSalesbackByMonth', function(res) {
+            if (res.code === 0) {
+                var months = res.data.map(item => item.month);
+                var totalSalesback = res.data.map(item => item.totalSalesback);
+                var salesbackCount = res.data.map(item => item.salesbackCount);
+
+                salesbackByMonthChart.setOption({
+                    title: { text: '月度退货趋势' },
+                    tooltip: { trigger: 'axis' },
+                    legend: { data: ['退货总额', '退货数量'] },
+                    grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
+                    xAxis: { type: 'category', boundaryGap: false, data: months },
+                    yAxis: { type: 'value' },
+                    series: [
+                        { name: '退货总额', type: 'line', data: totalSalesback },
+                        { name: '退货数量', type: 'line', data: salesbackCount }
+                    ]
+                });
+            }
+        });
+
+        // 获取商品分类销售数据
+        $.get('/visualization/getSalesByCategory', function(res) {
+            if (res.code === 0) {
+                var categories = res.data.map(item => item.category);
+                var totalSales = res.data.map(item => item.totalSales);
+
+                salesByCategoryChart.setOption({
+                    title: { text: '商品分类销售占比' },
+                    tooltip: { trigger: 'item' },
+                    legend: { orient: 'vertical', left: 'left' },
+                    series: [
+                        { name: '销售总额', type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false, 
+                          label: { show: false, position: 'center' }, emphasis: { label: { show: true, fontSize: '16', fontWeight: 'bold' } },
+                          labelLine: { show: false }, data: res.data.map((item, index) => ({ value: totalSales[index], name: categories[index] })) }
+                    ]
+                });
+            }
+        });
+
+        // 获取客户销售数据
+        $.get('/visualization/getSalesByCustomer', function(res) {
+            if (res.code === 0) {
+                var customers = res.data.map(item => item.customer);
+                var totalSales = res.data.map(item => item.totalSales);
+
+                salesByCustomerChart.setOption({
+                    title: { text: '客户销售占比' },
+                    tooltip: { trigger: 'item' },
+                    legend: { orient: 'vertical', left: 'left' },
+                    series: [
+                        { name: '销售总额', type: 'pie', radius: ['40%', '70%'], avoidLabelOverlap: false, 
+                          label: { show: false, position: 'center' }, emphasis: { label: { show: true, fontSize: '16', fontWeight: 'bold' } },
+                          labelLine: { show: false }, data: res.data.map((item, index) => ({ value: totalSales[index], name: customers[index] })) }
+                    ]
+                });
+            }
+        });
+
+        // 响应式调整
+        window.addEventListener('resize', function() {
+            salesByMonthChart.resize();
+            salesbackByMonthChart.resize();
+            salesByCategoryChart.resize();
+            salesByCustomerChart.resize();
+        });
+    });
+</script>
+</body>
+</html>

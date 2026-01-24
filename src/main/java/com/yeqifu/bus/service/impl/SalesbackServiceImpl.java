@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -73,6 +75,21 @@ public class SalesbackServiceImpl extends ServiceImpl<SalesbackMapper, Salesback
 
 
         getBaseMapper().insert(salesback);
+    }
+
+    @Override
+    public Double getTotalSalesback() {
+        return baseMapper.getTotalSalesback();
+    }
+
+    @Override
+    public Integer getSalesbackCount() {
+        return baseMapper.getSalesbackCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> getSalesbackByMonth() {
+        return baseMapper.getSalesbackByMonth();
     }
     
 }
