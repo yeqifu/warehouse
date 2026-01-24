@@ -1,6 +1,12 @@
 {
 	"contentManagement": [
 		{
+			"title": "数据可视化",
+			"icon": "&#xe629;",
+			"href": "page/chart/chartAnalysis.html",
+			"spread": false
+		},
+		{
 			"title": "文章列表",
 			"icon": "icon-text",
 			"href": "page/news/newsList.html",
@@ -71,6 +77,14 @@
 			"spread": false
 		}
 	],
+	"dataAnalysis": [
+		{
+			"title": "数据可视化",
+			"icon": "&#xe629;",
+			"href": "page/chart/chartAnalysis.html",
+			"spread": false
+		}
+	],
 	"seraphApi": [
 		{
 			"title": "三级联动模块",
@@ -90,5 +104,3 @@
 		}
 	]
 }
-
-
