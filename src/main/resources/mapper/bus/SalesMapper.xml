@@ -2,4 +2,49 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeqifu.bus.mapper.SalesMapper">
 
+    <!-- 获取销售总额 -->
+    <select id="getTotalSales" resultType="java.lang.Double">
+        SELECT COALESCE(SUM(number * price), 0) FROM bus_sales
+    </select>
+
+    <!-- 获取销售商品数量 -->
+    <select id="getSalesCount" resultType="java.lang.Integer">
+        SELECT COALESCE(SUM(number), 0) FROM bus_sales
+    </select>
+
+    <!-- 获取按月份统计的销售数据 -->
+    <select id="getSalesByMonth" resultType="java.util.Map">
+        SELECT 
+            DATE_FORMAT(salestime, '%Y-%m') AS month,
+            SUM(number * price) AS totalSales,
+            SUM(number) AS salesCount
+        FROM bus_sales
+        GROUP BY DATE_FORMAT(salestime, '%Y-%m')
+        ORDER BY month
+    </select>
+
+    <!-- 获取按商品分类统计的销售数据 -->
+    <select id="getSalesByCategory" resultType="java.util.Map">
+        SELECT 
+            g.goodsname AS category,
+            SUM(s.number * s.price) AS totalSales,
+            SUM(s.number) AS salesCount
+        FROM bus_sales s
+        LEFT JOIN bus_goods g ON s.goodsid = g.id
+        GROUP BY g.goodsname
+        ORDER BY totalSales DESC
+    </select>
+
+    <!-- 获取按客户统计的销售数据 -->
+    <select id="getSalesByCustomer" resultType="java.util.Map">
+        SELECT 
+            c.customername AS customer,
+            SUM(s.number * s.price) AS totalSales,
+            SUM(s.number) AS salesCount
+        FROM bus_sales s
+        LEFT JOIN bus_customer c ON s.customerid = c.id
+        GROUP BY c.customername
+        ORDER BY totalSales DESC
+    </select>
+
 </mapper>

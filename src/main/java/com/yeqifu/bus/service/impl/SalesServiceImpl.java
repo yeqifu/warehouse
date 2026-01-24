@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 /**
  * <p>
@@ -58,18 +60,46 @@ public class SalesServiceImpl extends ServiceImpl<SalesMapper, Sales> implements
     }
 
     /**
-     * 删除商品销售信息
-     * @param id    商品销售单ID
+     * 删除商品销售
+     * @param id    商品销售ID
      * @return
      */
     @Override
     public boolean removeById(Serializable id) {
-        //根据商品销售单ID查询出销售单数据
+        //根据销售单ID查询销售单信息
         Sales sales = baseMapper.selectById(id);
+        //根据商品ID查询商品信息
         Goods goods = goodsMapper.selectById(sales.getGoodsid());
-        //仓库商品数量=原库存+删除商品销售单的数量
+        //将商品库存数量增加
         goods.setNumber(goods.getNumber()+sales.getNumber());
+        //更新商品库存信息
         goodsMapper.updateById(goods);
         return super.removeById(id);
     }
+
+    @Override
+    public Double getTotalSales() {
+        return baseMapper.getTotalSales();
+    }
+
+    @Override
+    public Integer getSalesCount() {
+        return baseMapper.getSalesCount();
+    }
+
+    @Override
+    public List<Map<String, Object>> getSalesByMonth() {
+        return baseMapper.getSalesByMonth();
+    }
+
+    @Override
+    public List<Map<String, Object>> getSalesByCategory() {
+        return baseMapper.getSalesByCategory();
+    }
+
+    @Override
+    public List<Map<String, Object>> getSalesByCustomer() {
+        return baseMapper.getSalesByCustomer();
+    }
+
 }
