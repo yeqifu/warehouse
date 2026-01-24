@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>数据可视化分析</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="/resources/layui/css/layui.css" media="all" />
+    <link rel="stylesheet" href="/resources/css/public.css" media="all" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+</head>
+<body class="childrenBody">
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <!-- 顶部统计卡片 -->
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-header">今日销售总额</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md8">
+                                <h2 class="no-margins" id="todaySalesAmount">¥0.00</h2>
+                                <small>今日销售总额</small>
+                            </div>
+                            <div class="layui-col-md4">
+                                <i class="layui-icon layui-icon-rmb" style="font-size: 50px; color: #1E9FFF;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-header">本月销售总额</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md8">
+                                <h2 class="no-margins" id="monthSalesAmount">¥0.00</h2>
+                                <small>本月销售总额</small>
+                            </div>
+                            <div class="layui-col-md4">
+                                <i class="layui-icon layui-icon-chart" style="font-size: 50px; color: #5FB878;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-header">库存预警数量</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md8">
+                                <h2 class="no-margins" id="lowStockCount">0</h2>
+                                <small>库存预警商品数</small>
+                            </div>
+                            <div class="layui-col-md4">
+                                <i class="layui-icon layui-icon-alert" style="font-size: 50px; color: #FFB800;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md3">
+                <div class="layui-card">
+                    <div class="layui-card-header">本月退货率</div>
+                    <div class="layui-card-body">
+                        <div class="layui-row layui-col-space10">
+                            <div class="layui-col-md8">
+                                <h2 class="no-margins" id="monthReturnRate">0.00%</h2>
+                                <small>本月退货率</small>
+                            </div>
+                            <div class="layui-col-md4">
+                                <i class="layui-icon layui-icon-return" style="font-size: 50px; color: #FF5722;"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 查询条件 -->
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-header">查询条件</div>
+                    <div class="layui-card-body">
+                        <form class="layui-form" id="searchForm">
+                            <div class="layui-row">
+                                <div class="layui-col-md3">
+                                    <label class="layui-form-label">开始时间</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="startTime" id="startTime" class="layui-input" placeholder="yyyy-MM-dd">
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <label class="layui-form-label">结束时间</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="endTime" id="endTime" class="layui-input" placeholder="yyyy-MM-dd">
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <label class="layui-form-label">统计类型</label>
+                                    <div class="layui-input-block">
+                                        <select name="type" id="type">
+                                            <option value="">请选择</option>
+                                            <option value="day">按日</option>
+                                            <option value="month">按月</option>
+                                            <option value="year">按年</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-col-md3">
+                                    <div class="layui-input-block">
+                                        <button type="button" class="layui-btn layui-btn-normal" id="searchBtn">
+                                            <i class="layui-icon layui-icon-search"></i>查询
+                                        </button>
+                                        <button type="button" class="layui-btn layui-btn-primary" id="resetBtn">
+                                            <i class="layui-icon layui-icon-refresh"></i>重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表区域 -->
+        <div class="layui-row layui-col-space15">
+            <!-- 销售趋势图 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">销售趋势分析</div>
+                    <div class="layui-card-body">
+                        <div id="salesTrendChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 商品销售排行 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">商品销售排行TOP10</div>
+                    <div class="layui-card-body">
+                        <div id="topGoodsChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row layui-col-space15">
+            <!-- 退货趋势图 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">退货趋势分析</div>
+                    <div class="layui-card-body">
+                        <div id="returnTrendChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 客户购买排行 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">客户购买排行TOP10</div>
+                    <div class="layui-card-body">
+                        <div id="topCustomersChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-row layui-col-space15">
+            <!-- 库存预警 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">库存预警商品</div>
+                    <div class="layui-card-body">
+                        <div id="lowStockChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+            <!-- 客户活跃度 -->
+            <div class="layui-col-md6">
+                <div class="layui-card">
+                    <div class="layui-card-header">客户活跃度分析</div>
+                    <div class="layui-card-body">
+                        <div id="customerActivityChart" style="height: 400px;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="/resources/layui/layui.js"></script>
+    <script type="text/javascript">
+        layui.use(['form', 'layer', 'jquery', 'laydate'], function() {
+            var form = layui.form;
+            var layer = layui.layer;
+            var $ = layui.jquery;
+            var laydate = layui.laydate;
+
+            // 初始化日期选择器
+            laydate.render({
+                elem: '#startTime',
+                type: 'date',
+                format: 'yyyy-MM-dd'
+            });
+            
+            laydate.render({
+                elem: '#endTime',
+                type: 'date',
+                format: 'yyyy-MM-dd'
+            });
+
+            // 初始化图表
+            var salesTrendChart = echarts.init(document.getElementById('salesTrendChart'));
+            var topGoodsChart = echarts.init(document.getElementById('topGoodsChart'));
+            var returnTrendChart = echarts.init(document.getElementById('returnTrendChart'));
+            var topCustomersChart = echarts.init(document.getElementById('topCustomersChart'));
+            var lowStockChart = echarts.init(document.getElementById('lowStockChart'));
+            var customerActivityChart = echarts.init(document.getElementById('customerActivityChart'));
+
+            // 加载仪表板数据
+            function loadDashboardData() {
+                $.get('/chart/getDashboardData', function(res) {
+                    if (res.code === 200) {
+                        $('#todaySalesAmount').text('¥' + res.data.todaySalesAmount.toFixed(2));
+                        $('#monthSalesAmount').text('¥' + res.data.monthSalesAmount.toFixed(2));
+                        $('#lowStockCount').text(res.data.lowStockCount);
+                        $('#monthReturnRate').text(res.data.monthReturnRate.toFixed(2) + '%');
+                    }
+                });
+            }
+
+            // 加载销售统计数据
+            function loadSalesStatistics() {
+                var params = getSearchParams();
+                $.get('/chart/getSalesStatistics', params, function(res) {
+                    if (res.code === 200) {
+                        updateSalesTrendChart(res.data.monthlyTrend);
+                        updateTopGoodsChart(res.data.topGoods);
+                        updateTopCustomersChart(res.data.topCustomers);
+                    }
+                });
+            }
+
+            // 加载退货统计数据
+            function loadSalesbackStatistics() {
+                var params = getSearchParams();
+                $.get('/chart/getSalesbackStatistics', params, function(res) {
+                    if (res.code === 200) {
+                        updateReturnTrendChart(res.data.monthlyTrend);
+                    }
+                });
+            }
+
+            // 加载库存统计数据
+            function loadGoodsStockStatistics() {
+                var params = getSearchParams();
+                $.get('/chart/getGoodsStockStatistics', params, function(res) {
+                    if (res.code === 200) {
+                        updateLowStockChart(res.data.lowStockGoods);
+                    }
+                });
+            }
+
+            // 加载客户统计数据
+            function loadCustomerStatistics() {
+                var params = getSearchParams();
+                $.get('/chart/getCustomerStatistics', params, function(res) {
+                    if (res.code === 200) {
+                        updateCustomerActivityChart(res.data.customerActivity);
+                    }
+                });
+            }
+
+            // 获取查询参数
+            function getSearchParams() {
+                return {
+                    startTime: $('#startTime').val(),
+                    endTime: $('#endTime').val(),
+                    type: $('#type').val()
+                };
+            }
+
+            // 更新销售趋势图
+            function updateSalesTrendChart(data) {
+                var option = {
+                    title: {
+                        text: '销售趋势',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function(params) {
+                            return params[0].name + '<br/>' + 
+                                   '销售额: ¥' + params[0].value.toFixed(2);
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: data.map(function(item) { return item.name; })
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '销售额(元)'
+                    },
+                    series: [{
+                        data: data.map(function(item) { return item.value; }),
+                        type: 'line',
+                        smooth: true,
+                        itemStyle: {
+                            color: '#1E9FFF'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(30, 159, 255, 0.3)' },
+                                { offset: 1, color: 'rgba(30, 159, 255, 0)' }
+                            ])
+                        }
+                    }]
+                };
+                salesTrendChart.setOption(option);
+            }
+
+            // 更新商品销售排行图
+            function updateTopGoodsChart(data) {
+                var option = {
+                    title: {
+                        text: '商品销售排行',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function(params) {
+                            return params[0].name + '<br/>' + 
+                                   '销售额: ¥' + params[0].value.toFixed(2);
+                        }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        name: '销售额(元)'
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: data.map(function(item) { return item.name; }).reverse()
+                    },
+                    series: [{
+                        data: data.map(function(item) { return item.value; }).reverse(),
+                        type: 'bar',
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                { offset: 0, color: '#83bff6' },
+                                { offset: 0.5, color: '#188df0' },
+                                { offset: 1, color: '#188df0' }
+                            ])
+                        }
+                    }]
+                };
+                topGoodsChart.setOption(option);
+            }
+
+            // 更新退货趋势图
+            function updateReturnTrendChart(data) {
+                var option = {
+                    title: {
+                        text: '退货趋势',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function(params) {
+                            return params[0].name + '<br/>' + 
+                                   '退货金额: ¥' + params[0].value.toFixed(2);
+                        }
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: data.map(function(item) { return item.name; })
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: '退货金额(元)'
+                    },
+                    series: [{
+                        data: data.map(function(item) { return item.value; }),
+                        type: 'line',
+                        smooth: true,
+                        itemStyle: {
+                            color: '#FF5722'
+                        },
+                        areaStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+                                { offset: 0, color: 'rgba(255, 87, 34, 0.3)' },
+                                { offset: 1, color: 'rgba(255, 87, 34, 0)' }
+                            ])
+                        }
+                    }]
+                };
+                returnTrendChart.setOption(option);
+            }
+
+            // 更新客户购买排行图
+            function updateTopCustomersChart(data) {
+                var option = {
+                    title: {
+                        text: '客户购买排行',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function(params) {
+                            return params[0].name + '<br/>' + 
+                                   '购买金额: ¥' + params[0].value.toFixed(2);
+                        }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        name: '购买金额(元)'
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: data.map(function(item) { return item.name; }).reverse()
+                    },
+                    series: [{
+                        data: data.map(function(item) { return item.value; }).reverse(),
+                        type: 'bar',
+                        itemStyle: {
+                            color: new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+                                { offset: 0, color: '#FFB800' },
+                                { offset: 0.5, color: '#FF9800' },
+                                { offset: 1, color: '#FF9800' }
+                            ])
+                        }
+                    }]
+                };
+                topCustomersChart.setOption(option);
+            }
+
+            // 更新库存预警图
+            function updateLowStockChart(data) {
+                var option = {
+                    title: {
+                        text: '库存预警商品',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'axis',
+                        formatter: function(params) {
+                            return params[0].name + '<br/>' + 
+                                   '库存数量: ' + params[0].value;
+                        }
+                    },
+                    xAxis: {
+                        type: 'value',
+                        name: '库存数量'
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: data.map(function(item) { return item.name; }).reverse()
+                    },
+                    series: [{
+                        data: data.map(function(item) { return item.value; }).reverse(),
+                        type: 'bar',
+                        itemStyle: {
+                            color: '#FFB800'
+                        }
+                    }]
+                };
+                lowStockChart.setOption(option);
+            }
+
+            // 更新客户活跃度图
+            function updateCustomerActivityChart(data) {
+                var option = {
+                    title: {
+                        text: '客户活跃度分布',
+                        left: 'center'
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        formatter: '{a} <br/>{b}: {c} ({d}%)'
+                    },
+                    legend: {
+                        bottom: '5%',
+                        left: 'center'
+                    },
+                    series: [{
+                        name: '客户活跃度',
+                        type: 'pie',
+                        radius: ['40%', '70%'],
+                        avoidLabelOverlap: false,
+                        label: {
+                            show: false,
+                            position: 'center'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: '30',
+                                fontWeight: 'bold'
+                            }
+                        },
+                        labelLine: {
+                            show: false
+                        },
+                        data: data
+                    }]
+                };
+                customerActivityChart.setOption(option);
+            }
+
+            // 查询按钮事件
+            $('#searchBtn').click(function() {
+                loadSalesStatistics();
+                loadSalesbackStatistics();
+                loadGoodsStockStatistics();
+                loadCustomerStatistics();
+            });
+
+            // 重置按钮事件
+            $('#resetBtn').click(function() {
+                $('#searchForm')[0].reset();
+                form.render();
+                loadSalesStatistics();
+                loadSalesbackStatistics();
+                loadGoodsStockStatistics();
+                loadCustomerStatistics();
+            });
+
+            // 窗口大小改变时重新调整图表大小
+            $(window).resize(function() {
+                salesTrendChart.resize();
+                topGoodsChart.resize();
+                returnTrendChart.resize();
+                topCustomersChart.resize();
+                lowStockChart.resize();
+                customerActivityChart.resize();
+            });
+
+            // 页面加载时初始化数据
+            loadDashboardData();
+            loadSalesStatistics();
+            loadSalesbackStatistics();
+            loadGoodsStockStatistics();
+            loadCustomerStatistics();
+        });
+    </script>
+</body>
+</html>

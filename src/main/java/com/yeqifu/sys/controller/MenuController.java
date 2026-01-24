@@ -79,6 +79,14 @@ public class MenuController {
         }
 
         List<TreeNode> treeNodes = new ArrayList<TreeNode>();
+        
+        // 为超级管理员添加数据可视化菜单
+        if (user.getType().equals(Constast.USER_TYPE_SUPER)) {
+            // 创建数据可视化菜单项
+            TreeNode chartNode = new TreeNode(999999, 1, "数据可视化", "&#xe629;", "/resources/page/chart/chartAnalysis.html", false);
+            treeNodes.add(chartNode);
+        }
+        
         for (Permission p : list) {
             Integer id =p.getId();
             Integer pid = p.getPid();
