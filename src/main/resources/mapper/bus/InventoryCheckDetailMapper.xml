@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeqifu.bus.mapper.InventoryCheckDetailMapper">
+
+    <!-- 根据盘点单ID查询明细 -->
+    <select id="selectByCheckid" resultType="com.yeqifu.bus.entity.InventoryCheckDetail">
+        SELECT * FROM bus_inventory_check_detail WHERE checkid = #{checkid}
+    </select>
+
+    <!-- 查询盘点差异统计 -->
+    <select id="selectDiffStatistics" resultType="com.yeqifu.bus.entity.InventoryCheckDetail">
+        SELECT * FROM bus_inventory_check_detail
+        WHERE checkid = #{checkid}
+        AND difftype != 0
+        ORDER BY difftype, ABS(diffnum) DESC
+    </select>
+
+    <!-- 批量插入盘点明细 -->
+    <insert id="batchInsert">
+        INSERT INTO bus_inventory_check_detail
+        (checkid, goodsid, booknum, actualnum, diffnum, diffamount, difftype, checktime, remark)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.checkid}, #{item.goodsid}, #{item.booknum}, #{item.actualnum},
+             #{item.diffnum}, #{item.diffamount}, #{item.difftype}, #{item.checktime}, #{item.remark})
+        </foreach>
+    </insert>
+
+</mapper>
