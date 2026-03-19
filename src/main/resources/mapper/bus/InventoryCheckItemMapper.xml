@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeqifu.bus.mapper.InventoryCheckItemMapper">
+
+    <resultMap id="BaseResultMap" type="com.yeqifu.bus.entity.InventoryCheckItem">
+        <id column="id" property="id"/>
+        <result column="check_id" property="checkId"/>
+        <result column="goodsid" property="goodsid"/>
+        <result column="system_number" property="systemNumber"/>
+        <result column="actual_number" property="actualNumber"/>
+        <result column="difference_number" property="differenceNumber"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <resultMap id="ItemWithGoodsMap" type="com.yeqifu.bus.entity.InventoryCheckItem" extends="BaseResultMap">
+        <result column="goodsname" property="goodsname"/>
+        <result column="productcode" property="productcode"/>
+    </resultMap>
+
+    <select id="selectByCheckId" resultMap="ItemWithGoodsMap">
+        SELECT i.*, g.goodsname, g.productcode
+        FROM bus_inventory_check_item i
+        LEFT JOIN bus_goods g ON i.goodsid = g.id
+        WHERE i.check_id = #{checkId}
+        ORDER BY i.id
+    </select>
+
+    <delete id="deleteByCheckId">
+        DELETE FROM bus_inventory_check_item WHERE check_id = #{checkId}
+    </delete>
+
+    <insert id="batchInsert">
+        INSERT INTO bus_inventory_check_item (check_id, goodsid, system_number, actual_number, difference_number, remark)
+        VALUES
+        <foreach collection="items" item="item" separator=",">
+            (#{item.checkId}, #{item.goodsid}, #{item.systemNumber}, #{item.actualNumber}, #{item.differenceNumber}, #{item.remark})
+        </foreach>
+    </insert>
+
+</mapper>

@@ -32,9 +32,11 @@
         delete from bus_salesback where customerid = #{customerid}
     </delete>
 
-    <!--查询所有库存预警商品-->
+    <!--查询所有库存预警商品（库存低于下限或高于上限）-->
     <select id="loadAllWarning" resultType="com.yeqifu.bus.entity.Goods">
-        select * from bus_goods where dangernum > number
+        select * from bus_goods 
+        where (dangernum is not null and number &lt; dangernum)
+           or (maxnum is not null and number &gt; maxnum)
     </select>
 
 

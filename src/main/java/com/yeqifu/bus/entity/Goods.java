@@ -51,6 +51,8 @@ public class Goods implements Serializable {
 
     private Integer dangernum;
 
+    private Integer maxnum;
+
     private String goodsimg;
 
     private Integer available;

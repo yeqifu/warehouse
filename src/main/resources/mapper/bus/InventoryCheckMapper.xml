@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeqifu.bus.mapper.InventoryCheckMapper">
+
+    <resultMap id="BaseResultMap" type="com.yeqifu.bus.entity.InventoryCheck">
+        <id column="id" property="id"/>
+        <result column="check_no" property="checkNo"/>
+        <result column="check_type" property="checkType"/>
+        <result column="warehouse_id" property="warehouseId"/>
+        <result column="category_name" property="categoryName"/>
+        <result column="check_date" property="checkDate"/>
+        <result column="status" property="status"/>
+        <result column="operator" property="operator"/>
+        <result column="create_time" property="createTime"/>
+        <result column="remark" property="remark"/>
+    </resultMap>
+
+    <select id="selectCheckList" resultMap="BaseResultMap">
+        SELECT * FROM bus_inventory_check
+        <where>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="checkType != null and checkType != ''">
+                AND check_type = #{checkType}
+            </if>
+        </where>
+        ORDER BY create_time DESC
+    </select>
+
+    <select id="generateCheckNo" resultType="java.lang.String">
+        SELECT CONCAT('PD', DATE_FORMAT(NOW(), '%Y%m%d'), LPAD(IFNULL(MAX(SUBSTRING(check_no, 11)), 0) + 1, 4, '0'))
+        FROM bus_inventory_check
+        WHERE check_no LIKE CONCAT('PD', DATE_FORMAT(NOW(), '%Y%m%d'), '%')
+    </select>
+
+</mapper>

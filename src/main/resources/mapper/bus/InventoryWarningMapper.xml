@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeqifu.bus.mapper.InventoryWarningMapper">
+
+    <resultMap id="BaseResultMap" type="com.yeqifu.bus.entity.InventoryWarning">
+        <id column="id" property="id"/>
+        <result column="goodsid" property="goodsid"/>
+        <result column="type" property="type"/>
+        <result column="warning_level" property="warningLevel"/>
+        <result column="content" property="content"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="handle_time" property="handleTime"/>
+        <result column="handler" property="handler"/>
+        <result column="handle_remark" property="handleRemark"/>
+    </resultMap>
+
+    <resultMap id="WarningWithGoodsMap" type="com.yeqifu.bus.entity.InventoryWarning" extends="BaseResultMap">
+        <result column="goodsname" property="goodsname"/>
+        <result column="current_number" property="currentNumber"/>
+        <result column="threshold_value" property="thresholdValue"/>
+    </resultMap>
+
+    <select id="selectWarningList" resultMap="WarningWithGoodsMap">
+        SELECT w.*, g.goodsname, g.number as current_number,
+               CASE WHEN w.type = 1 THEN g.dangernum ELSE g.maxnum END as threshold_value
+        FROM bus_inventory_warning w
+        LEFT JOIN bus_goods g ON w.goodsid = g.id
+        <where>
+            <if test="status != null">
+                AND w.status = #{status}
+            </if>
+        </where>
+        ORDER BY w.create_time DESC
+    </select>
+
+    <select id="selectUnhandledWarnings" resultMap="WarningWithGoodsMap">
+        SELECT w.*, g.goodsname, g.number as current_number,
+               CASE WHEN w.type = 1 THEN g.dangernum ELSE g.maxnum END as threshold_value
+        FROM bus_inventory_warning w
+        LEFT JOIN bus_goods g ON w.goodsid = g.id
+        WHERE w.status = 0
+        ORDER BY w.warning_level DESC, w.create_time DESC
+    </select>
+
+    <update id="updateStatus">
+        UPDATE bus_inventory_warning
+        SET status = #{status},
+            handler = #{handler},
+            handle_time = NOW(),
+            handle_remark = #{handleRemark}
+        WHERE id = #{id}
+    </update>
+
+</mapper>

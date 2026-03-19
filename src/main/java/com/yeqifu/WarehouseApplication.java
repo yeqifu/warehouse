@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.MultipartConfigFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.util.unit.DataSize;
 
 import javax.servlet.MultipartConfigElement;
@@ -15,6 +16,7 @@ import javax.servlet.MultipartConfigElement;
  */
 @Configuration
 @SpringBootApplication
+@EnableScheduling
 @MapperScan(basePackages = {"com.yeqifu.*.mapper"})
 public class WarehouseApplication {
 
