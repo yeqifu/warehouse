@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeqifu.bus.mapper.InventoryWarningMapper">
+
+    <!-- 查询指定商品的未处理预警记录 -->
+    <select id="selectUnhandledByGoodsid" resultType="com.yeqifu.bus.entity.InventoryWarning">
+        SELECT * FROM bus_inventory_warning
+        WHERE goodsid = #{goodsid}
+        AND warningtype = #{warningtype}
+        AND status = 0
+    </select>
+
+    <!-- 统计未处理的预警数量 -->
+    <select id="countUnhandledWarning" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM bus_inventory_warning WHERE status = 0
+    </select>
+
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeqifu.bus.mapper.InventoryCheckMapper">
+
+    <!-- 根据盘点单号查询盘点单 -->
+    <select id="selectByCheckno" resultType="com.yeqifu.bus.entity.InventoryCheck">
+        SELECT * FROM bus_inventory_check WHERE checkno = #{checkno}
+    </select>
+
+    <!-- 查询进行中的盘点单 -->
+    <select id="selectInProgressChecks" resultType="com.yeqifu.bus.entity.InventoryCheck">
+        SELECT * FROM bus_inventory_check WHERE status = 1
+    </select>
+
+</mapper>
